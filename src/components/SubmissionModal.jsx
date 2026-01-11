@@ -70,20 +70,37 @@ QRZ.com: [Optional - Full URL]`;
                     padding: '20px',
                     borderRadius: '8px',
                     marginBottom: '20px',
-                    border: '1px solid var(--glass-border)'
+                    border: '1px solid var(--glass-border)',
+                    textAlign: 'center'
                 }}>
                     <a href={`mailto:9m2pju@hamradio.my?subject=New Callbook Registration&body=${encodeURIComponent(emailBody)}`}
                         style={{
-                            color: 'var(--secondary)',
-                            fontSize: '1.2rem',
+                            background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                            color: '#000',
+                            fontSize: '1.1rem',
                             fontWeight: 'bold',
                             textDecoration: 'none',
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '10px'
-                        }}>
-                        <FaEnvelope /> 9m2pju@hamradio.my
+                            gap: '10px',
+                            padding: '14px 28px',
+                            borderRadius: '10px',
+                            transition: 'transform 0.2s, box-shadow 0.2s'
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 4px 20px rgba(79, 172, 254, 0.5)';
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        <FaEnvelope /> Click to Email: 9m2pju@hamradio.my
                     </a>
+                    <p style={{ margin: '12px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                        👆 Tap/Click the button above to open your email app
+                    </p>
                 </div>
 
                 <h3>Required Format</h3>
