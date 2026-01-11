@@ -69,9 +69,17 @@ function App() {
 
         // License class filter
         if (currentFilters.licenseClass) {
-            results = results.filter(item =>
-                item.callsign.startsWith(currentFilters.licenseClass)
-            );
+            if (currentFilters.licenseClass === 'A') {
+                results = results.filter(item => item.callsign.startsWith('9M'));
+            } else if (currentFilters.licenseClass === 'B') {
+                results = results.filter(item =>
+                    item.callsign.startsWith('9W2') ||
+                    item.callsign.startsWith('9W6') ||
+                    item.callsign.startsWith('9W8')
+                );
+            } else if (currentFilters.licenseClass === 'C') {
+                results = results.filter(item => item.callsign.startsWith('9W3'));
+            }
         }
 
         // Recently added filter

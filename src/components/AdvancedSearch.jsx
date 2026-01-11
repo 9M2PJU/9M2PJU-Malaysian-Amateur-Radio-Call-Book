@@ -76,11 +76,9 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
                     style={selectStyle}
                 >
                     <option value="">All Classes</option>
-                    <option value="9M">Class A (9M)</option>
-                    <option value="9W2">Class B (9W2)</option>
-                    <option value="9W6">Class B (9W6)</option>
-                    <option value="9W8">Class B (9W8)</option>
-                    <option value="9W3">Class C (9W3)</option>
+                    <option value="A">Class A</option>
+                    <option value="B">Class B</option>
+                    <option value="C">Class C</option>
                 </select>
 
                 {/* Recently Added Filter */}

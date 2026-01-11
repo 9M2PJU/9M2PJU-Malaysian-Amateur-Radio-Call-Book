@@ -19,11 +19,9 @@ const StatsDashboard = ({ data }) => {
 
     // Count by license class
     const classCount = {
-        'Class A (9M)': data.filter(d => d.callsign.startsWith('9M')).length,
-        'Class B (9W2)': data.filter(d => d.callsign.startsWith('9W2')).length,
-        'Class B (9W6)': data.filter(d => d.callsign.startsWith('9W6')).length,
-        'Class B (9W8)': data.filter(d => d.callsign.startsWith('9W8')).length,
-        'Class C (9W3)': data.filter(d => d.callsign.startsWith('9W3')).length
+        'Class A': data.filter(d => d.callsign.startsWith('9M')).length,
+        'Class B': data.filter(d => d.callsign.startsWith('9W2') || d.callsign.startsWith('9W6') || d.callsign.startsWith('9W8')).length,
+        'Class C': data.filter(d => d.callsign.startsWith('9W3')).length
     };
 
     // Count recently added (entries with addedDate within last 30 days)
