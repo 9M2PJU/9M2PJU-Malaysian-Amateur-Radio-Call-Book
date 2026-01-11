@@ -10,13 +10,14 @@ function App() {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('/callsigns.json')
+        // Fetch the latest callsign data directly from the repository (no rebuild needed)
+        fetch('https://raw.githubusercontent.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book/main/public/callsigns.json')
             .then(res => res.json())
             .then(data => {
                 setCallsigns(data);
                 setFiltered(data);
             })
-            .catch(err => console.error("Error fetching data:", err));
+            .catch(err => console.error('Error fetching data:', err));
     }, []);
 
     const handleSearch = (term) => {
