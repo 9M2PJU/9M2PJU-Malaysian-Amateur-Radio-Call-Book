@@ -1,6 +1,5 @@
 import React from 'react';
-import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch } from 'react-icons/fa';
 
 const Card = ({ data }) => {
     const downloadVCard = () => {
@@ -81,16 +80,16 @@ END:VCARD`;
                 )}
 
                 {/* Social Media Section */}
-                {(data.facebook || data.twitter) && (
+                {(data.facebook || data.qrz) && (
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--glass-border)' }}>
                         {data.facebook && (
                             <a href={data.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877f2', fontSize: '1.5rem' }} title="Facebook">
                                 <FaFacebook />
                             </a>
                         )}
-                        {data.twitter && (
-                            <a href={data.twitter} target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontSize: '1.5rem' }} title="X (Twitter)">
-                                <FaXTwitter />
+                        {data.qrz && (
+                            <a href={data.qrz} target="_blank" rel="noopener noreferrer" style={{ color: '#ff9800', fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }} title="QRZ.com">
+                                <FaSearch /> QRZ
                             </a>
                         )}
                     </div>

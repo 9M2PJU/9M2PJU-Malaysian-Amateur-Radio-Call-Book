@@ -12,7 +12,7 @@ Phone: [Optional]
 Address: [Optional]
 Website: [Optional]
 Facebook: [Optional - Full URL]
-X/Twitter: [Optional - Full URL]`;
+QRZ.com: [Optional - Full URL]`;
 
     return (
         <div style={{
@@ -105,7 +105,7 @@ Phone: [Optional]
 Address: [Optional]
 Website: [Optional]
 Facebook: [Optional - Full URL]
-X/Twitter: [Optional - Full URL]`}
+QRZ.com: [Optional - Full URL]`}
                 </pre>
 
                 <div style={{

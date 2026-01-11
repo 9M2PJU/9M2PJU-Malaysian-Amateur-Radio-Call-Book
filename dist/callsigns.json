@@ -5,7 +5,10 @@
         "location": "KUALA LUMPUR",
         "email": "9m2pju@hamradio.my",
         "phone": "+6012-3456789",
-        "address": "123, Jalan Radio, Bukit Antarabangsa, 68000 Ampang, Selangor"
+        "address": "123, Jalan Radio, Bukit Antarabangsa, 68000 Ampang, Selangor",
+        "website": "https://hamradio.my",
+        "facebook": "https://facebook.com/9m2pju",
+        "twitter": "https://x.com/9m2pju"
     },
     {
         "callsign": "9W2XYZ",
