@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload } from 'react-icons/fa';
+import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 const Card = ({ data }) => {
     const downloadVCard = () => {
@@ -11,6 +12,7 @@ ORG:Amateur Radio - ${data.callsign}
 ${data.phone ? `TEL;TYPE=CELL:${data.phone}` : ''}
 ${data.email ? `EMAIL:${data.email}` : ''}
 ${data.address ? `ADR;TYPE=HOME:;;${data.address};;;;` : ''}
+${data.website ? `URL:${data.website}` : ''}
 NOTE:Malaysian Amateur Radio Operator - ${data.callsign}\\nLocation: ${data.location}
 END:VCARD`;
 
@@ -56,7 +58,7 @@ END:VCARD`;
                 {data.phone && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                         <FaPhone style={{ minWidth: '16px' }} />
-                        <span>{data.phone}</span>
+                        <a href={`tel:${data.phone}`} style={{ color: 'var(--secondary)', textDecoration: 'none' }}>{data.phone}</a>
                     </div>
                 )}
 
@@ -66,6 +68,31 @@ END:VCARD`;
                         <a href={`mailto:${data.email}`} style={{ color: 'var(--secondary)', textDecoration: 'none', wordBreak: 'break-all' }}>
                             {data.email}
                         </a>
+                    </div>
+                )}
+
+                {data.website && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
+                        <FaGlobe style={{ minWidth: '16px' }} />
+                        <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--secondary)', textDecoration: 'none', wordBreak: 'break-all' }}>
+                            {data.website.replace(/^https?:\/\//, '')}
+                        </a>
+                    </div>
+                )}
+
+                {/* Social Media Section */}
+                {(data.facebook || data.twitter) && (
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--glass-border)' }}>
+                        {data.facebook && (
+                            <a href={data.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877f2', fontSize: '1.5rem' }} title="Facebook">
+                                <FaFacebook />
+                            </a>
+                        )}
+                        {data.twitter && (
+                            <a href={data.twitter} target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontSize: '1.5rem' }} title="X (Twitter)">
+                                <FaXTwitter />
+                            </a>
+                        )}
                     </div>
                 )}
 

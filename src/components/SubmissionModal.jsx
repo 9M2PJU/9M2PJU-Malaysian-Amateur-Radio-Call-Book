@@ -4,6 +4,16 @@ import { FaTimes, FaEnvelope, FaExclamationTriangle } from 'react-icons/fa';
 const SubmissionModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
+    const emailBody = `Callsign: [Your Callsign]
+Name: [Your Name]
+Location: [State/City]
+Email: [Optional]
+Phone: [Optional]
+Address: [Optional]
+Website: [Optional]
+Facebook: [Optional - Full URL]
+X/Twitter: [Optional - Full URL]`;
+
     return (
         <div style={{
             position: 'fixed',
@@ -16,17 +26,20 @@ const SubmissionModal = ({ isOpen, onClose }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 1000
+            zIndex: 1000,
+            overflow: 'auto',
+            padding: '20px'
         }} onClick={onClose}>
             <div
                 className="glass-panel"
                 style={{
-                    margin: '20px',
                     padding: '40px',
                     maxWidth: '600px',
                     width: '100%',
                     position: 'relative',
-                    background: '#1a1a1a'
+                    background: '#1a1a1a',
+                    maxHeight: '90vh',
+                    overflowY: 'auto'
                 }}
                 onClick={e => e.stopPropagation()}
             >
@@ -59,7 +72,7 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                     marginBottom: '20px',
                     border: '1px solid var(--glass-border)'
                 }}>
-                    <a href="mailto:9m2pju@hamradio.my?subject=New Callbook Registration&body=Callsign:%0D%0AName:%0D%0ALocation:%0D%0AEmail (Optional):%0D%0APhone (Optional):%0D%0AAddress (Optional):"
+                    <a href={`mailto:9m2pju@hamradio.my?subject=New Callbook Registration&body=${encodeURIComponent(emailBody)}`}
                         style={{
                             color: 'var(--secondary)',
                             fontSize: '1.2rem',
@@ -80,14 +93,19 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                     borderRadius: '8px',
                     overflowX: 'auto',
                     fontFamily: 'monospace',
-                    color: '#0f0'
+                    color: '#0f0',
+                    fontSize: '0.85rem',
+                    lineHeight: '1.6'
                 }}>
-                    Callsign: [Your Callsign]
-                    Name: [Your Name]
-                    Location: [State/City]
-                    Email: [Optional]
-                    Phone: [Optional]
-                    Address: [Optional]
+                    {`Callsign: [Your Callsign]
+Name: [Your Name]
+Location: [State/City]
+Email: [Optional]
+Phone: [Optional]
+Address: [Optional]
+Website: [Optional]
+Facebook: [Optional - Full URL]
+X/Twitter: [Optional - Full URL]`}
                 </pre>
 
                 <div style={{
