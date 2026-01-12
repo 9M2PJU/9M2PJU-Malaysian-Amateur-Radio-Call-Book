@@ -462,7 +462,7 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                             borderRadius: '4px'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ff4444', fontWeight: 'bold', marginBottom: '8px' }}>
-                                <FaExclamationTriangle /> ⚠️ Privacy Warning
+                                <FaExclamationTriangle /> Privacy Warning
                             </div>
                             <p style={{ margin: '0 0 10px 0', fontSize: '0.85rem', color: '#ffaaaa' }}>
                                 <strong>By clicking Submit, you understand and agree that:</strong>
