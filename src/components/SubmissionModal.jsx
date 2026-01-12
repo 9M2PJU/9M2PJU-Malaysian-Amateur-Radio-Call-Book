@@ -38,6 +38,16 @@ const SubmissionModal = ({ isOpen, onClose }) => {
         return regex.test(callsign.toUpperCase());
     };
 
+    // Auto-add https:// if user enters plain domain
+    const normalizeUrl = (url) => {
+        if (!url || url.trim() === '') return null;
+        url = url.trim();
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            return 'https://' + url;
+        }
+        return url;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -78,9 +88,9 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         email: formData.email || null,
                         phone: formData.phone || null,
                         address: formData.address || null,
-                        website: formData.website || null,
-                        facebook: formData.facebook || null,
-                        qrz: formData.qrz || null,
+                        website: normalizeUrl(formData.website),
+                        facebook: normalizeUrl(formData.facebook),
+                        qrz: normalizeUrl(formData.qrz),
                         added_date: new Date().toISOString().split('T')[0]
                     })
                     .eq('callsign', formData.callsign.toUpperCase());
@@ -97,9 +107,9 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         email: formData.email || null,
                         phone: formData.phone || null,
                         address: formData.address || null,
-                        website: formData.website || null,
-                        facebook: formData.facebook || null,
-                        qrz: formData.qrz || null,
+                        website: normalizeUrl(formData.website),
+                        facebook: normalizeUrl(formData.facebook),
+                        qrz: normalizeUrl(formData.qrz),
                         added_date: new Date().toISOString().split('T')[0]
                     });
 
@@ -297,11 +307,11 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         <div style={{ marginBottom: '20px' }}>
                             <label style={labelStyle}>Website (Optional)</label>
                             <input
-                                type="url"
+                                type="text"
                                 name="website"
                                 value={formData.website}
                                 onChange={handleChange}
-                                placeholder="https://example.com"
+                                placeholder="example.com or https://example.com"
                                 style={inputStyle}
                             />
                         </div>
@@ -309,11 +319,11 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         <div style={{ marginBottom: '20px' }}>
                             <label style={labelStyle}>Facebook (Optional)</label>
                             <input
-                                type="url"
+                                type="text"
                                 name="facebook"
                                 value={formData.facebook}
                                 onChange={handleChange}
-                                placeholder="https://facebook.com/yourprofile"
+                                placeholder="facebook.com/yourprofile"
                                 style={inputStyle}
                             />
                         </div>
@@ -321,11 +331,11 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         <div style={{ marginBottom: '20px' }}>
                             <label style={labelStyle}>QRZ.com Profile (Optional)</label>
                             <input
-                                type="url"
+                                type="text"
                                 name="qrz"
                                 value={formData.qrz}
                                 onChange={handleChange}
-                                placeholder="https://www.qrz.com/db/9M2ABC"
+                                placeholder="qrz.com/db/9M2ABC"
                                 style={inputStyle}
                             />
                         </div>
