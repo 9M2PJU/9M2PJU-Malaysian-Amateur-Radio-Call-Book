@@ -186,7 +186,7 @@ END:VCARD`;
                                 fontSize: '0.9rem',
                                 fontWeight: '600'
                             }}>
-                                🎫 MARTS ID: {data.martsId}
+                                🎫 MARTS MEMBER ID: {data.martsId}
                             </div>
                         )}
                     </div>

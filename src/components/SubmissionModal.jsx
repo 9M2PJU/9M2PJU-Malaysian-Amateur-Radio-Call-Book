@@ -359,7 +359,7 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>MARTS ID (Optional)</label>
+                            <label style={labelStyle}>MARTS MEMBER ID (Optional)</label>
                             <input
                                 type="text"
                                 name="martsId"
