@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTimes, FaExclamationTriangle, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import { supabase } from '../lib/supabase';
 
@@ -29,7 +29,7 @@ const SubmissionModal = ({ isOpen, onClose }) => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
 
-    if (!isOpen) return null;
+
 
     useEffect(() => {
         if (isOpen) {
@@ -62,6 +62,8 @@ const SubmissionModal = ({ isOpen, onClose }) => {
         }
         return url;
     };
+
+    if (!isOpen) return null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
