@@ -1,10 +1,18 @@
 import React from 'react';
-import { FaTimes, FaGithub, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
+import { FaTimes, FaEnvelope, FaExclamationTriangle } from 'react-icons/fa';
 
 const SubmissionModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
-    const GITHUB_ISSUE_URL = 'https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book/issues/new?template=callsign-submission.yml';
+    const emailBody = `Callsign: [Your Callsign]
+Name: [Your Name]
+Location: [State/City]
+Email: [Optional]
+Phone: [Optional]
+Address: [Optional]
+Website: [Optional]
+Facebook: [Optional - Full URL]
+QRZ.com: [Optional - Full URL]`;
 
     return (
         <div style={{
@@ -51,41 +59,21 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                     <FaTimes />
                 </button>
 
-                <h2 style={{ color: 'var(--primary)', marginTop: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    📻 Register Your Callsign
-                </h2>
+                <h2 style={{ color: 'var(--primary)', marginTop: 0 }}>Register New Callsign</h2>
 
-                <p style={{ lineHeight: '1.6', marginBottom: '25px' }}>
-                    Submit your callsign to be added to the Malaysian Amateur Radio Callbook directory.
-                    The process is simple and automated!
+                <p style={{ lineHeight: '1.6' }}>
+                    To add your callsign to the directory, please email your details to:
                 </p>
 
-                {/* How it works */}
                 <div style={{
-                    background: 'rgba(79, 172, 254, 0.1)',
+                    background: 'rgba(255,255,255,0.05)',
                     padding: '20px',
-                    borderRadius: '12px',
-                    marginBottom: '25px',
-                    border: '1px solid rgba(79, 172, 254, 0.3)'
+                    borderRadius: '8px',
+                    marginBottom: '20px',
+                    border: '1px solid var(--glass-border)',
+                    textAlign: 'center'
                 }}>
-                    <h3 style={{ marginTop: 0, color: 'var(--primary)', fontSize: '1.1rem' }}>
-                        📋 How It Works
-                    </h3>
-                    <ol style={{ margin: 0, paddingLeft: '20px', lineHeight: '2' }}>
-                        <li>Click the button below to open the submission form</li>
-                        <li>Fill in your callsign details (requires GitHub account)</li>
-                        <li>Submit the form</li>
-                        <li>Your submission will be reviewed and approved</li>
-                        <li>Once approved, your callsign appears in the directory!</li>
-                    </ol>
-                </div>
-
-                {/* Submit Button */}
-                <div style={{ textAlign: 'center', marginBottom: '25px' }}>
-                    <a
-                        href={GITHUB_ISSUE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <a href={`mailto:9m2pju@hamradio.my?subject=New Callbook Registration&body=${encodeURIComponent(emailBody)}`}
                         style={{
                             background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
                             color: '#000',
@@ -95,8 +83,8 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '10px',
-                            padding: '16px 32px',
-                            borderRadius: '12px',
+                            padding: '14px 28px',
+                            borderRadius: '10px',
                             transition: 'transform 0.2s, box-shadow 0.2s'
                         }}
                         onMouseOver={(e) => {
@@ -108,69 +96,37 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                             e.currentTarget.style.boxShadow = 'none';
                         }}
                     >
-                        <FaGithub size={24} /> Submit Your Callsign
+                        <FaEnvelope /> Click to Email: 9m2pju@hamradio.my
                     </a>
                     <p style={{ margin: '12px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Opens GitHub in a new tab
+                        👆 Tap/Click the button above to open your email app
                     </p>
                 </div>
 
-                {/* What you need */}
-                <div style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    padding: '20px',
-                    borderRadius: '12px',
-                    marginBottom: '25px'
+                <h3>Required Format</h3>
+                <pre style={{
+                    background: '#000',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    overflowX: 'auto',
+                    fontFamily: 'monospace',
+                    color: '#0f0',
+                    fontSize: '0.85rem',
+                    lineHeight: '1.6'
                 }}>
-                    <h3 style={{ marginTop: 0, fontSize: '1rem' }}>✅ What You'll Need</h3>
-                    <ul style={{ margin: 0, paddingLeft: '20px', lineHeight: '1.8' }}>
-                        <li><strong>Required:</strong> Callsign, Name, State</li>
-                        <li><strong>Optional:</strong> Email, Phone, Address, Website, Facebook, QRZ.com link</li>
-                        <li>A <strong>GitHub account</strong> (free to create)</li>
-                    </ul>
-                </div>
+                    {`Callsign: [Your Callsign]
+Name: [Your Name]
+Location: [State/City]
+Email: [Optional]
+Phone: [Optional]
+Address: [Optional]
+Website: [Optional]
+Facebook: [Optional - Full URL]
+QRZ.com: [Optional - Full URL]`}
+                </pre>
 
-                {/* Benefits */}
                 <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-                    gap: '15px',
-                    marginBottom: '25px'
-                }}>
-                    <div style={{
-                        background: 'rgba(0, 200, 83, 0.1)',
-                        padding: '15px',
-                        borderRadius: '10px',
-                        textAlign: 'center',
-                        border: '1px solid rgba(0, 200, 83, 0.3)'
-                    }}>
-                        <FaCheckCircle color="#00c853" size={24} />
-                        <p style={{ margin: '10px 0 0 0', fontSize: '0.9rem' }}>Quick Review</p>
-                    </div>
-                    <div style={{
-                        background: 'rgba(0, 200, 83, 0.1)',
-                        padding: '15px',
-                        borderRadius: '10px',
-                        textAlign: 'center',
-                        border: '1px solid rgba(0, 200, 83, 0.3)'
-                    }}>
-                        <FaCheckCircle color="#00c853" size={24} />
-                        <p style={{ margin: '10px 0 0 0', fontSize: '0.9rem' }}>Auto-Published</p>
-                    </div>
-                    <div style={{
-                        background: 'rgba(0, 200, 83, 0.1)',
-                        padding: '15px',
-                        borderRadius: '10px',
-                        textAlign: 'center',
-                        border: '1px solid rgba(0, 200, 83, 0.3)'
-                    }}>
-                        <FaCheckCircle color="#00c853" size={24} />
-                        <p style={{ margin: '10px 0 0 0', fontSize: '0.9rem' }}>Update Anytime</p>
-                    </div>
-                </div>
-
-                {/* Privacy Disclaimer */}
-                <div style={{
+                    marginTop: '30px',
                     padding: '15px',
                     background: 'rgba(255, 100, 100, 0.1)',
                     borderLeft: '4px solid #ff4444',
@@ -180,7 +136,7 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         <FaExclamationTriangle /> Privacy Disclaimer
                     </div>
                     <p style={{ margin: 0, fontSize: '0.9rem', color: '#ffaaaa' }}>
-                        Submission is voluntary. By submitting your details, you agree to have this information published publicly in this directory.
+                        Submission is voluntary. By submitting your details via email, you agree to have this information published publicly in this directory.
                         The maintainer is not responsible for any privacy breach or misuse of the published information.
                     </p>
                 </div>
