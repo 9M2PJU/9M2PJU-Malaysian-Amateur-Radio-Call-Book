@@ -1,18 +1,144 @@
-import React from 'react';
-import { FaTimes, FaEnvelope, FaExclamationTriangle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaTimes, FaExclamationTriangle, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { supabase } from '../lib/supabase';
+
+const MALAYSIAN_STATES = [
+    'JOHOR', 'KEDAH', 'KELANTAN', 'MELAKA', 'NEGERI SEMBILAN',
+    'PAHANG', 'PERAK', 'PERLIS', 'PULAU PINANG', 'SABAH',
+    'SARAWAK', 'SELANGOR', 'TERENGGANU', 'KUALA LUMPUR', 'LABUAN', 'PUTRAJAYA'
+];
 
 const SubmissionModal = ({ isOpen, onClose }) => {
+    const [formData, setFormData] = useState({
+        callsign: '',
+        name: '',
+        location: '',
+        email: '',
+        phone: '',
+        address: '',
+        website: '',
+        facebook: '',
+        qrz: ''
+    });
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+
     if (!isOpen) return null;
 
-    const emailBody = `Callsign: [Your Callsign]
-Name: [Your Name]
-Location: [State/City]
-Email: [Optional]
-Phone: [Optional]
-Address: [Optional]
-Website: [Optional]
-Facebook: [Optional - Full URL]
-QRZ.com: [Optional - Full URL]`;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const validateCallsign = (callsign) => {
+        const regex = /^9[MW][0-9][A-Z]{1,3}$/;
+        return regex.test(callsign.toUpperCase());
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        // Validate callsign
+        if (!validateCallsign(formData.callsign)) {
+            setError('Invalid callsign format. Must be Malaysian format (e.g., 9M2ABC, 9W2XYZ)');
+            return;
+        }
+
+        if (!formData.name.trim()) {
+            setError('Name is required');
+            return;
+        }
+
+        if (!formData.location) {
+            setError('Please select your state');
+            return;
+        }
+
+        setSubmitting(true);
+
+        try {
+            // Check if callsign already exists
+            const { data: existing } = await supabase
+                .from('callsigns')
+                .select('callsign')
+                .eq('callsign', formData.callsign.toUpperCase())
+                .single();
+
+            if (existing) {
+                // Update existing entry
+                const { error: updateError } = await supabase
+                    .from('callsigns')
+                    .update({
+                        name: formData.name.toUpperCase(),
+                        location: formData.location,
+                        email: formData.email || null,
+                        phone: formData.phone || null,
+                        address: formData.address || null,
+                        website: formData.website || null,
+                        facebook: formData.facebook || null,
+                        qrz: formData.qrz || null,
+                        added_date: new Date().toISOString().split('T')[0]
+                    })
+                    .eq('callsign', formData.callsign.toUpperCase());
+
+                if (updateError) throw updateError;
+            } else {
+                // Insert new entry
+                const { error: insertError } = await supabase
+                    .from('callsigns')
+                    .insert({
+                        callsign: formData.callsign.toUpperCase(),
+                        name: formData.name.toUpperCase(),
+                        location: formData.location,
+                        email: formData.email || null,
+                        phone: formData.phone || null,
+                        address: formData.address || null,
+                        website: formData.website || null,
+                        facebook: formData.facebook || null,
+                        qrz: formData.qrz || null,
+                        added_date: new Date().toISOString().split('T')[0]
+                    });
+
+                if (insertError) throw insertError;
+            }
+
+            setSuccess(true);
+            setTimeout(() => {
+                setSuccess(false);
+                setFormData({
+                    callsign: '', name: '', location: '', email: '',
+                    phone: '', address: '', website: '', facebook: '', qrz: ''
+                });
+                onClose();
+                window.location.reload(); // Refresh to show new data
+            }, 2000);
+
+        } catch (err) {
+            console.error('Submission error:', err);
+            setError(err.message || 'Failed to submit. Please try again.');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const inputStyle = {
+        width: '100%',
+        padding: '12px',
+        borderRadius: '8px',
+        border: '1px solid var(--glass-border)',
+        background: 'rgba(255,255,255,0.05)',
+        color: '#fff',
+        fontSize: '1rem'
+    };
+
+    const labelStyle = {
+        display: 'block',
+        marginBottom: '6px',
+        color: 'var(--text-muted)',
+        fontSize: '0.9rem'
+    };
 
     return (
         <div style={{
@@ -59,88 +185,196 @@ QRZ.com: [Optional - Full URL]`;
                     <FaTimes />
                 </button>
 
-                <h2 style={{ color: 'var(--primary)', marginTop: 0 }}>Register New Callsign</h2>
+                <h2 style={{ color: 'var(--primary)', marginTop: 0 }}>📻 Register Your Callsign</h2>
 
-                <p style={{ lineHeight: '1.6' }}>
-                    To add your callsign to the directory, please email your details to:
-                </p>
-
-                <div style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    marginBottom: '20px',
-                    border: '1px solid var(--glass-border)',
-                    textAlign: 'center'
-                }}>
-                    <a href={`mailto:9m2pju@hamradio.my?subject=New Callbook Registration&body=${encodeURIComponent(emailBody)}`}
-                        style={{
-                            background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                            color: '#000',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            textDecoration: 'none',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '14px 28px',
-                            borderRadius: '10px',
-                            transition: 'transform 0.2s, box-shadow 0.2s'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 4px 20px rgba(79, 172, 254, 0.5)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = 'none';
-                        }}
-                    >
-                        <FaEnvelope /> Click to Email: 9m2pju@hamradio.my
-                    </a>
-                    <p style={{ margin: '12px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        👆 Tap/Click the button above to open your email app
-                    </p>
-                </div>
-
-                <h3>Required Format</h3>
-                <pre style={{
-                    background: '#000',
-                    padding: '15px',
-                    borderRadius: '8px',
-                    overflowX: 'auto',
-                    fontFamily: 'monospace',
-                    color: '#0f0',
-                    fontSize: '0.85rem',
-                    lineHeight: '1.6'
-                }}>
-                    {`Callsign: [Your Callsign]
-Name: [Your Name]
-Location: [State/City]
-Email: [Optional]
-Phone: [Optional]
-Address: [Optional]
-Website: [Optional]
-Facebook: [Optional - Full URL]
-QRZ.com: [Optional - Full URL]`}
-                </pre>
-
-                <div style={{
-                    marginTop: '30px',
-                    padding: '15px',
-                    background: 'rgba(255, 100, 100, 0.1)',
-                    borderLeft: '4px solid #ff4444',
-                    borderRadius: '4px'
-                }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ff4444', fontWeight: 'bold', marginBottom: '8px' }}>
-                        <FaExclamationTriangle /> Privacy Disclaimer
+                {success ? (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '40px',
+                        color: '#00c853'
+                    }}>
+                        <FaCheckCircle size={60} />
+                        <h3>Submission Successful!</h3>
+                        <p>Your callsign has been added to the directory.</p>
                     </div>
-                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#ffaaaa' }}>
-                        Submission is voluntary. By submitting your details via email, you agree to have this information published publicly in this directory.
-                        The maintainer is not responsible for any privacy breach or misuse of the published information.
-                    </p>
-                </div>
+                ) : (
+                    <form onSubmit={handleSubmit}>
+                        {error && (
+                            <div style={{
+                                background: 'rgba(255,0,0,0.1)',
+                                border: '1px solid #ff4444',
+                                borderRadius: '8px',
+                                padding: '12px',
+                                marginBottom: '20px',
+                                color: '#ff6666'
+                            }}>
+                                {error}
+                            </div>
+                        )}
 
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Callsign *</label>
+                            <input
+                                type="text"
+                                name="callsign"
+                                value={formData.callsign}
+                                onChange={handleChange}
+                                placeholder="9M2ABC"
+                                style={inputStyle}
+                                required
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Name *</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="AHMAD BIN ALI"
+                                style={inputStyle}
+                                required
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>State *</label>
+                            <select
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                style={{ ...inputStyle, cursor: 'pointer' }}
+                                required
+                            >
+                                <option value="" style={{ background: '#1a1a1a', color: '#fff' }}>Select State</option>
+                                {MALAYSIAN_STATES.map(state => (
+                                    <option key={state} value={state} style={{ background: '#1a1a1a', color: '#fff' }}>
+                                        {state}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Email (Optional)</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="email@example.com"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Phone (Optional)</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                placeholder="+60123456789"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Address (Optional)</label>
+                            <input
+                                type="text"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                placeholder="123, Jalan Radio, 50000 Kuala Lumpur"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Website (Optional)</label>
+                            <input
+                                type="url"
+                                name="website"
+                                value={formData.website}
+                                onChange={handleChange}
+                                placeholder="https://example.com"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Facebook (Optional)</label>
+                            <input
+                                type="url"
+                                name="facebook"
+                                value={formData.facebook}
+                                onChange={handleChange}
+                                placeholder="https://facebook.com/yourprofile"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>QRZ.com Profile (Optional)</label>
+                            <input
+                                type="url"
+                                name="qrz"
+                                value={formData.qrz}
+                                onChange={handleChange}
+                                placeholder="https://www.qrz.com/db/9M2ABC"
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            style={{
+                                width: '100%',
+                                padding: '14px',
+                                background: submitting
+                                    ? 'rgba(79, 172, 254, 0.5)'
+                                    : 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                                border: 'none',
+                                borderRadius: '10px',
+                                color: '#000',
+                                fontSize: '1.1rem',
+                                fontWeight: 'bold',
+                                cursor: submitting ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '10px'
+                            }}
+                        >
+                            {submitting ? (
+                                <>
+                                    <FaSpinner className="spin" /> Submitting...
+                                </>
+                            ) : (
+                                'Submit Registration'
+                            )}
+                        </button>
+
+                        <div style={{
+                            marginTop: '20px',
+                            padding: '15px',
+                            background: 'rgba(255, 100, 100, 0.1)',
+                            borderLeft: '4px solid #ff4444',
+                            borderRadius: '4px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ff4444', fontWeight: 'bold', marginBottom: '8px' }}>
+                                <FaExclamationTriangle /> Privacy Disclaimer
+                            </div>
+                            <p style={{ margin: 0, fontSize: '0.85rem', color: '#ffaaaa' }}>
+                                By submitting, you agree to have this information published publicly.
+                                The maintainer is not responsible for any privacy breach or misuse.
+                            </p>
+                        </div>
+                    </form>
+                )}
             </div>
         </div>
     );

@@ -171,3 +171,18 @@ select option:checked {
     background-color: #3b82f6;
     color: #ffffff;
 }
+
+/* Spinner animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}

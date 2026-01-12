@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from './lib/supabase';
 import Navbar from './components/Navbar';
 import AdvancedSearch from './components/AdvancedSearch';
 import StatsDashboard from './components/StatsDashboard';
@@ -19,32 +20,47 @@ function App() {
     const [states, setStates] = useState([]);
 
     useEffect(() => {
-        // Fetch the latest callsign data directly from the repository
-        // Using refs/heads/main format for reliable access
-        const url = `https://raw.githubusercontent.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book/refs/heads/main/public/callsigns.json?t=${Date.now()}`;
-
-        fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-                return res.json();
-            })
-            .then(data => {
-                if (!Array.isArray(data)) throw new Error("Data format error: Expected an array");
-                setCallsigns(data);
-                setFiltered(data);
-
-                // Extract unique states
-                const uniqueStates = [...new Set(data.map(d => d.location.toUpperCase()))].sort();
-                setStates(uniqueStates);
-
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error('Error fetching data:', err);
-                setError(err.message);
-                setLoading(false);
-            });
+        fetchCallsigns();
     }, []);
+
+    const fetchCallsigns = async () => {
+        try {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('callsigns')
+                .select('*')
+                .order('added_date', { ascending: false });
+
+            if (error) throw error;
+
+            // Transform data to match existing format (snake_case to camelCase)
+            const transformedData = data.map(item => ({
+                callsign: item.callsign,
+                name: item.name,
+                location: item.location,
+                email: item.email || '',
+                phone: item.phone || '',
+                address: item.address || '',
+                website: item.website || '',
+                facebook: item.facebook || '',
+                qrz: item.qrz || '',
+                addedDate: item.added_date
+            }));
+
+            setCallsigns(transformedData);
+            setFiltered(transformedData);
+
+            // Extract unique states
+            const uniqueStates = [...new Set(transformedData.map(d => d.location.toUpperCase()))].sort();
+            setStates(uniqueStates);
+
+            setLoading(false);
+        } catch (err) {
+            console.error('Error fetching data:', err);
+            setError(err.message);
+            setLoading(false);
+        }
+    };
 
     // Apply all filters
     const applyFilters = (term, currentFilters) => {
@@ -145,7 +161,7 @@ function App() {
                 {loading && (
                     <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
                         <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Loading Directory...</div>
-                        <div>Fetching live data from GitHub</div>
+                        <div>Fetching data from database</div>
                     </div>
                 )}
 
