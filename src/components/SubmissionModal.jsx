@@ -20,13 +20,26 @@ const SubmissionModal = ({ isOpen, onClose }) => {
         facebook: '',
         qrz: '',
         dmrId: '',
-        martsId: ''
+        martsId: '',
+        botField: '', // Honeypot
+        mathAnswer: ''
     });
+    const [mathChallenge, setMathChallenge] = useState({ n1: 0, n2: 0 });
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
 
     if (!isOpen) return null;
+
+    useEffect(() => {
+        if (isOpen) {
+            setMathChallenge({
+                n1: Math.floor(Math.random() * 10) + 1,
+                n2: Math.floor(Math.random() * 10) + 1
+            });
+            setFormData(prev => ({ ...prev, botField: '', mathAnswer: '' }));
+        }
+    }, [isOpen]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,6 +66,18 @@ const SubmissionModal = ({ isOpen, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        // Spam Check 1: Honeypot
+        if (formData.botField) {
+            console.log("Bot detected (honeypot)");
+            return; // Silently fail
+        }
+
+        // Spam Check 2: Math Challenge
+        if (parseInt(formData.mathAnswer) !== mathChallenge.n1 + mathChallenge.n2) {
+            setError('Incorrect math answer. Please try again.');
+            return;
+        }
 
         // Validate callsign
         if (!validateCallsign(formData.callsign)) {
@@ -367,6 +392,32 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                                 onChange={handleChange}
                                 placeholder="xxxx"
                                 style={inputStyle}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Security Question: What is {mathChallenge.n1} + {mathChallenge.n2}?</label>
+                            <input
+                                type="number"
+                                name="mathAnswer"
+                                value={formData.mathAnswer}
+                                onChange={handleChange}
+                                placeholder="Answer"
+                                style={inputStyle}
+                                required
+                            />
+                        </div>
+
+                        {/* Honeypot field - hidden from humans */}
+                        <div style={{ display: 'none', position: 'absolute', left: '-9999px' }}>
+                            <label>Ignore this field</label>
+                            <input
+                                type="text"
+                                name="botField"
+                                value={formData.botField}
+                                onChange={handleChange}
+                                tabIndex="-1"
+                                autoComplete="off"
                             />
                         </div>
 
