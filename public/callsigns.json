@@ -58,5 +58,17 @@
         "facebook": "https://www.facebook.com/share/1C4nszhrJv/",
         "qrz": "https://www.qrz.com/db/9W2COY",
         "addedDate": "2026-01-12"
+    },
+    {
+        "callsign": "9M2IR",
+        "name": "MOHD ARIS BIN BERNAWI",
+        "location": "SELANGOR",
+        "email": "9m2ir@marts.org.my",
+        "phone": "+60193331416",
+        "address": "Lot 3026 off Jalan Embun, Kampung Kuala Ampang, 68000 Ampang, Selangor",
+        "website": "http://www.marts.org.my/",
+        "facebook": "https://www.facebook.com/Mohdarisbernawi",
+        "qrz": "https://www.qrz.com/db/9M2IR",
+        "addedDate": "2026-01-12"
     }
 ]
