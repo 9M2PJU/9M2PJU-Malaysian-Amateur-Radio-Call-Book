@@ -32,7 +32,9 @@ const SubmissionModal = ({ isOpen, onClose }) => {
     };
 
     const validateCallsign = (callsign) => {
-        const regex = /^9[MW][0-9][A-Z]{1,3}$/;
+        // Allow Malaysian callsigns: 9M or 9W followed by numbers and letters
+        // Examples: 9M2ABC, 9W2XYZ, 9M4IOTA, 9M59MY, 9M2PJU
+        const regex = /^9[MW][0-9][A-Z0-9]{1,6}$/i;
         return regex.test(callsign.toUpperCase());
     };
 
