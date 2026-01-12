@@ -22,22 +22,32 @@ const SubmissionModal = ({ isOpen, onClose }) => {
         dmrId: '',
         martsId: '',
         botField: '', // Honeypot
-        mathAnswer: ''
     });
-    const [mathChallenge, setMathChallenge] = useState({ n1: 0, n2: 0 });
+    const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
 
 
-
     useEffect(() => {
         if (isOpen) {
-            setMathChallenge({
-                n1: Math.floor(Math.random() * 10) + 1,
-                n2: Math.floor(Math.random() * 10) + 1
-            });
-            setFormData(prev => ({ ...prev, botField: '', mathAnswer: '' }));
+            setFormData(prev => ({ ...prev, botField: '' }));
+            setIsCaptchaVerified(false);
+        }
+    }, [isOpen]);
+
+    // Handle Altcha verification
+    useEffect(() => {
+        const handleStateChange = (ev) => {
+            if (ev.detail.state === 'verified') {
+                setIsCaptchaVerified(true);
+            }
+        };
+
+        const widget = document.querySelector('altcha-widget');
+        if (widget) {
+            widget.addEventListener('statechange', handleStateChange);
+            return () => widget.removeEventListener('statechange', handleStateChange);
         }
     }, [isOpen]);
 
@@ -75,9 +85,9 @@ const SubmissionModal = ({ isOpen, onClose }) => {
             return; // Silently fail
         }
 
-        // Spam Check 2: Math Challenge
-        if (parseInt(formData.mathAnswer) !== mathChallenge.n1 + mathChallenge.n2) {
-            setError('Incorrect math answer. Please try again.');
+        // Spam Check 2: Altcha
+        if (!isCaptchaVerified) {
+            setError('Please verify you are not a robot.');
             return;
         }
 
@@ -398,16 +408,11 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>Security Question: What is {mathChallenge.n1} + {mathChallenge.n2}?</label>
-                            <input
-                                type="number"
-                                name="mathAnswer"
-                                value={formData.mathAnswer}
-                                onChange={handleChange}
-                                placeholder="Answer"
-                                style={inputStyle}
-                                required
-                            />
+                            <label style={labelStyle}>Security Check</label>
+                            <altcha-widget
+                                challengeurl="/api/challenge"
+                                style={{ width: '100%' }}
+                            ></altcha-widget>
                         </div>
 
                         {/* Honeypot field - hidden from humans */}
