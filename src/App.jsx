@@ -70,7 +70,8 @@ function App() {
             const to = from + ITEMS_PER_PAGE - 1;
 
             const { data, error, count } = await query
-                .order('created_at', { ascending: false })
+                .order('added_date', { ascending: false })
+                .order('callsign', { ascending: true })
                 .range(from, to);
 
             if (error) throw error;
