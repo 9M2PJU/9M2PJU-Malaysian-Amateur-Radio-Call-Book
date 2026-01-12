@@ -12,66 +12,6 @@
         "addedDate": "2026-01-10"
     },
     {
-        "callsign": "9W2XYZ",
-        "name": "ALI BIN AHMAD",
-        "location": "SELANGOR",
-        "email": "ali@example.com",
-        "phone": "+60131234567",
-        "address": "56, Jalan Antenna, Shah Alam, 40000 Selangor",
-        "website": "https://9w2xyz.com",
-        "facebook": "https://facebook.com/9w2xyz",
-        "qrz": "https://www.qrz.com/db/9W2XYZ",
-        "addedDate": "2026-01-05"
-    },
-    {
-        "callsign": "9M2ABC",
-        "name": "SITI AMINAH",
-        "location": "PENANG",
-        "email": "siti@example.com",
-        "phone": "+60198765432",
-        "address": "45, Lorong Dipole, George Town, 10350 Penang",
-        "website": "https://9m2abc.my",
-        "facebook": "https://facebook.com/9m2abc",
-        "qrz": "https://www.qrz.com/db/9M2ABC",
-        "addedDate": "2025-12-15"
-    },
-    {
-        "callsign": "9W2TEST",
-        "name": "AHMAD BIN ISMAIL",
-        "location": "JOHOR",
-        "email": "ahmad@example.com",
-        "phone": "+60179876543",
-        "address": "77, Jalan Yagi, Skudai, 81300 Johor Bahru",
-        "website": "https://9w2test.com",
-        "facebook": "https://facebook.com/9w2test",
-        "qrz": "https://www.qrz.com/db/9W2TEST",
-        "addedDate": "2025-11-20"
-    },
-    {
-        "callsign": "9W3HAM",
-        "name": "MOHD RAZIF",
-        "location": "KEDAH",
-        "email": "razif@example.com",
-        "phone": "+60145551234",
-        "address": "12, Lorong Antenna, Alor Setar, 05000 Kedah",
-        "website": "",
-        "facebook": "https://facebook.com/9w3ham",
-        "qrz": "https://www.qrz.com/db/9W3HAM",
-        "addedDate": "2026-01-08"
-    },
-    {
-        "callsign": "9W3NEW",
-        "name": "NUR AISYAH",
-        "location": "TERENGGANU",
-        "email": "aisyah@example.com",
-        "phone": "+60112223344",
-        "address": "88, Jalan Beam, Kuala Terengganu, 21000 Terengganu",
-        "website": "",
-        "facebook": "",
-        "qrz": "https://www.qrz.com/db/9W3NEW",
-        "addedDate": "2026-01-11"
-    },
-    {
         "callsign": "9W2VVY",
         "name": "KHAIRUL AZLAN BIN UMAR",
         "location": "NEGERI SEMBILAN",
