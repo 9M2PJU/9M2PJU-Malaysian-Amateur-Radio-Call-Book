@@ -116,7 +116,15 @@ END:VCARD`;
                 {data.phone && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                         <FaPhone style={{ minWidth: '16px' }} />
-                        <a href={`tel:${data.phone}`} style={{ color: 'var(--secondary)', textDecoration: 'none' }}>{data.phone}</a>
+                        <a
+                            href={`https://wasap.my/${data.phone.replace(/[^0-9]/g, '').replace(/^0/, '60')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'var(--secondary)', textDecoration: 'none' }}
+                            title="Chat on WhatsApp"
+                        >
+                            {data.phone} 💬
+                        </a>
                     </div>
                 )}
 
