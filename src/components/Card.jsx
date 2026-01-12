@@ -117,7 +117,7 @@ END:VCARD`;
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                         <FaPhone style={{ minWidth: '16px' }} />
                         <a
-                            href={`https://wasap.my/${data.phone.replace(/[^0-9]/g, '').replace(/^0/, '60')}`}
+                            href={`https://wa.me/${data.phone.replace(/[^0-9]/g, '').replace(/^0/, '60')}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: 'var(--secondary)', textDecoration: 'none' }}
