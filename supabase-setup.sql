@@ -27,15 +27,19 @@ CREATE POLICY "Allow public read access" ON callsigns
     FOR SELECT
     USING (true);
 
--- Step 4: Create policy for public insert (auto-approve mode)
-CREATE POLICY "Allow public insert" ON callsigns
+-- Step 4: Create policy for authenticated insert (users must be logged in)
+CREATE POLICY "Allow authenticated insert" ON callsigns
     FOR INSERT
-    WITH CHECK (true);
+    WITH CHECK (
+        auth.uid() IS NOT NULL
+        AND (user_id = auth.uid() OR user_id IS NULL)
+    );
 
--- Step 5: Create policy for public update (users can update their own entry)
-CREATE POLICY "Allow public update" ON callsigns
+-- Step 5: Create policy for owner update (users can only update their own entry)
+CREATE POLICY "Allow owner update" ON callsigns
     FOR UPDATE
-    USING (true);
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
 
 -- Step 6: Import existing callsigns data
 INSERT INTO callsigns (callsign, name, location, email, phone, address, website, facebook, qrz, added_date) VALUES
