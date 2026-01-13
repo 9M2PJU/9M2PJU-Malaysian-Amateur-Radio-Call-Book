@@ -24,6 +24,25 @@ const isRecentlyAdded = (addedDate) => {
 
 const ADMIN_EMAIL = '9m2pju@hamradio.my';
 
+const STATE_FLAGS = {
+    'JOHOR': 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Flag_of_Johor.svg',
+    'KEDAH': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Flag_of_Kedah.svg',
+    'KELANTAN': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Flag_of_Kelantan.svg',
+    'MELAKA': 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_Malacca.svg',
+    'NEGERI SEMBILAN': 'https://upload.wikimedia.org/wikipedia/commons/d/db/Flag_of_Negeri_Sembilan.svg',
+    'PAHANG': 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Flag_of_Pahang.svg',
+    'PERAK': 'https://upload.wikimedia.org/wikipedia/commons/8/87/Flag_of_Perak.svg',
+    'PERLIS': 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Flag_of_Perlis.svg',
+    'PULAU PINANG': 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Penang_%28Malaysia%29.svg',
+    'SABAH': 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Flag_of_Sabah.svg',
+    'SARAWAK': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Flag_of_Sarawak.svg',
+    'SELANGOR': 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Flag_of_Selangor.svg',
+    'TERENGGANU': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Flag_of_Terengganu.svg',
+    'KUALA LUMPUR': 'https://upload.wikimedia.org/wikipedia/commons/6/64/Flag_of_Kuala_Lumpur_%28Malaysia%29.svg',
+    'LABUAN': 'https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Labuan.svg',
+    'PUTRAJAYA': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Putrajaya.svg'
+};
+
 const Card = ({ data, onEdit }) => {
     const { user } = useAuth();
     const licenseClass = getLicenseClass(data.callsign);
@@ -124,16 +143,30 @@ END:VCARD`;
                     }}>
                         {licenseClass.name}
                     </span>
-                    {/* Malaysia Badge */}
+                    {/* Malaysia/State Badge */}
                     <span style={{
                         background: 'rgba(79, 172, 254, 0.2)',
                         color: 'var(--secondary)',
                         padding: '4px 12px',
                         borderRadius: '20px',
                         fontSize: '0.75rem',
-                        fontWeight: '600'
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
                     }}>
-                        🇲🇾 MALAYSIA
+                        {STATE_FLAGS[data.location] ? (
+                            <>
+                                <img
+                                    src={STATE_FLAGS[data.location]}
+                                    alt={data.location}
+                                    style={{ width: '20px', height: 'auto', borderRadius: '2px', objectFit: 'cover' }}
+                                />
+                                {data.location}
+                            </>
+                        ) : (
+                            <>🇲🇾 MALAYSIA</>
+                        )}
                     </span>
                 </div>
             </div>
