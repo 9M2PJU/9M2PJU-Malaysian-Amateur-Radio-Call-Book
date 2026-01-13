@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList } from 'react-icons/fa';
+import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
 import InfoModal from './InfoModal';
 import { useAuth } from './AuthContext';
@@ -43,6 +43,26 @@ const Navbar = () => {
                     </h1>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button
+                        onClick={() => navigate('/')}
+                        style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid var(--glass-border)',
+                            color: 'var(--text-muted)',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            minWidth: '36px'
+                        }}
+                        title="Home"
+                    >
+                        <FaHome /> <span className="mobile-hidden">Home</span>
+                    </button>
                     <button
                         onClick={() => setIsInfoModalOpen(true)}
                         style={{
