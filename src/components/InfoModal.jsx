@@ -23,13 +23,15 @@ const InfoModal = ({ isOpen, onClose }) => {
             <div
                 className="glass-panel"
                 style={{
-                    padding: '40px',
-                    maxWidth: '600px',
-                    width: '100%',
+                    padding: '30px',
+                    maxWidth: '500px', // Slightly narrower for a more natural reading width
+                    width: '90%', // Responsive width
                     position: 'relative',
-                    background: '#1a1a1a',
-                    maxHeight: '90vh',
-                    overflowY: 'auto'
+                    // background: '#1a1a1a', // Removed to let glass-panel class handle it or use a more subtle background
+                    maxHeight: '85vh', // Slightly less height to avoid touching edges
+                    overflowY: 'auto',
+                    borderRadius: '16px', // Softer corners
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)' // floaty effect
                 }}
                 onClick={e => e.stopPropagation()}
             >
@@ -127,6 +129,17 @@ const InfoModal = ({ isOpen, onClose }) => {
                     </button>
                 </div>
             </div>
+            <style>{`
+                @media (max-width: 480px) {
+                    .glass-panel {
+                        padding: 20px !important;
+                        width: 95% !important;
+                        max-height: 90vh !important;
+                    }
+                    h2 { font-size: 1.5rem !important; }
+                    p { font-size: 0.95rem !important; }
+                }
+            `}</style>
         </div>
     );
 };
