@@ -139,6 +139,17 @@ const InfoModal = ({ isOpen, onClose }) => {
                     h2 { font-size: 1.5rem !important; }
                     p { font-size: 0.95rem !important; }
                 }
+
+                /* Hide scrollbar for Chrome, Safari and Opera */
+                .glass-panel::-webkit-scrollbar {
+                    display: none;
+                }
+
+                /* Hide scrollbar for IE, Edge and Firefox */
+                .glass-panel {
+                    -ms-overflow-style: none;  /* IE and Edge */
+                    scrollbar-width: none;  /* Firefox */
+                }
             `}</style>
         </div>
     );
