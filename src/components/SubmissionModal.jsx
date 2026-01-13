@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaExclamationTriangle, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import { supabase } from '../lib/supabase';
+import { useAuth } from './AuthContext';
 
 const MALAYSIAN_STATES = [
     'JOHOR', 'KEDAH', 'KELANTAN', 'MELAKA', 'NEGERI SEMBILAN',
@@ -9,6 +10,7 @@ const MALAYSIAN_STATES = [
 ];
 
 const SubmissionModal = ({ isOpen, onClose }) => {
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         callsign: '',
         name: '',
@@ -31,10 +33,14 @@ const SubmissionModal = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (isOpen) {
-            setFormData(prev => ({ ...prev, botField: '' }));
+            setFormData(prev => ({
+                ...prev,
+                botField: '',
+                email: user?.email || '' // Auto-fill email from auth
+            }));
             setIsCaptchaVerified(false);
         }
-    }, [isOpen]);
+    }, [isOpen, user]);
 
     // Handle Altcha verification
     useEffect(() => {
@@ -150,7 +156,8 @@ const SubmissionModal = ({ isOpen, onClose }) => {
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
-                        added_date: new Date().toISOString().split('T')[0]
+                        added_date: new Date().toISOString().split('T')[0],
+                        user_id: user?.id || null // Link to auth user
                     });
 
                 if (insertError) throw insertError;
