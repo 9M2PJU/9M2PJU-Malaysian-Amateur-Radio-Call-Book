@@ -5,7 +5,7 @@ import Card from './Card';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SubmissionModal from './SubmissionModal';
-import { FaPlus, FaEdit } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 const MyCallsigns = () => {
     const { user } = useAuth();
@@ -58,6 +58,25 @@ const MyCallsigns = () => {
     const handleEdit = (data) => {
         setEditData(data);
         setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id, callsign) => {
+        if (window.confirm(`Are you sure you want to delete ${callsign}? This action cannot be undone.`)) {
+            try {
+                const { error } = await supabase
+                    .from('callsigns')
+                    .delete()
+                    .eq('id', id); // Use ID for deletion
+
+                if (error) throw error;
+
+                // Refresh list
+                fetchMyCallsigns();
+            } catch (err) {
+                console.error('Error deleting:', err);
+                alert('Failed to delete callsign: ' + err.message);
+            }
+        }
     };
 
     const handleCloseModal = () => {
@@ -128,28 +147,53 @@ const MyCallsigns = () => {
                         {callsigns.map((item) => (
                             <div key={item.callsign} style={{ position: 'relative' }}>
                                 <Card data={item} />
-                                <button
-                                    onClick={() => handleEdit(item)}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '15px',
-                                        right: '15px',
-                                        background: 'var(--primary)',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '8px',
-                                        padding: '8px 16px',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px',
-                                        fontWeight: 'bold',
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-                                        zIndex: 10
-                                    }}
-                                >
-                                    <FaEdit /> Edit
-                                </button>
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '15px',
+                                    right: '15px',
+                                    display: 'flex',
+                                    gap: '8px',
+                                    zIndex: 10
+                                }}>
+                                    <button
+                                        onClick={() => handleEdit(item)}
+                                        style={{
+                                            background: 'var(--primary)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            padding: '8px 16px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '6px',
+                                            fontWeight: 'bold',
+                                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        <FaEdit /> Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(item.id, item.callsign)}
+                                        style={{
+                                            background: '#ef4444',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            padding: '8px 16px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '6px',
+                                            fontWeight: 'bold',
+                                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        <FaTrash /> Delete
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

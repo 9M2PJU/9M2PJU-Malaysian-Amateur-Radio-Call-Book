@@ -49,6 +49,15 @@ CREATE POLICY "Allow owner or admin update" ON callsigns
         auth.jwt() ->> 'email' = '9m2pju@hamradio.my'
     );
 
+-- Step 6: Create policy for owner/admin delete
+CREATE POLICY "Allow owner or admin delete" ON callsigns
+    FOR DELETE
+    USING (
+        auth.uid() = user_id
+        OR 
+        auth.jwt() ->> 'email' = '9m2pju@hamradio.my'
+    );
+
 -- Step 6: Import existing callsigns data
 INSERT INTO callsigns (callsign, name, location, email, phone, address, website, facebook, qrz, added_date) VALUES
 ('9M2PJU', 'FAIZUL', 'KUALA LUMPUR', '9m2pju@hamradio.my', '+60123456789', '123, Jalan Radio, Bukit Antarabangsa, 68000 Ampang, Selangor', 'https://hamradio.my', 'https://facebook.com/9m2pju', 'https://www.qrz.com/db/9M2PJU', '2026-01-10'),
