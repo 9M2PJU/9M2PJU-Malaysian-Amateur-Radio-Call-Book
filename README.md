@@ -10,7 +10,7 @@
 [![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7.x-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-GPLv3-22c55e?style=flat-square)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-ff69b4?style=flat-square)](https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-ff69b4?style=flat-square)](https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Callbook/pulls)
 
 *A sleek, glassmorphism-styled directory for the Malaysian amateur radio community*
 
@@ -60,8 +60,8 @@ Location: State/City
 
 ```bash
 # Clone & install
-git clone https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book.git
-cd 9M2PJU-Malaysian-Amateur-Radio-Call-Book
+git clone https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Callbook.git
+cd 9M2PJU-Malaysian-Amateur-Radio-Callbook
 npm install
 
 # Development
