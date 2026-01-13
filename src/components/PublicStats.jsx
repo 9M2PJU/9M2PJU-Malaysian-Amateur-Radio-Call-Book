@@ -55,11 +55,11 @@ const PublicStats = () => {
         <div style={{
             width: '100%',
             maxWidth: '600px',
-            margin: '0 auto 20px',
+            margin: '0 auto 10px',
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: '10px'
+            gap: '8px'
         }}>
             {/* Total Badge */}
             <div style={badgeStyle}>

@@ -42,16 +42,25 @@ const Login = () => {
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed'
         }}>
-            <div style={{
+            <style>{`
+                @media (max-height: 700px) {
+                    .login-container { padding: 10px !important; }
+                    .header-section { margin-bottom: 10px !important; }
+                    .footer-section { margin-top: 15px !important; }
+                    .login-card { padding: 15px !important; }
+                }
+            `}</style>
+            <div className="login-container" style={{
                 margin: 'auto',
                 padding: '20px', // Reduced outer padding
                 width: '100%',
                 maxWidth: '600px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
+                justifyContent: 'center'
             }}>
-                <div style={{ textAlign: 'center', marginBottom: 'clamp(15px, 3vh, 30px)' }}> {/* Reduced margin */}
+                <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(10px, 2vh, 20px)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
                         <FaBroadcastTower size={28} color="var(--primary)" /> {/* Slightly smaller icon */}
                         <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', fontWeight: 'bold' }}>
@@ -69,41 +78,40 @@ const Login = () => {
                     }}>
                         Malaysian Amateur<br />Radio Directory
                     </h1>
-                    <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', maxWidth: '600px', margin: '0 auto 20px' }}>
-                        The Modern "Yellow Pages" for Malaysian Amateur Radio Operators
+                    <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.8rem, 2.2vw, 1rem)', maxWidth: '600px', margin: '0 auto 15px' }}>
+                        Directory for Malaysian Amateur Radio Operators
                     </p>
 
                     <PublicStats />
                 </div>
 
-                <div className="glass-panel" style={{
+                <div className="glass-panel login-card" style={{
                     width: '100%',
-                    maxWidth: '400px', // Slightly narrower
-                    padding: 'clamp(20px, 4vw, 30px)' // Reduced padding
+                    maxWidth: '380px',
+                    padding: 'clamp(15px, 3vw, 25px)'
                 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '15px' }}>
                         <h2 style={{
                             marginTop: 0,
                             background: 'linear-gradient(to right, var(--primary), var(--secondary))',
                             WebkitBackgroundClip: 'text',
                             color: 'transparent',
-                            fontSize: '1.5rem' // Reduced size
+                            fontSize: '1.2rem',
+                            marginBottom: '5px'
                         }}>Restricted Access</h2>
                     </div>
 
                     <div style={{
                         background: 'rgba(255, 100, 100, 0.1)',
                         borderLeft: '4px solid #ff4444',
-                        padding: '12px',
+                        padding: '8px 12px',
                         borderRadius: '4px',
-                        marginBottom: '20px',
-                        fontSize: '0.85rem', // Smaller text
+                        marginBottom: '15px',
+                        fontSize: '0.8rem',
                         color: '#ffaaaa',
-                        lineHeight: '1.4'
+                        lineHeight: '1.3'
                     }}>
-                        <strong>🔒 Login Required</strong>
-                        <br />
-                        Directory contains sensitive personal info. Please log in to view.
+                        Directory contains sensitive data. Please log in.
                     </div>
 
                     {error && (
@@ -205,10 +213,10 @@ const Login = () => {
                         </Link>
                     </div>
                 </div>
-                <div style={{ marginTop: '30px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                    <p style={{ margin: '0 0 5px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
+                <div className="footer-section" style={{ marginTop: '20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                    <p style={{ margin: '0 0 4px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
                     <p style={{ margin: 0 }}>
-                        Made for 🇲🇾 by <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>9M2PJU</a>
+                        Made by <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>9M2PJU</a>
                     </p>
                 </div>
             </div>
