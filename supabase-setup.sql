@@ -35,11 +35,19 @@ CREATE POLICY "Allow authenticated insert" ON callsigns
         AND (user_id = auth.uid() OR user_id IS NULL)
     );
 
--- Step 5: Create policy for owner update (users can only update their own entry)
-CREATE POLICY "Allow owner update" ON callsigns
+-- Step 5: Create policy for owner/admin update (users can only update their own entry, admin can update any)
+CREATE POLICY "Allow owner or admin update" ON callsigns
     FOR UPDATE
-    USING (auth.uid() = user_id)
-    WITH CHECK (auth.uid() = user_id);
+    USING (
+        auth.uid() = user_id
+        OR 
+        (SELECT email FROM auth.users WHERE id = auth.uid()) = '9m2pju@hamradio.my'
+    )
+    WITH CHECK (
+        auth.uid() = user_id
+        OR 
+        (SELECT email FROM auth.users WHERE id = auth.uid()) = '9m2pju@hamradio.my'
+    );
 
 -- Step 6: Import existing callsigns data
 INSERT INTO callsigns (callsign, name, location, email, phone, address, website, facebook, qrz, added_date) VALUES
