@@ -28,7 +28,15 @@ const Navbar = () => {
                 top: '20px',
                 zIndex: 100
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div
+                    onClick={() => navigate('/')}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        cursor: 'pointer'
+                    }}
+                >
                     <FaBroadcastTower size={24} color="var(--primary)" />
                     <h1 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 'bold' }}>
                         MY-Callbook
