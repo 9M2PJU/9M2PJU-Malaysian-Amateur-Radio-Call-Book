@@ -116,6 +116,9 @@ function Directory() {
 
     const handleSearch = (term) => {
         setSearchTerm(term);
+        // Clear current data to show loading spinner for search
+        setCallsigns([]);
+        setPage(0);
         // Reset to page 0 for new search
         fetchCallsigns(0, term, filters, true);
     };
@@ -123,6 +126,9 @@ function Directory() {
     const handleFilterChange = (filterName, value) => {
         const newFilters = { ...filters, [filterName]: value };
         setFilters(newFilters);
+        // Clear current data to show loading spinner
+        setCallsigns([]);
+        setPage(0);
         // Reset to page 0 for new filter
         fetchCallsigns(0, searchTerm, newFilters, true);
     };
@@ -166,7 +172,7 @@ function Directory() {
                     states={states}
                 />
 
-                {loading && page === 0 && (
+                {loading && callsigns.length === 0 && (
                     <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
                         <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Loading Directory...</div>
                         <div>Fetching data from database</div>
@@ -201,7 +207,7 @@ function Directory() {
                 )}
 
                 {/* Results count */}
-                {!loading && !error && (
+                {!loading && !error && callsigns.length > 0 && (
                     <div style={{
                         marginBottom: '20px',
                         color: 'var(--text-muted)',
@@ -215,10 +221,8 @@ function Directory() {
                                 onClick={() => {
                                     setSearchTerm('');
                                     setFilters({ state: '', licenseClass: '', recentOnly: '' });
-                                    // Reset handled by useEffect dependence on state changes? No, passed explicit
-                                    handleSearch(''); // Reset search
-                                    // Filter reset effectively done by setFilters but we need to trigger fetch
-                                    fetchCallsigns(0, '', { state: '', licenseClass: '', recentOnly: '' }, true);
+                                    handleSearch('');
+                                    // Note: handleSearch already clears and fetches
                                 }}
                                 style={{
                                     background: 'transparent',
@@ -237,7 +241,7 @@ function Directory() {
                 )}
 
                 {/* Grid */}
-                {(!loading || page > 0) && !error && (
+                {callsigns.length > 0 && !error && (
                     <>
                         <div style={{
                             display: 'grid',
