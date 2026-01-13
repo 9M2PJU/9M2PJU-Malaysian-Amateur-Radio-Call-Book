@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { FaBroadcastTower, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
+import InfoModal from './InfoModal';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const { user, signOut } = useAuth();
     const navigate = useNavigate();
 
@@ -33,6 +35,26 @@ const Navbar = () => {
                     </h1>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button
+                        onClick={() => setIsInfoModalOpen(true)}
+                        style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid var(--glass-border)',
+                            color: 'var(--text-muted)',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            minWidth: '36px'
+                        }}
+                        title="About Callbook"
+                    >
+                        <FaInfoCircle /> <span className="mobile-hidden">Info</span>
+                    </button>
                     {user ? (
                         <>
                             <span className="mobile-hidden" style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginRight: '5px' }}>
@@ -88,6 +110,7 @@ const Navbar = () => {
                 }
             `}</style>
             <SubmissionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <InfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
         </>
     );
 };
