@@ -23,15 +23,14 @@ const InfoModal = ({ isOpen, onClose }) => {
             <div
                 className="glass-panel"
                 style={{
-                    padding: '30px',
-                    maxWidth: '500px', // Slightly narrower for a more natural reading width
-                    width: '90%', // Responsive width
+                    padding: '20px',
+                    maxWidth: '450px', // More compact width
+                    width: '90%',
                     position: 'relative',
-                    // background: '#1a1a1a', // Removed to let glass-panel class handle it or use a more subtle background
-                    maxHeight: '85vh', // Slightly less height to avoid touching edges
-                    overflowY: 'auto',
-                    borderRadius: '16px', // Softer corners
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)' // floaty effect
+                    maxHeight: '90vh',
+                    overflowY: 'auto', // Keep auto just in case, but structure is much smaller now
+                    borderRadius: '16px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
                 }}
                 onClick={e => e.stopPropagation()}
             >
@@ -51,79 +50,79 @@ const InfoModal = ({ isOpen, onClose }) => {
                     <FaTimes />
                 </button>
 
-                <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                    <FaBroadcastTower size={50} color="var(--primary)" />
-                    <h2 style={{ color: 'var(--primary)', margin: '15px 0 0' }}>What is the Callbook?</h2>
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                    <FaBroadcastTower size={32} color="var(--primary)" />
+                    <h2 style={{ color: 'var(--primary)', margin: '5px 0 0', fontSize: '1.4rem' }}>What is the Callbook?</h2>
 
                     <div style={{
-                        margin: '20px auto',
-                        padding: '15px',
+                        margin: '10px auto',
+                        padding: '10px',
                         background: 'rgba(255,255,255,0.03)',
                         borderRadius: '8px',
                         textAlign: 'left',
-                        fontSize: '0.9rem',
+                        fontSize: '0.85rem',
                         fontFamily: 'monospace',
                         color: 'var(--text-muted)'
                     }}>
-                        <p style={{ margin: '0 0 5px 0', color: 'var(--secondary)' }}><strong>Noun</strong>: callbook (plural callbooks)</p>
-                        <p style={{ margin: '0 0 10px 0' }}><em>Etymology: From call +‎ book.</em></p>
+                        <p style={{ margin: '0 0 2px 0', color: 'var(--secondary)' }}><strong>Noun</strong>: callbook (plural callbooks)</p>
+                        <p style={{ margin: '0 0 5px 0' }}><em>Etymology: From call +‎ book.</em></p>
                         <p style={{ margin: 0, color: '#fff' }}>A directory of radio station call signs.</p>
                     </div>
 
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-                        The <strong>Malaysian Amateur Radio Callbook</strong> is a comprehensive directory of amateur radio operators in Malaysia.
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', margin: '0' }}>
+                        The <strong>Malaysian Amateur Radio Callbook</strong> is a comprehensive directory.
                     </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div style={{
                         background: 'rgba(255, 255, 255, 0.05)',
-                        padding: '20px',
-                        borderRadius: '12px',
+                        padding: '12px',
+                        borderRadius: '8px',
                         borderLeft: '4px solid #4facfe'
                     }}>
-                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
                             <FaUserFriends /> For Short Wave Listeners (SWL)
                         </h3>
-                        <p style={{ color: 'var(--text-muted)', margin: 0 }}>
-                            Easily find the nearest <strong>9M</strong> (Malaysian Amateur Radio Operator) to sign the <strong>2 of Class A operator recommendation MCMC form</strong>.
+                        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.9rem' }}>
+                            Find nearest <strong>9M</strong> to sign <strong>Class A recommendation MCMC form</strong>.
                         </p>
                     </div>
 
                     <div style={{
                         background: 'rgba(255, 255, 255, 0.05)',
-                        padding: '20px',
-                        borderRadius: '12px',
+                        padding: '12px',
+                        borderRadius: '8px',
                         borderLeft: '4px solid #ff4444'
                     }}>
-                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
                             <FaExclamationTriangle /> Emergency Purposes
                         </h3>
-                        <p style={{ color: 'var(--text-muted)', margin: 0 }}>
-                            In times of crisis or communication breakdown, this directory serves as a vital resource to locate and contact radio operators who can assist with emergency communications.
+                        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.9rem' }}>
+                            Vital resource to locate operators for emergency communications during crises.
                         </p>
                     </div>
 
                     <div style={{
                         background: 'rgba(255, 255, 255, 0.05)',
-                        padding: '20px',
-                        borderRadius: '12px',
+                        padding: '12px',
+                        borderRadius: '8px',
                         borderLeft: '4px solid #00c853'
                     }}>
-                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            🤝 Community & Voluntary Projects
+                        <h3 style={{ color: '#fff', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                            🤝 Community Projects
                         </h3>
-                        <p style={{ color: 'var(--text-muted)', margin: 0 }}>
-                            Connect with fellow operators for community service projects, voluntary events, and technical collaboration.
+                        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.9rem' }}>
+                            Connect with operators for community service and technical collaboration.
                         </p>
                     </div>
                 </div>
 
-                <div style={{ marginTop: '30px', textAlign: 'center' }}>
+                <div style={{ marginTop: '15px', textAlign: 'center' }}>
                     <button
                         onClick={onClose}
                         className="btn-primary"
-                        style={{ padding: '10px 30px' }}
+                        style={{ padding: '8px 25px', fontSize: '0.9rem' }}
                     >
                         Close
                     </button>
