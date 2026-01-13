@@ -562,8 +562,9 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                             borderRadius: '4px'
                         }}>
                             <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                To <strong>update</strong> or <strong>delete</strong> your info, this form will not work.
-                                Please email: <a href="mailto:9m2pju@hamradio.my" style={{ color: 'var(--primary)' }}>9m2pju@hamradio.my</a>
+                                To <strong>update</strong> or <strong>delete</strong> your info, please go to <strong>My Callsigns</strong>.
+                                <br />
+                                If you encounter any problems, please email: <a href="mailto:9m2pju@hamradio.my" style={{ color: 'var(--primary)' }}>9m2pju@hamradio.my</a>
                             </p>
                         </div>
                     </form>
