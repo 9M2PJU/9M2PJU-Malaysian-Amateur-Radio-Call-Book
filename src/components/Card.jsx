@@ -235,15 +235,21 @@ END:VCARD`;
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '6px',
-                                background: 'rgba(168, 85, 247, 0.15)',
-                                color: '#a855f7',
+                                gap: '8px',
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                color: '#e2e8f0', // Slate-200 for text
                                 padding: '4px 12px',
                                 borderRadius: '6px',
                                 fontSize: '0.9rem',
-                                fontWeight: '600'
-                            }}>
-                                🆔 DMR ID: {data.dmrId}
+                                fontWeight: '600',
+                                border: '1px solid rgba(255, 255, 255, 0.2)'
+                            }} title="DMR ID">
+                                <img
+                                    src="/dmr-logo.png"
+                                    alt="DMR Logo"
+                                    style={{ width: '40px', height: 'auto', borderRadius: '2px' }}
+                                />
+                                {data.dmrId}
                             </div>
                         )}
                         {data.martsId && (
