@@ -190,8 +190,12 @@ END:VCARD`;
                             </a>
                         )}
                         {data.qrz && (
-                            <a href={data.qrz} target="_blank" rel="noopener noreferrer" style={{ color: '#ff9800', fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }} title="QRZ.com">
-                                <FaSearch /> QRZ
+                            <a href={data.qrz} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }} title="QRZ.com">
+                                <img
+                                    src="/qrz-logo.png"
+                                    alt="QRZ.com"
+                                    style={{ width: '40px', height: 'auto', borderRadius: '4px' }}
+                                />
                             </a>
                         )}
                         {data.dmrId && (
