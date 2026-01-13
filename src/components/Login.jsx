@@ -202,6 +202,12 @@ const Login = () => {
                         </Link>
                     </div>
                 </div>
+                <div style={{ marginTop: '30px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                    <p style={{ margin: '0 0 5px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
+                    <p style={{ margin: 0 }}>
+                        Made for 🇲🇾 by <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>9M2PJU</a>
+                    </p>
+                </div>
             </div>
         </div>
     );
