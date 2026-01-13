@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { FaBroadcastTower } from 'react-icons/fa';
+import { FaBroadcastTower, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { user, signOut } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSignOut = async () => {
+        await signOut();
+        navigate('/login');
+    };
 
     return (
         <>
@@ -23,14 +32,42 @@ const Navbar = () => {
                         MY-Callbook
                     </h1>
                 </div>
-                <div>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="btn-primary"
-                        style={{ fontSize: '1rem' }}
-                    >
-                        + Register / Update
-                    </button>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    {user ? (
+                        <>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginRight: '10px' }}>
+                                <FaUser style={{ marginRight: '5px' }} /> {user.email}
+                            </span>
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="btn-primary"
+                                style={{ fontSize: '0.9rem' }}
+                            >
+                                + Add Callsign
+                            </button>
+                            <button
+                                onClick={handleSignOut}
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid var(--glass-border)',
+                                    color: 'var(--text-muted)',
+                                    padding: '8px 12px',
+                                    borderRadius: '6px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}
+                            >
+                                <FaSignOutAlt /> Logout
+                            </button>
+                        </>
+                    ) : (
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                            Restricted Access
+                        </div>
+                    )}
                 </div>
             </nav>
             <SubmissionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

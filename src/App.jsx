@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './lib/supabase';
+import { AuthProvider } from './components/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './components/Login';
+import Register from './components/Register';
 import Navbar from './components/Navbar';
 import AdvancedSearch from './components/AdvancedSearch';
 import StatsDashboard from './components/StatsDashboard';
@@ -12,7 +17,7 @@ const MALAYSIAN_STATES = [
     'SARAWAK', 'SELANGOR', 'TERENGGANU', 'KUALA LUMPUR', 'LABUAN', 'PUTRAJAYA'
 ];
 
-function App() {
+function Directory() {
     const [callsigns, setCallsigns] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -279,6 +284,27 @@ function App() {
 
             <Footer />
         </div>
+    );
+}
+
+function App() {
+    return (
+        <Router>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Directory />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+            </AuthProvider>
+        </Router>
     );
 }
 
