@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { FaLock, FaEnvelope, FaSpinner } from 'react-icons/fa';
+import { FaLock, FaEnvelope, FaSpinner, FaBroadcastTower } from 'react-icons/fa';
 
 const Login = () => {
     const { signIn } = useAuth();
@@ -41,6 +41,12 @@ const Login = () => {
             padding: '20px'
         }}>
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '20px' }}>
+                    <FaBroadcastTower size={32} color="var(--primary)" />
+                    <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: '2rem', fontWeight: 'bold' }}>
+                        MY-Callbook
+                    </h2>
+                </div>
                 <h1 style={{
                     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                     fontWeight: '800',
