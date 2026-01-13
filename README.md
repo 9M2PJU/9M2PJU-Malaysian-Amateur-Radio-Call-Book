@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🇲🇾 Malaysian Amateur Radio Call Book
+# 🇲🇾 Malaysian Amateur Radio Callbook
 
 ### The Modern Interactive Directory for Malaysian Ham Radio Operators
 
