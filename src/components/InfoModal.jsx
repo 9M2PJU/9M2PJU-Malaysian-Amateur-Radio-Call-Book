@@ -131,12 +131,13 @@ const InfoModal = ({ isOpen, onClose }) => {
             <style>{`
                 @media (max-width: 480px) {
                     .glass-panel {
-                        padding: 20px !important;
+                        padding: 15px !important;
                         width: 95% !important;
-                        max-height: 90vh !important;
+                        max-height: 95vh !important;
                     }
-                    h2 { font-size: 1.5rem !important; }
-                    p { font-size: 0.95rem !important; }
+                    h2 { font-size: 1.2rem !important; }
+                    p { font-size: 0.85rem !important; }
+                    h3 { font-size: 0.95rem !important; }
                 }
 
                 /* Hide scrollbar for Chrome, Safari and Opera */
