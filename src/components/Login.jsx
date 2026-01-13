@@ -13,6 +13,14 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Prevent body scroll on this page
+    React.useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     // Redirect to where they were trying to go, or home
     const from = location.state?.from?.pathname || '/';
 
