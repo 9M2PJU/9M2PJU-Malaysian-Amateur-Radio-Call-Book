@@ -19,7 +19,7 @@ const ForgotPassword = () => {
         try {
             const { error } = await resetPassword(email);
             if (error) throw error;
-            setMessage('Check your email for the password reset link');
+            setMessage('Check your email (including spam/junk folder) for the password reset link');
         } catch (err) {
             setError(err.message);
         } finally {
