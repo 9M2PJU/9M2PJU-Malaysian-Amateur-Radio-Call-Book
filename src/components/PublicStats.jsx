@@ -52,7 +52,7 @@ const PublicStats = () => {
     };
 
     return (
-        <div style={{
+        <div className="badge-container" style={{
             width: '100%',
             maxWidth: '600px',
             margin: '0 auto 10px',

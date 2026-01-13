@@ -34,20 +34,25 @@ const Login = () => {
 
     return (
         <div style={{
-            minHeight: '100vh',
+            height: '100dvh', // Dynamic viewport height for mobile
             display: 'flex',
             flexDirection: 'column',
-            overflowY: 'auto',
+            overflow: 'hidden', // Strictly prevent scroll
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed'
         }}>
             <style>{`
                 @media (max-height: 700px) {
-                    .login-container { padding: 10px !important; }
-                    .header-section { margin-bottom: 10px !important; }
-                    .footer-section { margin-top: 15px !important; }
-                    .login-card { padding: 15px !important; }
+                    .login-container { padding: 5px 10px !important; }
+                    .header-section { margin-bottom: 5px !important; }
+                    .footer-section { margin-top: 10px !important; margin-bottom: 5px !important; }
+                    .login-card { padding: 12px !important; }
+                    .badge-container { margin-bottom: 5px !important; }
+                }
+                @media (max-width: 400px) {
+                    .header-section h1 { font-size: 1.1rem !important; }
+                    .login-card { max-width: 95% !important; }
                 }
             `}</style>
             <div className="login-container" style={{
