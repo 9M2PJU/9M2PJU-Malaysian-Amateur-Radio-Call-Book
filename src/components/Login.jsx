@@ -37,18 +37,19 @@ const Login = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '80vh',
-            padding: '20px'
+            minHeight: '100vh',
+            padding: '20px',
+            overflowY: 'auto' // Allow scrolling on small screens
         }}>
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <div style={{ textAlign: 'center', marginBottom: 'clamp(20px, 5vh, 40px)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '20px' }}>
                     <FaBroadcastTower size={32} color="var(--primary)" />
-                    <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: '2rem', fontWeight: 'bold' }}>
+                    <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 'bold' }}>
                         MY-Callbook
                     </h2>
                 </div>
                 <h1 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                    fontSize: 'clamp(1.8rem, 5vw, 3.5rem)',
                     fontWeight: '800',
                     marginBottom: '16px',
                     background: 'linear-gradient(to right, #fff, #94a3b8)',
@@ -58,7 +59,7 @@ const Login = () => {
                 }}>
                     Malaysian Amateur<br />Radio Directory
                 </h1>
-                <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1rem, 3vw, 1.2rem)', maxWidth: '600px', margin: '0 auto' }}>
                     The Modern "Yellow Pages" for Malaysian Amateur Radio Operators
                 </p>
             </div>
@@ -66,7 +67,7 @@ const Login = () => {
             <div className="glass-panel" style={{
                 width: '100%',
                 maxWidth: '450px',
-                padding: '40px'
+                padding: 'clamp(20px, 5vw, 40px)'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                     <h2 style={{
