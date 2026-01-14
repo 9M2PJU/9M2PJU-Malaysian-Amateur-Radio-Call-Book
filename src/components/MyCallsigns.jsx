@@ -46,6 +46,7 @@ const MyCallsigns = () => {
                 martsId: item.marts_id || '',
                 district: item.district || '',
                 gridLocator: item.grid_locator || '',
+                aprsCallsign: item.aprs_callsign || '',
                 addedDate: item.added_date
             }));
 
