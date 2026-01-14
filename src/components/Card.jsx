@@ -266,7 +266,7 @@ END:VCARD`;
                         )}
                         {data.aprsCallsign && (
                             <a
-                                href={`https://aprs.fi/info/a/${data.aprsCallsign}`}
+                                href={`https://aprs.fi/#!call=a%2F${encodeURIComponent(data.aprsCallsign)}&timerange=3600&tail=3600`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
