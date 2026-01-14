@@ -88,6 +88,29 @@ const Navbar = () => {
                     >
                         <FaInfoCircle /> <span className="mobile-hidden">Info</span>
                     </button>
+                    <a
+                        href="https://frequency.hamradio.my"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            background: 'rgba(79, 172, 254, 0.2)',
+                            border: '1px solid rgba(79, 172, 254, 0.4)',
+                            color: '#4facfe',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            minWidth: '36px',
+                            textDecoration: 'none'
+                        }}
+                        title="Repeaters, Simplex & PMR Frequencies"
+                    >
+                        <FaBroadcastTower /> <span className="mobile-hidden">Frequencies</span>
+                    </a>
                     <button
                         onClick={() => setIsDonationModalOpen(true)}
                         style={{
