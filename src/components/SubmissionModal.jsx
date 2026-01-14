@@ -21,6 +21,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         qrz: '',
         dmrId: '',
         martsId: '',
+        meshtasticId: '',
         district: '',
         gridLocator: '',
         aprsCallsign: '',
@@ -50,6 +51,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                     qrz: initialData.qrz || '',
                     dmrId: initialData.dmrId || '',
                     martsId: initialData.martsId || '',
+                    meshtasticId: initialData.meshtasticId || '',
                     district: initialData.district || '',
                     gridLocator: initialData.gridLocator || '',
                     aprsCallsign: initialData.aprsCallsign || '',
@@ -203,6 +205,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
+                        meshtastic_id: formData.meshtasticId || null,
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
                         aprs_callsign: formData.aprsCallsign || null,
@@ -240,6 +243,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
+                        meshtastic_id: formData.meshtasticId || null,
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
                         aprs_callsign: formData.aprsCallsign || null,
@@ -546,6 +550,21 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                 placeholder="xxxx"
                                 style={inputStyle}
                             />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Meshtastic Node ID (Optional)</label>
+                            <input
+                                type="text"
+                                name="meshtasticId"
+                                value={formData.meshtasticId}
+                                onChange={handleChange}
+                                placeholder="e.g. !a1b2c3d4"
+                                style={inputStyle}
+                            />
+                            <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                                Your Meshtastic device node ID (starts with !)
+                            </small>
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>

@@ -286,7 +286,7 @@ END:VCARD`;
                 )}
 
                 {/* Social Media Section */}
-                {(data.facebook || data.qrz || data.dmrId || data.martsId) && (
+                {(data.facebook || data.qrz || data.dmrId || data.martsId || data.meshtasticId) && (
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--glass-border)', flexWrap: 'wrap', alignItems: 'center' }}>
                         {data.facebook && (
                             <a href={data.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877f2', fontSize: '1.5rem' }} title="Facebook">
@@ -366,6 +366,27 @@ END:VCARD`;
                                     style={{ width: '20px', height: 'auto' }}
                                 />
                                 MARTS #{data.martsId}
+                            </div>
+                        )}
+                        {data.meshtasticId && (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                background: 'rgba(103, 232, 157, 0.1)',
+                                color: '#67e89d', // Meshtastic green
+                                padding: '4px 12px',
+                                borderRadius: '6px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                border: '1px solid rgba(103, 232, 157, 0.3)'
+                            }} title="Meshtastic Node">
+                                <img
+                                    src="/meshtastic-logo.png"
+                                    alt="Meshtastic"
+                                    style={{ width: '24px', height: '24px', borderRadius: '4px' }}
+                                />
+                                {data.meshtasticId}
                             </div>
                         )}
                     </div>

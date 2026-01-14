@@ -44,6 +44,7 @@ const MyCallsigns = () => {
                 qrz: item.qrz || '',
                 dmrId: item.dmr_id || '',
                 martsId: item.marts_id || '',
+                meshtasticId: item.meshtastic_id || '',
                 district: item.district || '',
                 gridLocator: item.grid_locator || '',
                 aprsCallsign: item.aprs_callsign || '',
