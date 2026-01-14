@@ -119,8 +119,28 @@ If you are reading this in the future and wish to improve the project:
 
 ---
 
-## 🤝 Contributing
+---
 
+## 🐳 Docker Deployment
+
+To deploy this project using Docker (e.g., on a VPS, Raspberry Pi, or local machine):
+
+1.  **Set Environment Variables**:
+    Create a `.env` file in the root directory:
+    ```env
+    VITE_SUPABASE_URL=your_supabase_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_key
+    ```
+
+2.  **Build and Run**:
+    ```bash
+    docker-compose up -d --build
+    ```
+
+3.  **Access**:
+    Open `http://localhost:8080`
+
+---
 Contributions welcome! Report bugs, suggest features, or submit PRs.
 
 ---
