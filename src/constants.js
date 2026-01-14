@@ -33,7 +33,7 @@ export const MALAYSIAN_DISTRICTS = {
         'Muallim', 'Perak Tengah'
     ],
     'PERLIS': [
-        'Perlis (Single District)'
+        'Arau', 'Kangar', 'Kuala Perlis', 'Padang Besar', 'Kaki Bukit', 'Simpang Empat'
     ],
     'PULAU PINANG': [
         'Barat Daya', 'Seberang Perai Selatan', 'Seberang Perai Tengah',
@@ -67,7 +67,7 @@ export const MALAYSIAN_DISTRICTS = {
         'Lembah Pantai', 'Segambut', 'Seputeh', 'Setiawangsa', 'Titiwangsa', 'Wangsa Maju'
     ],
     'LABUAN': [
-        'Labuan (Single District)'
+        'Bandar Labuan (Victoria)', 'Bebuloh', 'Layang-Layangan', 'Lubok Temiang', 'Rancha-Rancha', 'Pohon Batu'
     ],
     'PUTRAJAYA': [
         'Putrajaya (Single District)'
