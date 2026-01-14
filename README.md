@@ -72,8 +72,8 @@ graph TD
         SB -->|Serverless| Edge[⚡ Edge Functions]
     end
     
-    Auth -->|Verify/Reset (OK)| Email["📧 Resend (Email API)"]
-    Edge -.->|🚫 Bulk Reminders (Quota Limit)| Email
+    Auth -->|"Verify/Reset (OK)"| Email["📧 Resend (Email API)"]
+    Edge -.->|"🚫 Bulk Reminders (Quota Limit)"| Email
     
     style User fill:#f9f,stroke:#333
     style CDN fill:#435,stroke:#333,color:#fff
