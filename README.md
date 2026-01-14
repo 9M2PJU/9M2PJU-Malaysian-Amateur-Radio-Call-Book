@@ -72,7 +72,7 @@ graph TD
         SB -->|Serverless| Edge[⚡ Edge Functions]
     end
     
-    Edge -.->|Disabled| Email[🚫 Resend (Email API)]
+    Edge -.->|Disabled| Email["🚫 Resend (Email API)"]
     
     style User fill:#f9f,stroke:#333
     style CDN fill:#435,stroke:#333,color:#fff
