@@ -86,7 +86,7 @@ const Login = () => {
             }}>
                 <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(5px, 1.5vh, 15px)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '5px' }}>
-                        <FaBroadcastTower size={24} color="var(--primary)" />
+                        <img src="/logo.jpg" alt="MY-Callbook" style={{ height: '48px', width: '48px', borderRadius: '50%' }} />
                         <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 3.5vw, 1.5rem)', fontWeight: 'bold' }}>
                             MY-Callbook
                         </h2>
