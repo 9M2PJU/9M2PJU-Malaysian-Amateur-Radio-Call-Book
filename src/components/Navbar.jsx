@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome, FaHeart } from 'react-icons/fa';
+import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome, FaHeart, FaKey } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
 import InfoModal from './InfoModal';
 import DonationModal from './DonationModal';
+import ChangePasswordModal from './ChangePasswordModal';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
     const { user, signOut } = useAuth();
     const navigate = useNavigate();
 
@@ -108,9 +110,26 @@ const Navbar = () => {
                     </button>
                     {user ? (
                         <>
-                            <span className="mobile-hidden" style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginRight: '5px' }}>
-                                <FaUser style={{ marginRight: '5px' }} /> {user.email}
-                            </span>
+                            <button
+                                onClick={() => setIsChangePasswordModalOpen(true)}
+                                className="mobile-hidden"
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid var(--glass-border)',
+                                    color: 'var(--text-muted)',
+                                    padding: '8px 12px',
+                                    borderRadius: '6px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.85rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    marginRight: '5px'
+                                }}
+                                title="Click to change password"
+                            >
+                                <FaUser /> {user.email} <FaKey style={{ marginLeft: '4px', fontSize: '0.75rem' }} />
+                            </button>
                             <button
                                 onClick={() => { navigate('/my-callsigns'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 style={{
@@ -190,6 +209,7 @@ const Navbar = () => {
             <SubmissionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <InfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
             <DonationModal isOpen={isDonationModalOpen} onClose={() => setIsDonationModalOpen(false)} />
+            <ChangePasswordModal isOpen={isChangePasswordModalOpen} onClose={() => setIsChangePasswordModalOpen(false)} />
         </>
     );
 };
