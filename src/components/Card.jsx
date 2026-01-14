@@ -260,6 +260,15 @@ END:VCARD`;
                     </div>
                 )}
 
+                {data.expiryDate && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
+                        <FaCalendarAlt style={{ minWidth: '16px' }} />
+                        <span>
+                            License Expires: <span style={{ color: licenseStatus?.color || 'var(--text-main)' }}>{formatExpiryDate(data.expiryDate)}</span>
+                        </span>
+                    </div>
+                )}
+
                 {data.website && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                         <FaGlobe style={{ minWidth: '16px' }} />
