@@ -15,11 +15,7 @@ import Footer from './components/Footer';
 import SubmissionModal from './components/SubmissionModal';
 import MyCallsigns from './components/MyCallsigns';
 
-const MALAYSIAN_STATES = [
-    'JOHOR', 'KEDAH', 'KELANTAN', 'MELAKA', 'NEGERI SEMBILAN',
-    'PAHANG', 'PERAK', 'PERLIS', 'PULAU PINANG', 'SABAH',
-    'SARAWAK', 'SELANGOR', 'TERENGGANU', 'KUALA LUMPUR', 'LABUAN', 'PUTRAJAYA'
-];
+import { MALAYSIAN_STATES } from './constants';
 
 function Directory() {
     const [callsigns, setCallsigns] = useState([]);
@@ -31,6 +27,7 @@ function Directory() {
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
         state: '',
+        district: '',
         licenseClass: '',
         recentOnly: ''
     });
@@ -61,6 +58,10 @@ function Directory() {
 
             if (currentFilters.state) {
                 query = query.eq('location', currentFilters.state);
+            }
+
+            if (currentFilters.district) {
+                query = query.eq('district', currentFilters.district);
             }
 
             if (currentFilters.licenseClass) {
@@ -101,6 +102,8 @@ function Directory() {
                 qrz: item.qrz || '',
                 dmrId: item.dmr_id || '',
                 martsId: item.marts_id || '',
+                district: item.district || '',
+                gridLocator: item.grid_locator || '',
                 addedDate: item.added_date
             }));
 
@@ -131,7 +134,13 @@ function Directory() {
     };
 
     const handleFilterChange = (filterName, value) => {
-        const newFilters = { ...filters, [filterName]: value };
+        let newFilters = { ...filters, [filterName]: value };
+
+        // Reset district if state filter changes
+        if (filterName === 'state') {
+            newFilters.district = '';
+        }
+
         setFilters(newFilters);
         // Clear current data to show loading spinner
         setCallsigns([]);
@@ -241,7 +250,7 @@ function Directory() {
                             <button
                                 onClick={() => {
                                     setSearchTerm('');
-                                    setFilters({ state: '', licenseClass: '', recentOnly: '' });
+                                    setFilters({ state: '', district: '', licenseClass: '', recentOnly: '' });
                                     handleSearch('');
                                     // Note: handleSearch already clears and fetches
                                 }}

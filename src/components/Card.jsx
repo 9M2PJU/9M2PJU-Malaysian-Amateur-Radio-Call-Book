@@ -24,6 +24,8 @@ const isRecentlyAdded = (addedDate) => {
 
 const ADMIN_EMAIL = '9m2pju@hamradio.my';
 
+import { MALAYSIAN_STATES } from '../constants';
+
 const STATE_FLAGS = {
     'JOHOR': 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Flag_of_Johor.svg',
     'KEDAH': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Flag_of_Kedah.svg',
@@ -178,8 +180,22 @@ END:VCARD`;
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                     <FaMapMarkerAlt style={{ minWidth: '16px' }} />
-                    <span>{data.location}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span>{data.location}</span>
+                        {data.district && (
+                            <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>{data.district}</span>
+                        )}
+                    </div>
                 </div>
+
+                {data.gridLocator && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
+                        <FaGlobe style={{ minWidth: '16px' }} />
+                        <span style={{ fontFamily: 'monospace', letterSpacing: '1px' }}>
+                            GRID: {data.gridLocator}
+                        </span>
+                    </div>
+                )}
 
                 {data.phone && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>

@@ -74,3 +74,6 @@ INSERT INTO callsigns (callsign, name, location, email, phone, address, website,
 
 -- Done! Your database is ready.
 -- You should see 8 callsigns imported.
+-- 2026-01-14 Updates: Add District and Grid Locator
+-- ALTER TABLE callsigns ADD COLUMN district TEXT;
+-- ALTER TABLE callsigns ADD COLUMN grid_locator TEXT;

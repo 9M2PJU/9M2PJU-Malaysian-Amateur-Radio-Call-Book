@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
+import { MALAYSIAN_DISTRICTS } from '../constants';
 
 const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
     const inputStyle = {
@@ -66,6 +67,19 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
                     <option value="">All States</option>
                     {states.map(state => (
                         <option key={state} value={state}>{state}</option>
+                    ))}
+                </select>
+
+                {/* District Filter (Dependent on State) */}
+                <select
+                    value={filters.district || ''}
+                    onChange={(e) => onFilterChange('district', e.target.value)}
+                    style={{ ...selectStyle, cursor: filters.state ? 'pointer' : 'not-allowed', opacity: filters.state ? 1 : 0.6 }}
+                    disabled={!filters.state}
+                >
+                    <option value="">All Districts</option>
+                    {filters.state && MALAYSIAN_DISTRICTS[filters.state]?.map(dist => (
+                        <option key={dist} value={dist}>{dist}</option>
                     ))}
                 </select>
 

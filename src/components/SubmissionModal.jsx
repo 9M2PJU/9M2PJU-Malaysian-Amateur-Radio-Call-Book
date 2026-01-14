@@ -3,11 +3,7 @@ import { FaTimes, FaExclamationTriangle, FaCheckCircle, FaSpinner } from 'react-
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
-const MALAYSIAN_STATES = [
-    'JOHOR', 'KEDAH', 'KELANTAN', 'MELAKA', 'NEGERI SEMBILAN',
-    'PAHANG', 'PERAK', 'PERLIS', 'PULAU PINANG', 'SABAH',
-    'SARAWAK', 'SELANGOR', 'TERENGGANU', 'KUALA LUMPUR', 'LABUAN', 'PUTRAJAYA'
-];
+import { MALAYSIAN_STATES, MALAYSIAN_DISTRICTS } from '../constants';
 
 const ADMIN_EMAIL = '9m2pju@hamradio.my';
 
@@ -25,6 +21,8 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         qrz: '',
         dmrId: '',
         martsId: '',
+        district: '',
+        gridLocator: '',
         botField: '', // Honeypot
     });
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
@@ -49,6 +47,8 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                     qrz: initialData.qrz || '',
                     dmrId: initialData.dmrId || '',
                     martsId: initialData.martsId || '',
+                    district: initialData.district || '',
+                    gridLocator: initialData.gridLocator || '',
                     botField: ''
                 });
                 setIsCaptchaVerified(true); // Skip captcha for editing
@@ -108,7 +108,12 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
             }
         }
 
-        setFormData(prev => ({ ...prev, [name]: value }));
+        // Reset district if location (state) changes
+        if (name === 'location') {
+            setFormData(prev => ({ ...prev, [name]: value, district: '' }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const validateCallsign = (callsign) => {
@@ -190,7 +195,10 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         facebook: normalizeUrl(formData.facebook),
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
+                        dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
+                        district: formData.district || null,
+                        grid_locator: formData.gridLocator || null,
                     });
 
                 // Use ID if available (more robust), otherwise fallback to original callsign
@@ -224,6 +232,8 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
+                        district: formData.district || null,
+                        grid_locator: formData.gridLocator || null,
                         added_date: new Date().toISOString().split('T')[0],
                         user_id: user?.id || null // Link to auth user
                     });
@@ -383,6 +393,38 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                     </option>
                                 ))}
                             </select>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>District / Daerah (Optional)</label>
+                            <select
+                                name="district"
+                                value={formData.district}
+                                onChange={handleChange}
+                                style={{ ...inputStyle, cursor: formData.location ? 'pointer' : 'not-allowed' }}
+                                disabled={!formData.location}
+                            >
+                                <option value="" style={{ background: '#1a1a1a', color: '#fff' }}>
+                                    {formData.location ? 'Select District' : 'Select State First'}
+                                </option>
+                                {formData.location && MALAYSIAN_DISTRICTS[formData.location]?.map(dist => (
+                                    <option key={dist} value={dist} style={{ background: '#1a1a1a', color: '#fff' }}>
+                                        {dist}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Grid Locator (Maidenhead) (Optional)</label>
+                            <input
+                                type="text"
+                                name="gridLocator"
+                                value={formData.gridLocator}
+                                onChange={handleChange}
+                                placeholder="e.g. OJ03"
+                                style={inputStyle}
+                            />
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
