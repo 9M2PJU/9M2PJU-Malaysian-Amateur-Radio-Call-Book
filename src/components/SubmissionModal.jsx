@@ -101,7 +101,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         let { name, value } = e.target;
 
         // Auto-uppercase specific fields
-        if (name === 'callsign' || name === 'name' || name === 'address') {
+        if (name === 'callsign' || name === 'aprsCallsign' || name === 'name' || name === 'address' || name === 'gridLocator') {
             value = value.toUpperCase();
         }
 
