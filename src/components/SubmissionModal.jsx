@@ -598,7 +598,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                         required={hasExpiryDate}
                                     />
                                     <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
-                                        Your MCMC amateur radio license expiry date (from your license certificate)
+                                        Your MCMC amateur radio license expiry date. <span style={{ color: 'var(--primary)' }}>MY-Callbook will send an automated email reminder before it expires.</span>
                                     </small>
                                 </>
                             )}
