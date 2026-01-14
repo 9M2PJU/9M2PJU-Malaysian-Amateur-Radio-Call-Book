@@ -47,6 +47,25 @@ We utilize the generous free tiers of modern cloud infrastructure to guarantee l
 *   **Hosting (Vercel)**: The frontend is static and cached globally. It handles traffic effortlessly within the 100GB/month bandwidth limit.
 *   **Authentication**: Supabase Auth handles up to 50,000 monthly active users, far exceeding the size of our local community.
 
+```mermaid
+graph TD
+    User([👤 User]) -->|HTTPS| CDN[⚡ Vercel Edge Network]
+    CDN -->|Cached Assets| UI[⚛️ React Frontend]
+    UI -->|Auth / Data| SB[🔥 Supabase Project]
+    
+    subgraph "Free Tier Infrastructure"
+        SB -->|Identities| Auth[🔐 Supabase Auth]
+        SB -->|Relational Data| DB[(🐘 PostgreSQL)]
+        SB -->|Serverless| Edge[⚡ Edge Functions]
+    end
+    
+    Edge -.->|Disabled| Email[🚫 Resend (Email API)]
+    
+    style User fill:#f9f,stroke:#333
+    style CDN fill:#435,stroke:#333,color:#fff
+    style SB fill:#3ecf8e,stroke:#333,color:#fff
+```
+
 ### ⚠️ The Disabled Email System (Important)
 We built a fully functional **License Expiry Reminder System** (`supabase/functions/license-reminder`), designed to notify operators when their license is expiring (90, 60, 30, 14, 7, 3, 1 days before).
 
@@ -157,7 +176,23 @@ This project is built to be a resilient, long-term asset. All improvements below
 
 ---
 
-## 🐳 100% Self-Hosted Deployment (True Freedom)
+## 💻 Local Development (Legacy Mode)
+For quick UI contributions (without spinning up the full Docker stack):
+
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Start Dev Server**:
+    ```bash
+    npm run dev
+    ```
+3.  **Open in Browser**:
+    *   `http://localhost:5173`
+
+> **Note**: This connects to the *Live* Supabase project by default (if keys are configured) or requires a local `.env` file pointing to your own project.
+
+---
 
 To ensure this project can survive even if Vercel or Supabase cease to exist, we have included a **Full Stack Docker Configuration**.
 
