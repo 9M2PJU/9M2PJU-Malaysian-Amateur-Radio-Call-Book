@@ -64,12 +64,16 @@ export const AuthProvider = ({ children }) => {
                 setSession(session);
                 const currentUser = session?.user ?? null;
                 setUser(currentUser);
+
+                // Set loading to false FIRST, then check admin in background
+                setLoading(false);
+
+                // Check admin status in background (non-blocking)
                 if (currentUser) {
-                    await checkAdminStatus(currentUser);
+                    checkAdminStatus(currentUser);
                 }
             } catch (err) {
                 console.error('Failed to get session:', err);
-            } finally {
                 setLoading(false);
             }
         };
@@ -81,10 +85,12 @@ export const AuthProvider = ({ children }) => {
             setSession(session);
             const currentUser = session?.user ?? null;
             setUser(currentUser);
-            if (currentUser) {
-                await checkAdminStatus(currentUser);
-            }
             setLoading(false);
+
+            // Check admin status in background (non-blocking)
+            if (currentUser) {
+                checkAdminStatus(currentUser);
+            }
         });
 
         return () => subscription.unsubscribe();
