@@ -58,18 +58,32 @@ The email service (Resend) provides **100 free emails/day**.
 *   **The Risk**: If many licenses expire on the same day (a "cluster" event), the system would attempt to send >100 emails, hit the limit, and fail.
 *   **The Decision**: To protect the project's free status, we disabled this potentially volatile feature. We prioritized **system stability** over this convenience feature.
 
-### 🔮 Guide for Future Maintainers
-If you are reading this in the future and wish to improve the project:
+### 🔮 Guide for Future Maintainers (The Road Ahead)
+This project is built to be a resilient, long-term asset for the community. Here is how you can take it to the next level:
 
-1.  **Re-enabling Emails**:
-    *   If you have funding (~$20/mo), you can upgrade Resend and simply set `EMAIL_ENABLED = true` in the Edge Function.
-    *   If staying free, you must optimize the logic to send fewer emails (e.g., only 3 reminders per expiring user instead of 7) to stay under the 100/day limit.
+1.  **📧 Re-enabling Emails (The Reminder System)**:
+    *   **The Challenge**: Resend's free tier allows 100 emails/day. A "cluster" of expirations could breach this.
+    *   **Solution A (Funded)**: If you have ~$20/mo, simply upgrade Resend and set `EMAIL_ENABLED = true`.
+    *   **Solution B (Zero-Cost)**: Modify the Edge Function logic to:
+        *   **Stagger Sends**: Distribute reminders over a 24-hour window.
+        *   **Priority Queue**: Only send critical "3 Days Left" reminders if the daily quota is near full.
+        *   **Self-Hosted SMTP**: Use the `mailpit` or `postfix` container in the Docker stack for unlimited sending (requires a VPS).
 
-2.  **Image Hosting**:
-    *   Do not store user profile photos in this Git repository. It will bloat the size and break the deployment. Use Supabase Storage (1GB free) instead.
+2.  **🖼️ Image Hosting (Scaling Avatars)**:
+    *   **Warning**: Do not commit photos to this Git repo. It will break the app.
+    *   **Solution A (Easiest)**: Use **Gravatar**. It's 100% free, automatic, and handles bandwidth for you.
+    *   **Solution B (Supabase)**: Use Supabase Storage (1GB Free). *Caution*: Large traffic can hit the 5GB egress limit.
+    *   **Solution C (External)**: Integrate a dedicated free-tier image host like Cloudinary or Imgur API.
 
-3.  **Data Integrity**:
-    *   The next great leap for this project would be automating the data sync with MCMC's public records, reducing the need for manual user submissions.
+3.  **🛡️ Data Integrity & Automation**:
+    *   **The Goal**: Eliminate manual entry errors.
+    *   **The Method**: Write a Python/Node.js script to periodically scrape or query the **MCMC Public Register**.
+    *   **Automation**: Schedule this script via Supabase Edge Functions (Cron) to auto-update license expiry dates.
+
+4.  **🪙 Community Governance**:
+    *   Keep this project **Open Source (GPLv3)**.
+    *   Never put the data behind a paywall.
+    *   The goal is to serve the hobby, not to profit.
 
 
 ### 🚀 The "Dream" Architecture (Growth Plan)
