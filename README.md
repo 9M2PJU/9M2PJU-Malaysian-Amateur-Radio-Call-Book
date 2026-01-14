@@ -121,24 +121,35 @@ If you are reading this in the future and wish to improve the project:
 
 ---
 
-## 🐳 Docker Deployment
+## 🐳 100% Self-Hosted Deployment (True Freedom)
 
-To deploy this project using Docker (e.g., on a VPS, Raspberry Pi, or local machine):
+To ensure this project can survive even if Vercel or Supabase cease to exist, we have included a **Full Stack Docker Configuration**.
 
-1.  **Set Environment Variables**:
-    Create a `.env` file in the root directory:
-    ```env
-    VITE_SUPABASE_URL=your_supabase_url
-    VITE_SUPABASE_ANON_KEY=your_supabase_key
-    ```
+This `docker-compose.yml` spins up the **entire infrastructure** locally:
+*   **Web App**: The React Frontend (Port 3000)
+*   **PostgreSQL**: The Database (Port 54322)
+*   **Supabase Stack**: Auth (GoTrue), API (PostgREST), Realtime, Storage
+*   **Dashboard**: Supabase Studio UI (Port 8001)
+*   **Mailpit**: Local SMTP Server for testing emails (Port 8025)
 
-2.  **Build and Run**:
+### How to Run (Local / VPS)
+1.  **Clone the Repo**:
     ```bash
-    docker-compose up -d --build
+    git clone https://github.com/9M2PJU/9M2PJU-Malaysian-Amateur-Radio-Call-Book.git
+    cd 9M2PJU-Malaysian-Amateur-Radio-Call-Book
     ```
 
-3.  **Access**:
-    Open `http://localhost:8080`
+2.  **Start the Stack**:
+    ```bash
+    docker compose up -d
+    ```
+
+3.  **Access the Services**:
+    *   **Public Directory**: `http://localhost:3000`
+    *   **Backend Dashboard**: `http://localhost:8001` (Manage Data/Users)
+    *   **Email Inbox**: `http://localhost:8025` (View sent emails)
+
+> **Note**: This setup uses default "development" keys. For production use on a public server, please change the JWT secrets and passwords in `docker-compose.yml`.
 
 ---
 Contributions welcome! Report bugs, suggest features, or submit PRs.
