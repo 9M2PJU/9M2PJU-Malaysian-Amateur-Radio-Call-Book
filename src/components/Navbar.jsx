@@ -171,6 +171,16 @@ const Navbar = () => {
                     .mobile-hidden { display: none !important; }
                     .mobile-hidden-element { display: none !important; }
                     .mobile-only-lock { display: inline !important; }
+                    .nav-container {
+                        padding: 0.5rem 0.75rem !important;
+                        margin: 8px !important;
+                        gap: 4px;
+                        flex-wrap: wrap;
+                    }
+                    .nav-container button {
+                        padding: 6px !important;
+                        min-width: 32px !important;
+                    }
                 }
                 @media (min-width: 481px) {
                     .mobile-only-plus { display: none !important; }
