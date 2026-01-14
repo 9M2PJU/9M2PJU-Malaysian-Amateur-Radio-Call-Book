@@ -59,26 +59,23 @@ The email service (Resend) provides **100 free emails/day**.
 *   **The Decision**: To protect the project's free status, we disabled this potentially volatile feature. We prioritized **system stability** over this convenience feature.
 
 ### 🔮 Guide for Future Maintainers (The Road Ahead)
-This project is built to be a resilient, long-term asset for the community. Here is how you can take it to the next level:
+This project is built to be a resilient, long-term asset. All improvements below should be seen as stepping stones towards the **Dream Architecture** outlined in the next section.
 
-1.  **📧 Re-enabling Emails (The Reminder System)**:
+1.  **📧 Re-enabling Emails (Step towards "Enterprise Email Service")**:
     *   **The Challenge**: Resend's free tier allows 100 emails/day. A "cluster" of expirations could breach this.
     *   **Solution A (Funded)**: If you have ~$20/mo, simply upgrade Resend and set `EMAIL_ENABLED = true`.
-    *   **Solution B (Zero-Cost)**: Modify the Edge Function logic to:
-        *   **Stagger Sends**: Distribute reminders over a 24-hour window.
-        *   **Priority Queue**: Only send critical "3 Days Left" reminders if the daily quota is near full.
-        *   **Self-Hosted SMTP**: Use the `mailpit` or `postfix` container in the Docker stack for unlimited sending (requires a VPS).
+    *   **Solution B (Zero-Cost)**: Modify the Edge Function logic to stagger sends or use the **Self-Hosted SMTP** (`mailpit`) container in our Docker stack.
 
-2.  **🖼️ Image Hosting (Scaling Avatars)**:
+2.  **🖼️ Image Hosting (Step towards "Unrestricted Object Storage")**:
     *   **Warning**: Do not commit photos to this Git repo. It will break the app.
     *   **Solution A (Easiest)**: Use **Gravatar**. It's 100% free, automatic, and handles bandwidth for you.
-    *   **Solution B (Supabase)**: Use Supabase Storage (1GB Free). *Caution*: Large traffic can hit the 5GB egress limit.
-    *   **Solution C (External)**: Integrate a dedicated free-tier image host like Cloudinary or Imgur API.
+    *   **Solution B (Supabase)**: Use Supabase Storage (1GB Free). *Caution*: Watch the 5GB egress limit.
+    *   **Goal**: Eventually migrate to **AWS S3/MinIO** (see Dream Architecture #4) for unlimited high-res storage.
 
-3.  **🛡️ Data Integrity & Automation**:
+3.  **🛡️ Data Integrity & Automation (Step towards "Dedicated Search Engine")**:
     *   **The Goal**: Eliminate manual entry errors.
-    *   **The Method**: Write a Python/Node.js script to periodically scrape or query the **MCMC Public Register**.
-    *   **Automation**: Schedule this script via Supabase Edge Functions (Cron) to auto-update license expiry dates.
+    *   **The Method**: Write a Python/Node.js script to periodically scrape the **MCMC Public Register**.
+    *   **Future**: This clean data will be the foundation for the **Meilisearch** engine (Dream Architecture #3).
 
 4.  **🪙 Community Governance**:
     *   Keep this project **Open Source (GPLv3)**.
