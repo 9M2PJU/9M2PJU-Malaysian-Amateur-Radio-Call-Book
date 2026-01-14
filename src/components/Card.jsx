@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from './AuthContext';
-import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch, FaClock } from 'react-icons/fa';
+import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch, FaClock, FaAddressCard } from 'react-icons/fa';
 
 // Determine license class info
 // 9M = Class A (Full License)
