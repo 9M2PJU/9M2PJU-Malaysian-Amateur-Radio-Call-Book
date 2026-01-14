@@ -31,7 +31,7 @@ const Navbar = () => {
                 zIndex: 100
             }}>
                 <div
-                    onClick={() => navigate('/')}
+                    onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -46,7 +46,7 @@ const Navbar = () => {
                 </div>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                         className="mobile-hidden-element"
                         style={{
                             background: 'rgba(255, 255, 255, 0.1)',
@@ -112,7 +112,7 @@ const Navbar = () => {
                                 <FaUser style={{ marginRight: '5px' }} /> {user.email}
                             </span>
                             <button
-                                onClick={() => navigate('/my-callsigns')}
+                                onClick={() => { navigate('/my-callsigns'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 style={{
                                     background: 'rgba(255, 255, 255, 0.1)',
                                     border: '1px solid var(--glass-border)',
