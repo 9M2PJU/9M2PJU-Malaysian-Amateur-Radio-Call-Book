@@ -239,12 +239,36 @@ END:VCARD`;
                             </a>
                         )}
                         {data.qrz && (
-                            <a href={data.qrz} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }} title="QRZ.com">
+                            <a
+                                href={data.qrz}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={buttonStyle}
+                            >
+                                <FaAddressCard /> QRZ.com
+                            </a>
+                        )}
+                        {data.aprsCallsign && (
+                            <a
+                                href={`https://aprs.fi/info/a/${data.aprsCallsign}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    ...buttonStyle,
+                                    background: 'rgba(59, 130, 246, 0.15)',
+                                    color: '#60a5fa',
+                                    border: '1px solid rgba(59, 130, 246, 0.3)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}
+                            >
                                 <img
-                                    src="/qrz-logo.png"
-                                    alt="QRZ.com"
-                                    style={{ width: '40px', height: 'auto', borderRadius: '4px' }}
+                                    src="/aprs-icon.png"
+                                    alt="APRS"
+                                    style={{ width: '20px', height: '20px', objectFit: 'contain' }}
                                 />
+                                Track (APRS)
                             </a>
                         )}
                         {data.dmrId && (

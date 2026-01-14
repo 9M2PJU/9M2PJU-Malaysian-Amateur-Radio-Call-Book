@@ -22,7 +22,10 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         dmrId: '',
         martsId: '',
         district: '',
+        martsId: '',
+        district: '',
         gridLocator: '',
+        aprsCallsign: '',
         botField: '', // Honeypot
     });
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
@@ -48,7 +51,9 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                     dmrId: initialData.dmrId || '',
                     martsId: initialData.martsId || '',
                     district: initialData.district || '',
+                    district: initialData.district || '',
                     gridLocator: initialData.gridLocator || '',
+                    aprsCallsign: initialData.aprsCallsign || '',
                     botField: ''
                 });
                 setIsCaptchaVerified(true); // Skip captcha for editing
@@ -199,6 +204,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         marts_id: formData.martsId || null,
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
+                        aprs_callsign: formData.aprsCallsign || null,
                     });
 
                 // Use ID if available (more robust), otherwise fallback to original callsign
@@ -234,6 +240,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         marts_id: formData.martsId || null,
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
+                        aprs_callsign: formData.aprsCallsign || null,
                         added_date: new Date().toISOString().split('T')[0],
                         user_id: user?.id || null // Link to auth user
                     });
@@ -425,6 +432,21 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                 placeholder="e.g. OJ03"
                                 style={inputStyle}
                             />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>APRS Callsign (Optional)</label>
+                            <input
+                                type="text"
+                                name="aprsCallsign"
+                                value={formData.aprsCallsign}
+                                onChange={handleChange}
+                                placeholder="e.g. 9M2PJU-9"
+                                style={inputStyle}
+                            />
+                            <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                                Leave blank if same as main callsign, or specify SSID (e.g. -9 for mobile)
+                            </small>
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
