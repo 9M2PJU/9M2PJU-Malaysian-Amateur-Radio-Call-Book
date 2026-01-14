@@ -261,7 +261,7 @@ END:VCARD`;
                                 rel="noopener noreferrer"
                                 style={buttonStyle}
                             >
-                                <FaAddressCard /> QRZ.com
+                                <img src="/qrz-logo.png" alt="QRZ" style={{ height: '16px', width: 'auto' }} /> QRZ.com
                             </a>
                         )}
                         {data.aprsCallsign && (
