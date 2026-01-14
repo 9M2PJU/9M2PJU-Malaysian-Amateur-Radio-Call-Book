@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from './AuthContext';
-import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch, FaClock, FaAddressCard } from 'react-icons/fa';
+import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch, FaClock, FaAddressCard, FaCalendarAlt } from 'react-icons/fa';
+import { getLicenseStatus, formatExpiryDate } from '../utils/licenseStatus';
 
 // Determine license class info
 // 9M = Class A (Full License)
@@ -49,6 +50,7 @@ const Card = ({ data, onEdit }) => {
     const { user } = useAuth();
     const licenseClass = getLicenseClass(data.callsign);
     const recentlyAdded = isRecentlyAdded(data.addedDate);
+    const licenseStatus = getLicenseStatus(data.expiryDate);
 
     const downloadVCard = () => {
         const vcard = `BEGIN:VCARD
@@ -186,6 +188,27 @@ END:VCARD`;
                             <>🇲🇾 MALAYSIA</>
                         )}
                     </span>
+                    {/* License Status Badge */}
+                    {licenseStatus && (
+                        <span
+                            style={{
+                                background: licenseStatus.bg,
+                                color: licenseStatus.color,
+                                padding: '4px 12px',
+                                borderRadius: '20px',
+                                fontSize: '0.75rem',
+                                fontWeight: '600',
+                                border: `1px solid ${licenseStatus.color}`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                cursor: 'help'
+                            }}
+                            title={`License expires: ${formatExpiryDate(data.expiryDate)}${licenseStatus.daysUntilExpiry >= 0 ? ` (${licenseStatus.daysUntilExpiry} days)` : ''}`}
+                        >
+                            {licenseStatus.icon} {licenseStatus.label}
+                        </span>
+                    )}
                 </div>
             </div>
 

@@ -106,7 +106,8 @@ function Directory() {
                 district: item.district || '',
                 gridLocator: item.grid_locator || '',
                 aprsCallsign: item.aprs_callsign || '',
-                addedDate: item.added_date
+                addedDate: item.added_date,
+                expiryDate: item.expiry_date || ''
             }));
 
             if (reset) {
