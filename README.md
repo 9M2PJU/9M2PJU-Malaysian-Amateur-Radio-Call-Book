@@ -20,16 +20,29 @@
 
 ## ✨ Features
 
-| Feature | Description |
-|---------|-------------|
-| 🔒 **Authentication** | Secure Login & Registration powered by Supabase Auth |
-| 📊 **Statistics Dashboard** | Real-time stats: total operators, breakdown by class, top locations |
-| 🔍 **Advanced Search** | Filter by callsign, name, location, license class (A/B/C) |
-| 📅 **License Status** | Indicators for **Active** (Green), **Expiring Soon** (Orange), and **Expired** (Red) licenses |
-| 🏷️ **License Class Badges** | 🟢 Class A (9M) · 🔵 Class B (9W2/6/8) · 🟠 Class C (9W3) |
-| 💾 **vCard Export** | Save any operator directly to phone contacts |
-| 🔗 **Social Links** | QRZ.com, Facebook, personal websites |
-| 📱 **Responsive Design** | Perfect fit on desktop and mobile |
+### 🔍 Intelligent Search & Discovery
+*   **Advanced Filtering**: precise search by Callsign, Name, State (Location), and License Class (A/B/C).
+*   **Instant Results**: Optimized query performance for rapid lookups.
+*   **License Indicators**: Visual cues for Active 🟢, Expiring 🟠, and Expired 🔴 statuses.
+
+### 🔐 Secure Identity & Access
+*   **Supabase Auth**: Robust email/password authentication flow.
+*   **User Management**: Complete 'Forgot Password' and 'Change Password' workflows.
+*   **Role-Based Access**: Protected routes ensuring only owners can edit their data.
+
+### 📡 Operator Portfolio
+*   **My Callsigns**: A private dashboard to manage your submitted stations.
+*   **vCard Export**: One-click download to save operator details directly to phone contacts.
+*   **Social Connectivity**: Link your QRZ.com, Facebook, and Website profiles.
+
+### 📊 Live Analytics
+*   **Real-Time Dashboard**: Live counter of total operators and daily registrations.
+*   **Data Visualization**: Breakdown of operators by License Class (9M vs 9W) and Top 5 Locations.
+
+### 📱 Modern User Experience
+*   **Glassmorphism Design**: A premium, translucent aesthetic inspired by macOS/Windows 11.
+*   **Fully Responsive**: Flawless experience on mobile phones, tablets, and desktops.
+*   **Interactive Modals**: Smooth transitions for data entry and user updates.
 
 ---
 
