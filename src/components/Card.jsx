@@ -74,6 +74,22 @@ END:VCARD`;
         URL.revokeObjectURL(url);
     };
 
+    // Define buttonStyle for social buttons
+    const buttonStyle = {
+        background: 'rgba(255, 255, 255, 0.05)',
+        border: '1px solid var(--glass-border)',
+        borderRadius: '6px',
+        color: 'var(--text-muted)',
+        padding: '6px 12px',
+        textDecoration: 'none',
+        fontSize: '0.9rem',
+        fontWeight: '500',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        transition: 'all 0.2s ease',
+    };
+
     return (
         <div className="glass-panel" style={{ padding: 'clamp(16px, 4vw, 24px)', transition: 'all 0.3s ease', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
             {/* Recently Added Badge */}
