@@ -5,10 +5,8 @@ import { useAuth } from './AuthContext';
 
 import { MALAYSIAN_STATES, MALAYSIAN_DISTRICTS } from '../constants';
 
-const ADMIN_EMAIL = '9m2pju@hamradio.my';
-
 const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
-    const { user } = useAuth();
+    const { user, isAdmin } = useAuth();
     const [formData, setFormData] = useState({
         callsign: '',
         name: '',
@@ -220,7 +218,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                 }
 
                 // Security: Ensure ownership UNLESS ADMIN
-                if (user?.email !== ADMIN_EMAIL) {
+                if (!isAdmin) {
                     query = query.eq('user_id', user.id);
                 }
 

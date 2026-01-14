@@ -23,7 +23,6 @@ const isRecentlyAdded = (addedDate) => {
     return added >= thirtyDaysAgo;
 };
 
-const ADMIN_EMAIL = '9m2pju@hamradio.my';
 
 import { MALAYSIAN_STATES } from '../constants';
 
@@ -46,8 +45,8 @@ const STATE_FLAGS = {
     'PUTRAJAYA': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Putrajaya.svg'
 };
 
-const Card = ({ data, onEdit }) => {
-    const { user } = useAuth();
+const Card = ({ data, onEdit, onDelete }) => {
+    const { user, isAdmin, isSuperAdmin } = useAuth();
     const licenseClass = getLicenseClass(data.callsign);
     const recentlyAdded = isRecentlyAdded(data.addedDate);
     const licenseStatus = getLicenseStatus(data.expiryDate);
@@ -116,7 +115,7 @@ END:VCARD`;
             )}
 
             {/* Admin Edit Button */}
-            {user?.email === ADMIN_EMAIL && onEdit && (
+            {isAdmin && onEdit && (
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
@@ -125,7 +124,7 @@ END:VCARD`;
                     style={{
                         position: 'absolute',
                         top: '10px',
-                        right: recentlyAdded ? '90px' : '10px',
+                        right: recentlyAdded ? (isSuperAdmin ? '160px' : '90px') : (isSuperAdmin ? '80px' : '10px'),
                         background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                         color: 'white',
                         border: 'none',
@@ -143,6 +142,37 @@ END:VCARD`;
                     title="Admin Edit"
                 >
                     ✏️ Edit
+                </button>
+            )}
+
+            {/* Super Admin Delete Button */}
+            {isSuperAdmin && onDelete && (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(data);
+                    }}
+                    style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: recentlyAdded ? '90px' : '10px',
+                        background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '6px 12px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                        zIndex: 10,
+                        boxShadow: '0 2px 8px rgba(239, 68, 68, 0.4)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}
+                    title="Super Admin Delete"
+                >
+                    🗑️ Delete
                 </button>
             )}
 

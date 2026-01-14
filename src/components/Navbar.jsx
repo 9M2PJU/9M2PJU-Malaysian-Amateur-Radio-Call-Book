@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome, FaHeart, FaKey } from 'react-icons/fa';
+import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome, FaHeart, FaKey, FaShieldAlt } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
 import InfoModal from './InfoModal';
 import DonationModal from './DonationModal';
@@ -12,7 +12,7 @@ const Navbar = () => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
     const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
-    const { user, signOut } = useAuth();
+    const { user, signOut, isSuperAdmin } = useAuth();
     const navigate = useNavigate();
 
     const handleSignOut = async () => {
@@ -153,6 +153,27 @@ const Navbar = () => {
                             >
                                 <FaUser /> {user.email} <FaKey style={{ marginLeft: '4px', fontSize: '0.75rem' }} />
                             </button>
+                            {isSuperAdmin && (
+                                <button
+                                    onClick={() => { navigate('/manage-admins'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                    style={{
+                                        background: 'rgba(255, 193, 7, 0.2)',
+                                        border: '1px solid rgba(255, 193, 7, 0.4)',
+                                        color: '#ffc107',
+                                        padding: '8px',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer',
+                                        fontSize: '0.9rem',
+                                        marginRight: '5px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px'
+                                    }}
+                                    title="Manage Admins"
+                                >
+                                    <FaShieldAlt /> <span className="mobile-hidden">Admins</span>
+                                </button>
+                            )}
                             <button
                                 onClick={() => { navigate('/my-callsigns'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 style={{

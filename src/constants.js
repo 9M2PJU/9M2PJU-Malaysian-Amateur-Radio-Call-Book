@@ -76,3 +76,7 @@ export const MALAYSIAN_DISTRICTS = {
         'Presint 16', 'Presint 17', 'Presint 18', 'Presint 19', 'Presint 20'
     ]
 };
+
+// Super Admin - hardcoded, can manage normal admins and delete callsigns
+export const SUPER_ADMIN_EMAILS = ['9m2pju@hamradio.my'];
+

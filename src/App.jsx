@@ -14,6 +14,7 @@ import Card from './components/Card';
 import Footer from './components/Footer';
 import SubmissionModal from './components/SubmissionModal';
 import MyCallsigns from './components/MyCallsigns';
+import ManageAdmins from './components/ManageAdmins';
 
 import { MALAYSIAN_STATES } from './constants';
 
@@ -162,6 +163,27 @@ function Directory() {
         setIsModalOpen(true);
     };
 
+    const handleDelete = async (data) => {
+        if (!window.confirm(`Are you sure you want to delete ${data.callsign}? This action cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('callsigns')
+                .delete()
+                .eq('id', data.id);
+
+            if (error) throw error;
+
+            // Refresh the list
+            fetchCallsigns(0, searchTerm, filters, true);
+        } catch (err) {
+            console.error('Error deleting callsign:', err);
+            alert('Failed to delete callsign: ' + err.message);
+        }
+    };
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setEditData(null);
@@ -283,7 +305,7 @@ function Directory() {
                             gap: '24px'
                         }}>
                             {callsigns.map((item, index) => (
-                                <Card key={`${item.callsign}-${index}`} data={item} onEdit={handleEdit} />
+                                <Card key={`${item.callsign}-${index}`} data={item} onEdit={handleEdit} onDelete={handleDelete} />
                             ))}
                         </div>
 
@@ -345,6 +367,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <MyCallsigns />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/manage-admins"
+                        element={
+                            <ProtectedRoute>
+                                <ManageAdmins />
                             </ProtectedRoute>
                         }
                     />
