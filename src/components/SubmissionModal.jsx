@@ -22,10 +22,9 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         dmrId: '',
         martsId: '',
         district: '',
-        martsId: '',
-        district: '',
         gridLocator: '',
         aprsCallsign: '',
+        expiryDate: '',
         botField: '', // Honeypot
     });
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
@@ -51,9 +50,9 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                     dmrId: initialData.dmrId || '',
                     martsId: initialData.martsId || '',
                     district: initialData.district || '',
-                    district: initialData.district || '',
                     gridLocator: initialData.gridLocator || '',
                     aprsCallsign: initialData.aprsCallsign || '',
+                    expiryDate: initialData.expiryDate || '',
                     botField: ''
                 });
                 setIsCaptchaVerified(true); // Skip captcha for editing
@@ -200,11 +199,11 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         facebook: normalizeUrl(formData.facebook),
                         qrz: normalizeUrl(formData.qrz),
                         dmr_id: formData.dmrId || null,
-                        dmr_id: formData.dmrId || null,
                         marts_id: formData.martsId || null,
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
                         aprs_callsign: formData.aprsCallsign || null,
+                        expiry_date: formData.expiryDate || null,
                     });
 
                 // Use ID if available (more robust), otherwise fallback to original callsign
@@ -241,6 +240,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         district: formData.district || null,
                         grid_locator: formData.gridLocator || null,
                         aprs_callsign: formData.aprsCallsign || null,
+                        expiry_date: formData.expiryDate || null,
                         added_date: new Date().toISOString().split('T')[0],
                         user_id: user?.id || null // Link to auth user
                     });
@@ -543,6 +543,20 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                 placeholder="xxxx"
                                 style={inputStyle}
                             />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>License Expiry Date (Optional)</label>
+                            <input
+                                type="date"
+                                name="expiryDate"
+                                value={formData.expiryDate}
+                                onChange={handleChange}
+                                style={inputStyle}
+                            />
+                            <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                                Your MCMC amateur radio license expiry date (from your license certificate)
+                            </small>
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
