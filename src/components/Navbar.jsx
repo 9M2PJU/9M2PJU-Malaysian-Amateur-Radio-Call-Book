@@ -139,7 +139,6 @@ const Navbar = () => {
                         <>
                             <button
                                 onClick={() => setIsChangePasswordModalOpen(true)}
-                                className="mobile-hidden"
                                 style={{
                                     background: 'rgba(255, 255, 255, 0.1)',
                                     border: '1px solid var(--glass-border)',
@@ -155,7 +154,7 @@ const Navbar = () => {
                                 }}
                                 title="Click to change password"
                             >
-                                <FaUser /> {user.email} <FaKey style={{ marginLeft: '4px', fontSize: '0.75rem' }} />
+                                <FaUser className="mobile-hidden" /> <span className="mobile-hidden">{user.email}</span> <FaKey style={{ fontSize: '0.85rem' }} />
                             </button>
                             {isSuperAdmin && (
                                 <button
