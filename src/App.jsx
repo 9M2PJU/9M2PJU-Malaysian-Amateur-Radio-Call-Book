@@ -1,22 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Login from './components/Login';
-import Register from './components/Register';
-import ForgotPassword from './components/ForgotPassword';
-import UpdatePassword from './components/UpdatePassword';
+
+// Lazy load components for better code splitting
+const Login = lazy(() => import('./components/Login'));
+const Register = lazy(() => import('./components/Register'));
+const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
+const UpdatePassword = lazy(() => import('./components/UpdatePassword'));
+const MyCallsigns = lazy(() => import('./components/MyCallsigns'));
+const ManageAdmins = lazy(() => import('./components/ManageAdmins'));
+
+// Keep frequently used components loaded
 import Navbar from './components/Navbar';
 import AdvancedSearch from './components/AdvancedSearch';
 import StatsDashboard from './components/StatsDashboard';
 import Card from './components/Card';
 import Footer from './components/Footer';
 import SubmissionModal from './components/SubmissionModal';
-import MyCallsigns from './components/MyCallsigns';
-import ManageAdmins from './components/ManageAdmins';
 
 import { MALAYSIAN_STATES } from './constants';
+
+// Loading spinner for lazy components
+const LazyLoadSpinner = () => (
+    <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: 'var(--bg-dark)',
+        color: 'var(--text-muted)'
+    }}>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '16px' }}>📡</div>
+            <div>Loading...</div>
+        </div>
+    </div>
+);
 
 function Directory() {
     const [callsigns, setCallsigns] = useState([]);
@@ -357,36 +378,38 @@ function App() {
     return (
         <Router>
             <AuthProvider>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/update-password" element={<UpdatePassword />} />
-                    <Route
-                        path="/my-callsigns"
-                        element={
-                            <ProtectedRoute>
-                                <MyCallsigns />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/manage-admins"
-                        element={
-                            <ProtectedRoute>
-                                <ManageAdmins />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            <ProtectedRoute>
-                                <Directory />
-                            </ProtectedRoute>
-                        }
-                    />
-                </Routes>
+                <Suspense fallback={<LazyLoadSpinner />}>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/update-password" element={<UpdatePassword />} />
+                        <Route
+                            path="/my-callsigns"
+                            element={
+                                <ProtectedRoute>
+                                    <MyCallsigns />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/manage-admins"
+                            element={
+                                <ProtectedRoute>
+                                    <ManageAdmins />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/"
+                            element={
+                                <ProtectedRoute>
+                                    <Directory />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                </Suspense>
             </AuthProvider>
         </Router>
     );
