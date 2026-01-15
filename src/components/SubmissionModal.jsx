@@ -442,13 +442,14 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>District (Optional)</label>
+                            <label style={labelStyle}>District *</label>
                             <select
                                 name="district"
                                 value={formData.district}
                                 onChange={handleChange}
                                 style={{ ...inputStyle, cursor: formData.location ? 'pointer' : 'not-allowed' }}
                                 disabled={!formData.location}
+                                required
                             >
                                 <option value="" style={{ background: '#1a1a1a', color: '#fff' }}>
                                     {formData.location ? 'Select District' : 'Select State First'}
