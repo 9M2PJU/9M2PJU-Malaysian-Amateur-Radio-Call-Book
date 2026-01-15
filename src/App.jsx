@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, useSearchParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,23 +41,36 @@ const LazyLoadSpinner = () => (
 );
 
 function Directory() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    // Helper to get saved filters from localStorage
+    const getSavedFilters = () => {
+        try {
+            const saved = localStorage.getItem('callbook_filters');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (e) {
+            console.error('Error reading saved filters:', e);
+        }
+        return null;
+    };
 
-    // Initialize state from URL params
+    const savedFilters = getSavedFilters();
+
+    // Initialize state from localStorage
     const [callsigns, setCallsigns] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
-    const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+    const [searchTerm, setSearchTerm] = useState(savedFilters?.searchTerm || '');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
-        state: searchParams.get('state') || '',
-        district: searchParams.get('district') || '',
-        licenseClass: searchParams.get('class') || '',
-        licenseStatus: searchParams.get('status') || '',
-        recentOnly: searchParams.get('recent') || '',
-        contactInfo: searchParams.get('contact') || ''
+        state: savedFilters?.state || '',
+        district: savedFilters?.district || '',
+        licenseClass: savedFilters?.licenseClass || '',
+        licenseStatus: savedFilters?.licenseStatus || '',
+        recentOnly: savedFilters?.recentOnly || '',
+        contactInfo: savedFilters?.contactInfo || ''
     });
     // States are static list for dropdown, fetching once
     const [states, setStates] = useState(MALAYSIAN_STATES);
@@ -70,21 +83,30 @@ function Directory() {
 
     const ITEMS_PER_PAGE = 50;
 
-    // Helper to update URL params
-    const updateUrlParams = (term, currentFilters) => {
-        const params = new URLSearchParams();
-        if (term) params.set('q', term);
-        if (currentFilters.state) params.set('state', currentFilters.state);
-        if (currentFilters.district) params.set('district', currentFilters.district);
-        if (currentFilters.licenseClass) params.set('class', currentFilters.licenseClass);
-        if (currentFilters.licenseStatus) params.set('status', currentFilters.licenseStatus);
-        if (currentFilters.recentOnly) params.set('recent', currentFilters.recentOnly);
-        if (currentFilters.contactInfo) params.set('contact', currentFilters.contactInfo);
-        setSearchParams(params, { replace: true });
+    // Helper to save filters to localStorage
+    const saveFilters = (term, currentFilters) => {
+        try {
+            const data = {
+                searchTerm: term,
+                ...currentFilters
+            };
+            localStorage.setItem('callbook_filters', JSON.stringify(data));
+        } catch (e) {
+            console.error('Error saving filters:', e);
+        }
+    };
+
+    // Helper to clear saved filters
+    const clearSavedFilters = () => {
+        try {
+            localStorage.removeItem('callbook_filters');
+        } catch (e) {
+            console.error('Error clearing filters:', e);
+        }
     };
 
     useEffect(() => {
-        // Initial fetch with values from URL
+        // Initial fetch with values from localStorage
         console.log('App Initializing...');
         fetchCallsigns(0, searchTerm, filters, true);
     }, []);
@@ -104,7 +126,7 @@ function Directory() {
             setFilters(emptyFilters);
             setCallsigns([]);
             setPage(0);
-            updateUrlParams('', emptyFilters); // Clear URL params
+            clearSavedFilters(); // Clear localStorage
             fetchCallsigns(0, '', emptyFilters, true);
         };
 
@@ -270,8 +292,8 @@ function Directory() {
         // Clear current data to show loading spinner for search
         setCallsigns([]);
         setPage(0);
-        // Update URL params
-        updateUrlParams(term, filters);
+        // Save to localStorage
+        saveFilters(term, filters);
         // Reset to page 0 for new search
         fetchCallsigns(0, term, filters, true);
     };
@@ -288,8 +310,8 @@ function Directory() {
         // Clear current data to show loading spinner
         setCallsigns([]);
         setPage(0);
-        // Update URL params
-        updateUrlParams(searchTerm, newFilters);
+        // Save to localStorage
+        saveFilters(searchTerm, newFilters);
         // Reset to page 0 for new filter
         fetchCallsigns(0, searchTerm, newFilters, true);
     };
@@ -421,7 +443,7 @@ function Directory() {
                                     setFilters(emptyFilters);
                                     setCallsigns([]);
                                     setPage(0);
-                                    updateUrlParams('', emptyFilters); // Clear URL params
+                                    clearSavedFilters(); // Clear localStorage
                                     fetchCallsigns(0, '', emptyFilters, true);
                                 }}
                                 style={{
