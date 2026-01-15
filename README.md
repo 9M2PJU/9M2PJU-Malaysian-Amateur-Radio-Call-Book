@@ -44,6 +44,13 @@
 *   **Fully Responsive**: Flawless experience on mobile phones, tablets, and desktops.
 *   **Interactive Modals**: Smooth transitions for data entry and user updates.
 
+### ⚡ Performance Optimizations
+*   **Lazy Loading**: Routes (Login, Register, MyCallsigns, etc.) are loaded on-demand using `React.lazy()`, reducing initial bundle size by ~30KB.
+*   **Code Splitting**: Vite automatically creates separate chunks for lazy-loaded components, improving first contentful paint.
+*   **React.memo**: Card components are memoized to prevent unnecessary re-renders when scrolling through the directory.
+*   **Suspense Boundaries**: Loading spinners are shown while lazy components are being fetched for smooth UX.
+*   **Infinite Scroll**: Uses Intersection Observer API to automatically load more data as users scroll, eliminating the need for "Load More" buttons.
+*   **Optimized Queries**: Supabase queries use pagination (50 items/page) to reduce payload size and improve response times.
 ---
 
 ## 🛡️ Project Legacy & Technical Decisions
