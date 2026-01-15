@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MdSmartphone, MdFlashOn, MdNotifications, MdOfflinePin, MdClose } from 'react-icons/md';
 
+import { useAuth } from './AuthContext';
+
 const PWAInstallPrompt = () => {
+    const { user } = useAuth();
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -11,8 +14,7 @@ const PWAInstallPrompt = () => {
             e.preventDefault();
             // Stash the event so it can be triggered later.
             setDeferredPrompt(e);
-            // Update UI notify the user they can install the PWA
-            setIsVisible(true);
+            // Don't show yet, wait for user login check in next effect
         };
 
         window.addEventListener('beforeinstallprompt', handler);
@@ -21,6 +23,13 @@ const PWAInstallPrompt = () => {
             window.removeEventListener('beforeinstallprompt', handler);
         };
     }, []);
+
+    // Show prompt only when we have the deferred event AND the user is logged in
+    useEffect(() => {
+        if (deferredPrompt && user) {
+            setIsVisible(true);
+        }
+    }, [deferredPrompt, user]);
 
     const handleInstallClick = async () => {
         if (!deferredPrompt) return;
