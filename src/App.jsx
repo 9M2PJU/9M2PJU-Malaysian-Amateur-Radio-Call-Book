@@ -53,7 +53,8 @@ function Directory() {
         district: '',
         licenseClass: '',
         licenseStatus: '',
-        recentOnly: ''
+        recentOnly: '',
+        contactInfo: ''
     });
     // States are static list for dropdown, fetching once
     const [states, setStates] = useState(MALAYSIAN_STATES);
@@ -183,6 +184,27 @@ function Directory() {
                         return false;
                     }
                     return status && status.status === currentFilters.licenseStatus;
+                });
+            }
+
+            // Client-side filtering for contact availability
+            if (currentFilters.contactInfo) {
+                transformedData = transformedData.filter(item => {
+                    const hasPhone = item.phone && item.phone.trim() !== '';
+                    const hasEmail = item.email && item.email.trim() !== '';
+
+                    switch (currentFilters.contactInfo) {
+                        case 'hasPhone':
+                            return hasPhone;
+                        case 'hasEmail':
+                            return hasEmail;
+                        case 'hasBoth':
+                            return hasPhone && hasEmail;
+                        case 'noContact':
+                            return !hasPhone && !hasEmail;
+                        default:
+                            return true;
+                    }
                 });
             }
 
@@ -346,11 +368,11 @@ function Directory() {
                         alignItems: 'center'
                     }}>
                         <span>Showing {callsigns.length} of {totalCount} operators</span>
-                        {(searchTerm || filters.state || filters.licenseClass || filters.licenseStatus || filters.recentOnly) && (
+                        {(searchTerm || filters.state || filters.licenseClass || filters.licenseStatus || filters.recentOnly || filters.contactInfo) && (
                             <button
                                 onClick={() => {
                                     setSearchTerm('');
-                                    setFilters({ state: '', district: '', licenseClass: '', licenseStatus: '', recentOnly: '' });
+                                    setFilters({ state: '', district: '', licenseClass: '', licenseStatus: '', recentOnly: '', contactInfo: '' });
                                     handleSearch('');
                                     // Note: handleSearch already clears and fetches
                                 }}

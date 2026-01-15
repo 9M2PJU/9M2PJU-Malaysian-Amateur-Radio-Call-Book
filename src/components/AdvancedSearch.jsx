@@ -210,6 +210,19 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
                     <option value="365">Last 1 year</option>
                     <option value="older">Older than 1 year</option>
                 </select>
+
+                {/* Contact Availability Filter */}
+                <select
+                    value={filters.contactInfo || ''}
+                    onChange={(e) => onFilterChange('contactInfo', e.target.value)}
+                    style={selectStyle}
+                >
+                    <option value="">All Contacts</option>
+                    <option value="hasPhone">📱 Has Phone</option>
+                    <option value="hasEmail">📧 Has Email</option>
+                    <option value="hasBoth">✅ Has Both</option>
+                    <option value="noContact">❌ No Contact</option>
+                </select>
             </div>
         </div>
     );
