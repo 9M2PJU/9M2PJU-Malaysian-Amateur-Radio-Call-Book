@@ -410,10 +410,12 @@ function Directory() {
                         {(searchTerm || filters.state || filters.licenseClass || filters.licenseStatus || filters.recentOnly || filters.contactInfo) && (
                             <button
                                 onClick={() => {
+                                    const emptyFilters = { state: '', district: '', licenseClass: '', licenseStatus: '', recentOnly: '', contactInfo: '' };
                                     setSearchTerm('');
-                                    setFilters({ state: '', district: '', licenseClass: '', licenseStatus: '', recentOnly: '', contactInfo: '' });
-                                    handleSearch('');
-                                    // Note: handleSearch already clears and fetches
+                                    setFilters(emptyFilters);
+                                    setCallsigns([]);
+                                    setPage(0);
+                                    fetchCallsigns(0, '', emptyFilters, true);
                                 }}
                                 style={{
                                     background: 'transparent',
