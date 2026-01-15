@@ -535,6 +535,7 @@ function Directory() {
 }
 
 import PWAInstallPrompt from './components/PWAInstallPrompt';
+import LiveNotifications from './components/LiveNotifications';
 
 function App() {
     return (
@@ -542,6 +543,7 @@ function App() {
             <AuthProvider>
                 <Suspense fallback={<LazyLoadSpinner />}>
                     <PWAInstallPrompt />
+                    <LiveNotifications />
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
