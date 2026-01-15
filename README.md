@@ -249,6 +249,16 @@ Contributions welcome! Report bugs, suggest features, or submit PRs.
 
 ---
 
+## 💝 Support the Project
+
+This project is maintained entirely for free by volunteers for the Malaysian amateur radio community. If you find it useful and would like to support its continued development and server costs, you can donate via:
+
+*   **In-App Donation**: Click the ❤️ **Donate** button in the navigation bar to scan a QR code with your Malaysian banking or e-wallet app.
+
+Your support helps keep the servers running and enables future improvements. Every contribution, big or small, is deeply appreciated!
+
+---
+
 ## 💌 Message from the Author
 
 > "This project is an initiative by me for all Malaysian Amateur Radio Operators. I hope someone will improve this project later for future generations. Amateur Radio is always the greatest hobby of all."

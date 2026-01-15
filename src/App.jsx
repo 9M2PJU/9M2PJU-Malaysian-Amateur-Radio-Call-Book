@@ -534,11 +534,14 @@ function Directory() {
     );
 }
 
+import PWAInstallPrompt from './components/PWAInstallPrompt';
+
 function App() {
     return (
         <Router>
             <AuthProvider>
                 <Suspense fallback={<LazyLoadSpinner />}>
+                    <PWAInstallPrompt />
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
