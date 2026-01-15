@@ -73,6 +73,28 @@ function Directory() {
         fetchCallsigns(0, searchTerm, filters, true);
     }, []);
 
+    // Listen for reset filters event from Navbar home button
+    useEffect(() => {
+        const handleResetFilters = () => {
+            const emptyFilters = {
+                state: '',
+                district: '',
+                licenseClass: '',
+                licenseStatus: '',
+                recentOnly: '',
+                contactInfo: ''
+            };
+            setSearchTerm('');
+            setFilters(emptyFilters);
+            setCallsigns([]);
+            setPage(0);
+            fetchCallsigns(0, '', emptyFilters, true);
+        };
+
+        window.addEventListener('resetFilters', handleResetFilters);
+        return () => window.removeEventListener('resetFilters', handleResetFilters);
+    }, []);
+
     // Intersection Observer for infinite scroll
     useEffect(() => {
         const currentRef = loadMoreRef.current;

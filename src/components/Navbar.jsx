@@ -33,7 +33,11 @@ const Navbar = () => {
                 zIndex: 100
             }}>
                 <div
-                    onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    onClick={() => {
+                        window.dispatchEvent(new Event('resetFilters'));
+                        navigate('/');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -48,7 +52,7 @@ const Navbar = () => {
                 </div>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <button
-                        onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        onClick={() => { window.dispatchEvent(new Event('resetFilters')); navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                         className="mobile-hidden-element"
                         style={{
                             background: 'rgba(255, 255, 255, 0.1)',
