@@ -411,6 +411,19 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Email *</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="email@example.com"
+                                style={inputStyle}
+                                required
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
                             <label style={labelStyle}>State *</label>
                             <select
                                 name="location"
@@ -475,17 +488,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                             </small>
                         </div>
 
-                        <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>Email (Optional)</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="email@example.com"
-                                style={inputStyle}
-                            />
-                        </div>
+
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={labelStyle}>Phone (Optional)</label>
