@@ -114,10 +114,11 @@ const PublicStats = () => {
     return (
         <div className="badge-container" style={{
             width: '100%',
-            maxWidth: '550px',
+            maxWidth: '520px',
             margin: '0 auto 10px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: '8px',
             padding: '5px 10px',
         }}>
