@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FaUsers, FaMapMarkerAlt, FaClock, FaBroadcastTower, FaSpinner } from 'react-icons/fa';
+import { FaUsers, FaMapMarkerAlt, FaClock, FaBroadcastTower, FaSpinner, FaEye, FaCircle } from 'react-icons/fa';
 import { supabase } from '../lib/supabase';
+import { useAuth } from './AuthContext';
 
 const StatsDashboard = ({ totalCount }) => {
+    const { user } = useAuth();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [onlineCount, setOnlineCount] = useState(0);
+    const [totalVisitors, setTotalVisitors] = useState(0);
 
+    // Fetch directory stats
     useEffect(() => {
         const fetchStats = async () => {
             try {
@@ -20,6 +25,60 @@ const StatsDashboard = ({ totalCount }) => {
         };
 
         fetchStats();
+    }, []);
+
+    // Track online presence
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const channel = supabase.channel('online-users', {
+            config: {
+                presence: {
+                    key: user.id,
+                },
+            },
+        });
+
+        channel
+            .on('presence', { event: 'sync' }, () => {
+                const state = channel.presenceState();
+                setOnlineCount(Object.keys(state).length);
+            })
+            .subscribe(async (status) => {
+                if (status === 'SUBSCRIBED') {
+                    await channel.track({
+                        user_id: user.id,
+                        online_at: new Date().toISOString(),
+                    });
+                }
+            });
+
+        return () => {
+            channel.unsubscribe();
+        };
+    }, [user?.id]);
+
+    // Track visitor count (once per session)
+    useEffect(() => {
+        const sessionKey = 'my-callbook-visited';
+        const hasVisited = sessionStorage.getItem(sessionKey);
+
+        const trackVisit = async () => {
+            try {
+                if (!hasVisited) {
+                    const { data } = await supabase.rpc('increment_visit');
+                    setTotalVisitors(data || 0);
+                    sessionStorage.setItem(sessionKey, 'true');
+                } else {
+                    const { data } = await supabase.rpc('get_visit_count');
+                    setTotalVisitors(data || 0);
+                }
+            } catch (err) {
+                console.error('Error tracking visit:', err);
+            }
+        };
+
+        trackVisit();
     }, []);
 
     const statCardStyle = {
@@ -48,7 +107,6 @@ const StatsDashboard = ({ totalCount }) => {
 
     if (!stats) return null;
 
-    // Use totalCount from props if available (more accurate with filters), otherwise use stats
     const totalOperators = totalCount || stats.total_operators;
 
     return (
@@ -76,7 +134,7 @@ const StatsDashboard = ({ totalCount }) => {
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Total Operators</div>
                 </div>
 
-                {/* License Classes - from database */}
+                {/* License Classes */}
                 <div style={statCardStyle}>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px' }}>By Class</div>
                     {Object.entries(stats.class_counts || {}).filter(([_, count]) => count > 0).map(([cls, count]) => (
@@ -93,7 +151,7 @@ const StatsDashboard = ({ totalCount }) => {
                     ))}
                 </div>
 
-                {/* Top States - from database */}
+                {/* Top States */}
                 <div style={statCardStyle}>
                     <FaMapMarkerAlt style={{ fontSize: '1.5rem', color: 'var(--secondary)', marginBottom: '8px' }} />
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px' }}>Top Locations</div>
@@ -112,13 +170,34 @@ const StatsDashboard = ({ totalCount }) => {
                     ))}
                 </div>
 
-                {/* Recently Added - from database */}
+                {/* Recently Added */}
                 <div style={statCardStyle}>
                     <FaClock style={{ fontSize: '1.5rem', color: '#22c55e', marginBottom: '8px' }} />
                     <div style={statNumberStyle}>{stats.recent_count}</div>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Added (30 days)</div>
                 </div>
+
+                {/* Online Users */}
+                <div style={statCardStyle}>
+                    <FaCircle style={{ fontSize: '1.5rem', color: '#22c55e', marginBottom: '8px', animation: 'pulse 2s infinite' }} />
+                    <div style={{ ...statNumberStyle, color: '#22c55e', background: 'none' }}>{onlineCount}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Online Now</div>
+                </div>
+
+                {/* Total Visitors */}
+                <div style={statCardStyle}>
+                    <FaEye style={{ fontSize: '1.5rem', color: '#a855f7', marginBottom: '8px' }} />
+                    <div style={{ ...statNumberStyle, background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)' }}>{totalVisitors}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Total Visits</div>
+                </div>
             </div>
+
+            <style>{`
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
+            `}</style>
         </div>
     );
 };
