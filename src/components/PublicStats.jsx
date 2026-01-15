@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { FaUsers, FaMapMarkerAlt, FaClock, FaBroadcastTower, FaSpinner } from 'react-icons/fa';
+import { FaUsers, FaClock, FaSpinner, FaCircle, FaEye } from 'react-icons/fa';
 
 const PublicStats = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [onlineCount, setOnlineCount] = useState(0);
+    const [totalVisitors, setTotalVisitors] = useState(0);
 
+    // Fetch directory stats
     useEffect(() => {
         const fetchStats = async () => {
             try {
@@ -22,6 +25,62 @@ const PublicStats = () => {
         };
 
         fetchStats();
+    }, []);
+
+    // Track online presence (anonymous channel for login page)
+    useEffect(() => {
+        const visitorId = sessionStorage.getItem('visitor-id') || `anon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        sessionStorage.setItem('visitor-id', visitorId);
+
+        const channel = supabase.channel('online-users', {
+            config: {
+                presence: {
+                    key: visitorId,
+                },
+            },
+        });
+
+        channel
+            .on('presence', { event: 'sync' }, () => {
+                const state = channel.presenceState();
+                setOnlineCount(Object.keys(state).length);
+            })
+            .subscribe(async (status) => {
+                if (status === 'SUBSCRIBED') {
+                    await channel.track({
+                        visitor_id: visitorId,
+                        online_at: new Date().toISOString(),
+                    });
+                }
+            });
+
+        return () => {
+            channel.unsubscribe();
+        };
+    }, []);
+
+    // Track visitor count (once per session)
+    useEffect(() => {
+        const sessionKey = 'my-callbook-visited';
+        const hasVisited = sessionStorage.getItem(sessionKey);
+
+        const trackVisit = async () => {
+            try {
+                if (!hasVisited) {
+                    const { data } = await supabase.rpc('increment_visit');
+                    setTotalVisitors(data || 0);
+                    sessionStorage.setItem(sessionKey, 'true');
+                } else {
+                    const { data } = await supabase.rpc('get_visit_count');
+                    setTotalVisitors(data || 0);
+                }
+            } catch (err) {
+                // Functions may not exist yet, just log
+                console.error('Error tracking visit:', err);
+            }
+        };
+
+        trackVisit();
     }, []);
 
     if (loading) {
@@ -57,8 +116,8 @@ const PublicStats = () => {
             maxWidth: '600px',
             margin: '0 auto 10px',
             display: 'flex',
-            flexWrap: 'wrap', // Wrap on small screens
-            justifyContent: 'center', // Center items
+            flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: '8px',
             padding: '5px 10px',
         }}>
@@ -94,6 +153,27 @@ const PublicStats = () => {
                     <span style={{ color: '#22c55e', fontWeight: 'bold' }}>{stats.recent_count} NEW</span>
                 </div>
             )}
+
+            {/* Online Now Badge */}
+            <div style={{ ...badgeStyle, borderColor: '#22c55e' }}>
+                <FaCircle size={8} color="#22c55e" style={{ animation: 'pulse 2s infinite' }} />
+                <span style={{ color: '#22c55e', fontWeight: 'bold' }}>{onlineCount} Online</span>
+            </div>
+
+            {/* Total Visitors Badge */}
+            {totalVisitors > 0 && (
+                <div style={{ ...badgeStyle, borderColor: '#a855f7' }}>
+                    <FaEye size={12} color="#a855f7" />
+                    <span style={{ color: '#a855f7', fontWeight: 'bold' }}>{totalVisitors} Visits</span>
+                </div>
+            )}
+
+            <style>{`
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.3; }
+                }
+            `}</style>
         </div>
     );
 };
