@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MdSmartphone, MdFlashOn, MdNotifications, MdOfflinePin, MdClose } from 'react-icons/md';
-
 import { useAuth } from './AuthContext';
 
 const PWAInstallPrompt = () => {
@@ -52,50 +51,50 @@ const PWAInstallPrompt = () => {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-            <div className="bg-[#0a0a0a] border border-gray-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl relative">
+        <div className="pwa-overlay">
+            <div className="pwa-modal">
                 <button
                     onClick={handleDismiss}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                    className="pwa-close-btn"
                 >
                     <MdClose size={24} />
                 </button>
 
-                <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-pink-500/20">
-                        <MdSmartphone className="text-white text-3xl" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                    <div className="pwa-icon-container">
+                        <MdSmartphone style={{ color: 'white', fontSize: '1.875rem' }} />
                     </div>
 
-                    <h2 className="text-xl font-bold text-white mb-2">Add MY-Callbook to Homescreen</h2>
-                    <p className="text-gray-400 text-sm mb-6">
+                    <h2 className="pwa-title">Add MY-Callbook to Homescreen</h2>
+                    <p className="pwa-text">
                         Access MY-Callbook faster! Install as an app for the best experience.
                     </p>
 
-                    <div className="w-full space-y-3 mb-8 text-left">
-                        <div className="flex items-center text-gray-300 text-sm">
-                            <MdFlashOn className="text-yellow-400 mr-3 text-lg" />
+                    <div className="pwa-features">
+                        <div className="pwa-feature-item">
+                            <MdFlashOn className="pwa-feature-icon" />
                             <span>Fast access from homescreen</span>
                         </div>
-                        <div className="flex items-center text-gray-300 text-sm">
-                            <MdNotifications className="text-yellow-400 mr-3 text-lg" />
+                        <div className="pwa-feature-item">
+                            <MdNotifications className="pwa-feature-icon" />
                             <span>Latest event notifications</span>
                         </div>
-                        <div className="flex items-center text-gray-300 text-sm">
-                            <MdOfflinePin className="text-yellow-400 mr-3 text-lg" />
+                        <div className="pwa-feature-item">
+                            <MdOfflinePin className="pwa-feature-icon" />
                             <span>Works offline</span>
                         </div>
                     </div>
 
                     <button
                         onClick={handleInstallClick}
-                        className="w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-95 mb-3 shadow-lg shadow-pink-500/25"
+                        className="pwa-btn-install"
                     >
                         Install Now
                     </button>
 
                     <button
                         onClick={handleDismiss}
-                        className="w-full bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 font-semibold py-3 px-6 rounded-xl transition-all active:scale-95 border border-yellow-500/20"
+                        className="pwa-btn-later"
                     >
                         Maybe later
                     </button>

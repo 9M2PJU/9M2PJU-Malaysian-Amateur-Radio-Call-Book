@@ -94,7 +94,7 @@ const LiveNotifications = () => {
                         type: 'login',
                         title: `${name} is online`,
                         message: 'Just logged in',
-                        icon: <MdPersonAdd className="text-green-400" />
+                        icon: <MdPersonAdd style={{ color: '#4ade80' }} />
                     });
                 });
             })
@@ -108,7 +108,7 @@ const LiveNotifications = () => {
                         type: 'logout',
                         title: `${name} went offline`,
                         message: 'Logged out',
-                        icon: <MdPersonOff className="text-gray-400" />
+                        icon: <MdPersonOff style={{ color: '#9ca3af' }} />
                     });
                 });
             });
@@ -156,20 +156,20 @@ const LiveNotifications = () => {
 
         let title = '';
         let message = '';
-        let icon = <MdEdit className="text-blue-400" />;
+        let icon = <MdEdit style={{ color: '#60a5fa' }} />;
 
         try {
             if (payload.eventType === 'INSERT') {
                 title = `New Operator: ${record.callsign}`;
                 message = `${record.name} just joined the directory!`;
-                icon = <MdPersonAdd className="text-purple-400" />;
+                icon = <MdPersonAdd style={{ color: '#c084fc' }} />;
             } else if (payload.eventType === 'UPDATE') {
                 title = `${record.callsign} updated`;
                 message = 'Profile information was just updated.';
             } else if (payload.eventType === 'DELETE') {
                 title = `${record.callsign} removed`;
                 message = 'Operator removed from directory.';
-                icon = <MdClose className="text-red-400" />;
+                icon = <MdClose style={{ color: '#f87171' }} />;
             }
 
             if (title) {
@@ -188,22 +188,22 @@ const LiveNotifications = () => {
     if (notifications.length === 0) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-3 pointer-events-none">
+        <div className="live-notifications-container">
             {notifications.map((note) => (
                 <div
                     key={note.id}
-                    className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-gray-800 p-4 rounded-xl shadow-2xl flex items-start gap-3 min-w-[280px] max-w-sm animate-in slide-in-from-bottom-5 fade-in duration-300"
+                    className="live-notification-toast"
                 >
-                    <div className="mt-1 bg-gray-800/50 p-2 rounded-lg">
-                        {note.icon || <MdPerson className="text-white" />}
+                    <div className="notification-icon-wrapper">
+                        {note.icon || <MdPerson style={{ color: '#ffffff' }} />}
                     </div>
-                    <div className="flex-1">
-                        <h4 className="text-sm font-bold text-white leading-tight">{note.title}</h4>
-                        <p className="text-xs text-gray-400 mt-1">{note.message}</p>
+                    <div className="notification-content">
+                        <h4 className="notification-title">{note.title}</h4>
+                        <p className="notification-message">{note.message}</p>
                     </div>
                     <button
                         onClick={() => removeNotification(note.id)}
-                        className="text-gray-500 hover:text-white transition-colors"
+                        className="notification-close-btn"
                     >
                         <MdClose size={16} />
                     </button>
