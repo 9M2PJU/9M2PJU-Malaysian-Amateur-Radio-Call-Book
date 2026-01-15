@@ -442,7 +442,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>District / Daerah (Optional)</label>
+                            <label style={labelStyle}>District (Optional)</label>
                             <select
                                 name="district"
                                 value={formData.district}
