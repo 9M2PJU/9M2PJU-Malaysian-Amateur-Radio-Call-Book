@@ -71,57 +71,83 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
     };
 
     return (
-        <div className="glass-panel" style={{ padding: '20px', marginBottom: '30px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+        <div className="glass-panel" style={{ padding: '24px', marginBottom: '30px' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                 <FaFilter color="var(--primary)" />
                 <h3 style={{ margin: 0, color: 'var(--text-main)' }}>Search & Filter</h3>
             </div>
 
+            {/* Search Input - Full Width on Top */}
+            <div style={{ position: 'relative', marginBottom: '20px' }}>
+                <FaSearch style={{
+                    position: 'absolute',
+                    left: '16px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)',
+                    fontSize: '1.1rem'
+                }} />
+                <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search by callsign, name, or location..."
+                    onChange={(e) => handleParamChange(e.target.value)}
+                    style={{
+                        ...inputStyle,
+                        paddingLeft: '48px',
+                        paddingRight: '48px',
+                        padding: '14px 48px',
+                        fontSize: '1.05rem',
+                        borderRadius: '10px'
+                    }}
+                />
+                {hasText && (
+                    <button
+                        onClick={handleClear}
+                        style={{
+                            position: 'absolute',
+                            right: '16px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            background: 'rgba(255,255,255,0.1)',
+                            border: 'none',
+                            color: 'var(--text-muted)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '6px',
+                            borderRadius: '50%',
+                            transition: 'all 0.2s ease'
+                        }}
+                        title="Clear Search"
+                        onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                        onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                    >
+                        <FaTimes />
+                    </button>
+                )}
+            </div>
+
+            {/* Filter Label */}
+            <div style={{
+                fontSize: '0.85rem',
+                color: 'var(--text-muted)',
+                marginBottom: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                fontWeight: '500'
+            }}>
+                Filter by
+            </div>
+
+            {/* Filters Row */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '16px'
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '12px'
             }}>
-                {/* Search Input */}
-                <div style={{ position: 'relative' }}>
-                    <FaSearch style={{
-                        position: 'absolute',
-                        left: '12px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        color: 'var(--text-muted)'
-                    }} />
-                    <input
-                        ref={searchInputRef}
-                        type="text"
-                        placeholder="Search callsign, name, location..."
-                        onChange={(e) => handleParamChange(e.target.value)}
-                        style={{ ...inputStyle, paddingLeft: '40px', paddingRight: '40px' }}
-                    />
-                    {hasText && (
-                        <button
-                            onClick={handleClear}
-                            style={{
-                                position: 'absolute',
-                                right: '12px',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'var(--text-muted)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '4px'
-                            }}
-                            title="Clear Search"
-                        >
-                            <FaTimes />
-                        </button>
-                    )}
-                </div>
-
                 {/* State Filter */}
                 <select
                     value={filters.state}
@@ -178,9 +204,9 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
                     style={selectStyle}
                 >
                     <option value="">All Entries</option>
-                    <option value="7">Added last 7 days</option>
-                    <option value="30">Added last 30 days</option>
-                    <option value="90">Added last 90 days</option>
+                    <option value="7">Last 7 days</option>
+                    <option value="30">Last 30 days</option>
+                    <option value="90">Last 90 days</option>
                 </select>
             </div>
         </div>
