@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useSearchParams } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,20 +41,23 @@ const LazyLoadSpinner = () => (
 );
 
 function Directory() {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // Initialize state from URL params
     const [callsigns, setCallsigns] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
-        state: '',
-        district: '',
-        licenseClass: '',
-        licenseStatus: '',
-        recentOnly: '',
-        contactInfo: ''
+        state: searchParams.get('state') || '',
+        district: searchParams.get('district') || '',
+        licenseClass: searchParams.get('class') || '',
+        licenseStatus: searchParams.get('status') || '',
+        recentOnly: searchParams.get('recent') || '',
+        contactInfo: searchParams.get('contact') || ''
     });
     // States are static list for dropdown, fetching once
     const [states, setStates] = useState(MALAYSIAN_STATES);
@@ -67,8 +70,21 @@ function Directory() {
 
     const ITEMS_PER_PAGE = 50;
 
+    // Helper to update URL params
+    const updateUrlParams = (term, currentFilters) => {
+        const params = new URLSearchParams();
+        if (term) params.set('q', term);
+        if (currentFilters.state) params.set('state', currentFilters.state);
+        if (currentFilters.district) params.set('district', currentFilters.district);
+        if (currentFilters.licenseClass) params.set('class', currentFilters.licenseClass);
+        if (currentFilters.licenseStatus) params.set('status', currentFilters.licenseStatus);
+        if (currentFilters.recentOnly) params.set('recent', currentFilters.recentOnly);
+        if (currentFilters.contactInfo) params.set('contact', currentFilters.contactInfo);
+        setSearchParams(params, { replace: true });
+    };
+
     useEffect(() => {
-        // Initial fetch
+        // Initial fetch with values from URL
         console.log('App Initializing...');
         fetchCallsigns(0, searchTerm, filters, true);
     }, []);
@@ -88,6 +104,7 @@ function Directory() {
             setFilters(emptyFilters);
             setCallsigns([]);
             setPage(0);
+            updateUrlParams('', emptyFilters); // Clear URL params
             fetchCallsigns(0, '', emptyFilters, true);
         };
 
@@ -253,6 +270,8 @@ function Directory() {
         // Clear current data to show loading spinner for search
         setCallsigns([]);
         setPage(0);
+        // Update URL params
+        updateUrlParams(term, filters);
         // Reset to page 0 for new search
         fetchCallsigns(0, term, filters, true);
     };
@@ -269,6 +288,8 @@ function Directory() {
         // Clear current data to show loading spinner
         setCallsigns([]);
         setPage(0);
+        // Update URL params
+        updateUrlParams(searchTerm, newFilters);
         // Reset to page 0 for new filter
         fetchCallsigns(0, searchTerm, newFilters, true);
     };
@@ -345,6 +366,7 @@ function Directory() {
                     onFilterChange={handleFilterChange}
                     filters={filters}
                     states={states}
+                    searchTerm={searchTerm}
                 />
 
                 {loading && callsigns.length === 0 && (
@@ -399,6 +421,7 @@ function Directory() {
                                     setFilters(emptyFilters);
                                     setCallsigns([]);
                                     setPage(0);
+                                    updateUrlParams('', emptyFilters); // Clear URL params
                                     fetchCallsigns(0, '', emptyFilters, true);
                                 }}
                                 style={{
