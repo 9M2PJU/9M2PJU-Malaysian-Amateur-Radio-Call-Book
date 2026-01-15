@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import { getLicenseStatus } from './utils/licenseStatus';
 
 // Lazy load components for better code splitting
 const Login = lazy(() => import('./components/Login'));
@@ -51,6 +52,7 @@ function Directory() {
         state: '',
         district: '',
         licenseClass: '',
+        licenseStatus: '',
         recentOnly: ''
     });
     // States are static list for dropdown, fetching once
@@ -144,7 +146,7 @@ function Directory() {
 
             if (error) throw error;
 
-            const transformedData = data.map(item => ({
+            let transformedData = data.map(item => ({
                 id: item.id,
                 callsign: item.callsign,
                 name: item.name,
@@ -164,6 +166,18 @@ function Directory() {
                 addedDate: item.added_date,
                 expiryDate: item.expiry_date || ''
             }));
+
+            // Client-side filtering for license status (requires date calculations)
+            if (currentFilters.licenseStatus) {
+                transformedData = transformedData.filter(item => {
+                    const status = getLicenseStatus(item.expiryDate);
+                    if (!status && currentFilters.licenseStatus !== '') {
+                        // If no expiry date, only show if filtering for all
+                        return false;
+                    }
+                    return status && status.status === currentFilters.licenseStatus;
+                });
+            }
 
             if (reset) {
                 setCallsigns(transformedData);
@@ -325,11 +339,11 @@ function Directory() {
                         alignItems: 'center'
                     }}>
                         <span>Showing {callsigns.length} of {totalCount} operators</span>
-                        {(searchTerm || filters.state || filters.licenseClass || filters.recentOnly) && (
+                        {(searchTerm || filters.state || filters.licenseClass || filters.licenseStatus || filters.recentOnly) && (
                             <button
                                 onClick={() => {
                                     setSearchTerm('');
-                                    setFilters({ state: '', district: '', licenseClass: '', recentOnly: '' });
+                                    setFilters({ state: '', district: '', licenseClass: '', licenseStatus: '', recentOnly: '' });
                                     handleSearch('');
                                     // Note: handleSearch already clears and fetches
                                 }}

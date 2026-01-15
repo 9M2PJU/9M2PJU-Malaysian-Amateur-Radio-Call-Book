@@ -159,6 +159,18 @@ const AdvancedSearch = ({ onSearch, onFilterChange, filters, states }) => {
                     <option value="C">Class C</option>
                 </select>
 
+                {/* License Status Filter */}
+                <select
+                    value={filters.licenseStatus || ''}
+                    onChange={(e) => onFilterChange('licenseStatus', e.target.value)}
+                    style={selectStyle}
+                >
+                    <option value="">All Status</option>
+                    <option value="active">✅ Active</option>
+                    <option value="expiring">⚠️ Expiring Soon</option>
+                    <option value="expired">❌ Expired</option>
+                </select>
+
                 {/* Recently Added Filter */}
                 <select
                     value={filters.recentOnly}
