@@ -14,9 +14,17 @@ const ManageAdmins = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // Donator management states
+    const [donators, setDonators] = useState([]);
+    const [donatorsLoading, setDonatorsLoading] = useState(false);
+    const [donatorEmail, setDonatorEmail] = useState('');
+    const [donatorNote, setDonatorNote] = useState('');
+    const [donatorAdding, setDonatorAdding] = useState(false);
+
     useEffect(() => {
         if (isSuperAdmin) {
             fetchAdmins();
+            fetchDonators();
         }
     }, [isSuperAdmin]);
 
@@ -101,6 +109,113 @@ const ManageAdmins = () => {
         } catch (err) {
             console.error('Error removing admin:', err);
             setError('Failed to remove admin');
+        }
+    };
+
+    // Donator Management Functions
+    const fetchDonators = async () => {
+        try {
+            setDonatorsLoading(true);
+            const { data, error } = await supabase
+                .from('user_profiles')
+                .select('*')
+                .eq('is_donator', true)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setDonators(data || []);
+        } catch (err) {
+            console.error('Error fetching donators:', err);
+            setError('Failed to load donators');
+        } finally {
+            setDonatorsLoading(false);
+        }
+    };
+
+    const handleAddDonator = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        if (!donatorEmail.trim()) {
+            setError('Please enter an email address');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(donatorEmail)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+
+        setDonatorAdding(true);
+
+        try {
+            // Check if profile already exists
+            const { data: existing } = await supabase
+                .from('user_profiles')
+                .select('*')
+                .eq('email', donatorEmail.toLowerCase().trim())
+                .single();
+
+            if (existing) {
+                // Update existing profile
+                const { error } = await supabase
+                    .from('user_profiles')
+                    .update({
+                        is_donator: true,
+                        donator_note: donatorNote.trim() || null,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('email', donatorEmail.toLowerCase().trim());
+
+                if (error) throw error;
+            } else {
+                // Create new profile
+                const { error } = await supabase
+                    .from('user_profiles')
+                    .insert({
+                        email: donatorEmail.toLowerCase().trim(),
+                        is_donator: true,
+                        donator_note: donatorNote.trim() || null
+                    });
+
+                if (error) throw error;
+            }
+
+            setSuccess(`${donatorEmail} has been marked as a donator`);
+            setDonatorEmail('');
+            setDonatorNote('');
+            fetchDonators();
+        } catch (err) {
+            console.error('Error adding donator:', err);
+            setError(err.message || 'Failed to add donator');
+        } finally {
+            setDonatorAdding(false);
+        }
+    };
+
+    const handleRemoveDonator = async (donatorEmail) => {
+        if (!window.confirm(`Are you sure you want to remove donator badge from ${donatorEmail}?`)) {
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('user_profiles')
+                .update({
+                    is_donator: false,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('email', donatorEmail);
+
+            if (error) throw error;
+
+            setSuccess(`Donator badge removed from ${donatorEmail}`);
+            fetchDonators();
+        } catch (err) {
+            console.error('Error removing donator:', err);
+            setError('Failed to remove donator badge');
         }
     };
 
@@ -278,6 +393,146 @@ const ManageAdmins = () => {
                         <strong>Admin Permissions:</strong> Admins can edit any callsign in the directory.<br />
                         <strong>Super Admin:</strong> Only you (9m2pju@hamradio.my) can delete callsigns and manage admins.
                     </p>
+                </div>
+
+                {/* Donator Management Section */}
+                <div style={{ marginTop: '60px' }}>
+                    <h2 style={{
+                        fontSize: '1.8rem',
+                        background: 'linear-gradient(to right, #ffd700, #ffb347)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        marginBottom: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px'
+                    }}>
+                        ❤️ Manage Donators
+                    </h2>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+                        Assign donator badges to users who have contributed to the project.
+                    </p>
+
+                    {/* Add Donator Form */}
+                    <div className="glass-panel" style={{ padding: '24px', marginBottom: '24px', maxWidth: '500px' }}>
+                        <h3 style={{ color: '#fff', marginTop: 0, marginBottom: '16px' }}>Add Donator Badge</h3>
+
+                        <form onSubmit={handleAddDonator} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <input
+                                type="email"
+                                value={donatorEmail}
+                                onChange={(e) => setDonatorEmail(e.target.value)}
+                                placeholder="donator@example.com"
+                                style={{
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: '#fff',
+                                    fontSize: '1rem'
+                                }}
+                            />
+                            <input
+                                type="text"
+                                value={donatorNote}
+                                onChange={(e) => setDonatorNote(e.target.value)}
+                                placeholder="Optional note (e.g., donation amount, date)"
+                                style={{
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: '#fff',
+                                    fontSize: '0.9rem'
+                                }}
+                            />
+                            <button
+                                type="submit"
+                                disabled={donatorAdding}
+                                style={{
+                                    padding: '12px 24px',
+                                    background: 'linear-gradient(135deg, #ffd700 0%, #ffb347 100%)',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    color: '#000',
+                                    fontWeight: 'bold',
+                                    cursor: donatorAdding ? 'wait' : 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px'
+                                }}
+                            >
+                                {donatorAdding ? <FaSpinner className="spin" /> : '❤️'}
+                                {donatorAdding ? 'Adding...' : 'Add Donator Badge'}
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Donator List */}
+                    <div className="glass-panel" style={{ padding: '24px' }}>
+                        <h3 style={{ color: '#fff', marginTop: 0, marginBottom: '16px' }}>
+                            Current Donators ({donators.length})
+                        </h3>
+
+                        {donatorsLoading ? (
+                            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
+                                <FaSpinner className="spin" /> Loading donators...
+                            </div>
+                        ) : donators.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
+                                No donators added yet. Add a donator above to assign the badge.
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                {donators.map((donator) => (
+                                    <div
+                                        key={donator.id}
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            padding: '16px',
+                                            background: 'rgba(255, 215, 0, 0.05)',
+                                            borderRadius: '8px',
+                                            border: '1px solid rgba(255, 215, 0, 0.2)'
+                                        }}
+                                    >
+                                        <div>
+                                            <div style={{ color: '#ffd700', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                ❤️ {donator.email}
+                                            </div>
+                                            {donator.donator_note && (
+                                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
+                                                    Note: {donator.donator_note}
+                                                </div>
+                                            )}
+                                            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
+                                                Added {new Date(donator.created_at).toLocaleDateString()}
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => handleRemoveDonator(donator.email)}
+                                            style={{
+                                                background: 'rgba(239, 68, 68, 0.2)',
+                                                border: '1px solid rgba(239, 68, 68, 0.4)',
+                                                color: '#ef4444',
+                                                padding: '8px 16px',
+                                                borderRadius: '6px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                fontWeight: '500'
+                                            }}
+                                        >
+                                            <FaTrash /> Remove
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </main>
             <Footer />

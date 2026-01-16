@@ -171,7 +171,10 @@ function Directory() {
             setLoading(true);
             let query = supabase
                 .from('callsigns')
-                .select('*', { count: 'exact' });
+                .select(`
+                    *,
+                    user_profiles!left(is_donator)
+                `, { count: 'exact' });
 
             // Apply Filters
             if (term) {
@@ -243,7 +246,8 @@ function Directory() {
                 isPpmMember: item.is_ppm_member || false,
                 isBsmmMember: item.is_bsmm_member || false,
                 isPppmMember: item.is_pppm_member || false,
-                isVeteran: item.is_veteran || false
+                isVeteran: item.is_veteran || false,
+                isDonator: item.user_profiles?.is_donator || false
             }));
 
             // Client-side filtering for license status (requires date calculations)

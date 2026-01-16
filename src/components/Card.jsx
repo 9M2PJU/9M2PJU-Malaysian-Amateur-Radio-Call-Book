@@ -177,9 +177,29 @@ END:VCARD`;
             )}
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
-                <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--primary)', letterSpacing: '1px' }}>
-                    {data.callsign}
-                </h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                    <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--primary)', letterSpacing: '1px' }}>
+                        {data.callsign}
+                    </h2>
+                    {/* Donator Badge - positioned near callsign */}
+                    {data.isDonator && (
+                        <span style={{
+                            background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 193, 7, 0.2) 100%)',
+                            color: '#ffd700',
+                            padding: '4px 12px',
+                            borderRadius: '20px',
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            border: '1px solid rgba(255, 215, 0, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            boxShadow: '0 2px 8px rgba(255, 215, 0, 0.3)'
+                        }}>
+                            ❤️ Donator
+                        </span>
+                    )}
+                </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {/* License Class Badge */}
                     <span style={{
