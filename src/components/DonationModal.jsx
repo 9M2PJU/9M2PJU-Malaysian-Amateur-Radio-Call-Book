@@ -89,7 +89,7 @@ const DonationModal = ({ isOpen, onClose }) => {
                     marginBottom: '20px'
                 }}>
                     <img
-                        src="https://lh3.googleusercontent.com/d/1lf1zgIN1Kx5cduZM79n3boGDJQ68uSJ_=w1000?authuser=0"
+                        src="/donation-qr.png"
                         alt="Donation QR Code"
                         style={{
                             width: '100%',

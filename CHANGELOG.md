@@ -2,6 +2,10 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.2.1] - 2026-01-16
+### Changed
+- **Donation QR Code**: Now self-hosted within the GitHub repository for better reliability, removing dependency on external Google Drive hosting.
+
 ## [2.2.0] - 2026-01-16
 ### Added
 - **Auto Logout**: Added inactivity timeout (5 minutes) to automatically log out users and protect sessions.
