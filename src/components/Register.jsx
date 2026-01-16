@@ -12,6 +12,26 @@ const Register = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState('');
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            if (window.turnstile) {
+                clearInterval(interval);
+                try {
+                    window.turnstile.render('#turnstile-container', {
+                        sitekey: '0x4AAAAAACM4A9z-qhrcwAcp',
+                        callback: function (token) {
+                            setCaptchaToken(token);
+                        },
+                    });
+                } catch (e) {
+                    console.error('Turnstile render error:', e);
+                }
+            }
+        }, 100);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,13 +48,24 @@ const Register = () => {
             return;
         }
 
+
+
+        if (!captchaToken) {
+            setError("Please complete the security check");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const { error, data } = await signUp(
-                { email, password },
-                { emailRedirectTo: 'https://callbook.hamradio.my' }
-            );
+            const { error, data } = await signUp({
+                email,
+                password,
+                options: {
+                    emailRedirectTo: 'https://callbook.hamradio.my',
+                    captchaToken
+                }
+            });
             if (error) throw error;
 
             if (data?.session) {
