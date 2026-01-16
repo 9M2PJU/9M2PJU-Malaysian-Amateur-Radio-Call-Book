@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 import { MdPersonAdd, MdEdit, MdPersonOff, MdPerson, MdClose } from 'react-icons/md';
 
 const LiveNotifications = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [notifications, setNotifications] = useState([]);
     const [myIdentity, setMyIdentity] = useState(null);
 
-    // Keep track of processed events to prevent duplicates if strict mode double-invokes
+    // Keep track of processed events to prevent duplicates
     const processedEvents = useRef(new Set());
 
     const addNotification = (input) => {
@@ -31,6 +34,18 @@ const LiveNotifications = () => {
         setNotifications(prev => prev.filter(n => n.id !== id));
     };
 
+    const handleNotificationClick = (callsign) => {
+        if (!callsign) return;
+
+        // If on directory page, dispatch event
+        if (location.pathname === '/') {
+            window.dispatchEvent(new CustomEvent('triggerSearch', { detail: callsign }));
+        } else {
+            // Navigate to home with state
+            navigate('/', { state: { search: callsign } });
+        }
+    };
+
     // 1. Determine Identity for Presence
     useEffect(() => {
         const fetchIdentity = async () => {
@@ -42,14 +57,13 @@ const LiveNotifications = () => {
                     .from('callsigns')
                     .select('callsign')
                     .eq('user_id', user.id)
-                    .order('created_at', { ascending: true }) // Oldest usually implies main
+                    .order('created_at', { ascending: true })
                     .limit(1)
                     .maybeSingle();
 
                 if (data) {
                     setMyIdentity(data.callsign);
                 } else {
-                    // Fallback using email or generic name if no callsign
                     const name = user.email ? user.email.split('@')[0] : 'Member';
                     setMyIdentity(name);
                 }
@@ -64,11 +78,7 @@ const LiveNotifications = () => {
 
     // 2. Setup Realtime Subscriptions
     useEffect(() => {
-        // REQUIRE LOGGED IN USER to see notifications
         if (!user) return;
-
-        // We need an identity to track presence effectively, but we can listen even without it.
-        // If we are logged in, we want to broadcast our identity.
 
         const channel = supabase.channel('global_presence', {
             config: {
@@ -81,29 +91,25 @@ const LiveNotifications = () => {
         // --- Presence: Track Logins / Logouts ---
         channel
             .on('presence', { event: 'sync' }, () => {
-                // Initial sync - we assume these people are already online, so maybe don't notify
-                // Or we could list them in a "Who's online" sidebar, but for toasts, maybe skip.
-                // const state = channel.presenceState();
-                // console.log('Synced presence state:', state);
+                // Initial sync - skip
             })
             .on('presence', { event: 'join' }, ({ key, newPresences }) => {
                 newPresences.forEach(presence => {
-                    // Don't notify about ourselves
                     if (presence.user_id === user?.id) return;
-                    if (presence.presence_ref === channel.presenceState()[key]?.[0]?.presence_ref) return; // Basic debounce
+                    // Debounce logic if needed, but simple check is ok
 
                     const name = presence.callsign || 'A member';
                     addNotification({
                         type: 'login',
                         title: `${name} is online`,
                         message: 'Just logged in',
+                        callsign: presence.callsign, // For click handler
                         icon: <MdPersonAdd style={{ color: '#4ade80' }} />
                     });
                 });
             })
             .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
                 leftPresences.forEach(presence => {
-                    // Don't notify about ourselves
                     if (presence.user_id === user?.id) return;
 
                     const name = presence.callsign || 'A member';
@@ -111,13 +117,13 @@ const LiveNotifications = () => {
                         type: 'logout',
                         title: `${name} went offline`,
                         message: 'Logged out',
+                        callsign: presence.callsign,
                         icon: <MdPersonOff style={{ color: '#9ca3af' }} />
                     });
                 });
             });
 
         // --- Database: Track Edits ---
-        // Listen to changes on 'callsigns' table
         channel
             .on(
                 'postgres_changes',
@@ -128,7 +134,6 @@ const LiveNotifications = () => {
             )
             .subscribe(async (status) => {
                 if (status === 'SUBSCRIBED') {
-                    // If we have an identity, track it in presence
                     if (myIdentity && user) {
                         await channel.track({
                             user_id: user.id,
@@ -142,15 +147,9 @@ const LiveNotifications = () => {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [user, myIdentity]); // Re-run if user or identity changes
+    }, [user, myIdentity]);
 
     const handleDatabaseChange = async (payload) => {
-        // Ignore our own changes to avoid noise?
-        // Actually, user said "9M2PJU is logged in, 9M2ABC is editing".
-        // Usually you want to see others' edits. 
-        // Payload gives us the `new` or `old` record. We check `user_id` if available.
-        // Note: RLS might hide `user_id` if we aren't careful, but Public selection usually allows it.
-
         const record = payload.new || payload.old;
         if (!record) return;
 
@@ -160,6 +159,8 @@ const LiveNotifications = () => {
         let title = '';
         let message = '';
         let icon = <MdEdit style={{ color: '#60a5fa' }} />;
+        // Map eventType to class type (insert, update, delete)
+        let type = payload.eventType.toLowerCase();
 
         try {
             if (payload.eventType === 'INSERT') {
@@ -177,10 +178,11 @@ const LiveNotifications = () => {
 
             if (title) {
                 addNotification({
-                    type: payload.eventType.toLowerCase(),
+                    type,
                     title,
                     message,
-                    icon
+                    icon,
+                    callsign: record.callsign
                 });
             }
         } catch (e) {
@@ -195,7 +197,9 @@ const LiveNotifications = () => {
             {notifications.map((note) => (
                 <div
                     key={note.id}
-                    className="live-notification-toast"
+                    className={`live-notification-toast ${note.type}`}
+                    onClick={() => handleNotificationClick(note.callsign)}
+                    role="alert"
                 >
                     <div className="notification-icon-wrapper">
                         {note.icon || <MdPerson style={{ color: '#ffffff' }} />}
@@ -205,11 +209,15 @@ const LiveNotifications = () => {
                         <p className="notification-message">{note.message}</p>
                     </div>
                     <button
-                        onClick={() => removeNotification(note.id)}
+                        onClick={(e) => {
+                            e.stopPropagation(); // Don't trigger search
+                            removeNotification(note.id);
+                        }}
                         className="notification-close-btn"
                     >
                         <MdClose size={16} />
                     </button>
+                    {/* The ::after element handles the countdown bar via CSS */}
                 </div>
             ))}
         </div>

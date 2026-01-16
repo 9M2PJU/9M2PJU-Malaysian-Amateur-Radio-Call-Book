@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -43,6 +43,7 @@ const LazyLoadSpinner = () => (
 
 function Directory() {
     const toast = useToast();
+    const location = useLocation();
 
     // Helper to get saved filters from localStorage
     const getSavedFilters = () => {
@@ -301,6 +302,27 @@ function Directory() {
         // Reset to page 0 for new search
         fetchCallsigns(0, term, filters, true);
     };
+
+    // Listen for search trigger from LiveNotifications
+    useEffect(() => {
+        const handleTriggerSearch = (e) => {
+            if (e.detail) {
+                handleSearch(e.detail);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+        window.addEventListener('triggerSearch', handleTriggerSearch);
+        return () => window.removeEventListener('triggerSearch', handleTriggerSearch);
+    });
+
+    // Handle Navigation Search
+    useEffect(() => {
+        if (location.state?.search) {
+            handleSearch(location.state.search);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.history.replaceState({}, '');
+        }
+    }, [location.state]);
 
     const handleFilterChange = (filterName, value) => {
         let newFilters = { ...filters, [filterName]: value };
