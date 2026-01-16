@@ -2,6 +2,13 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.1.1] - 2026-01-16
+
+### 🐛 Bug Fixes
+- **UI**: Adjusted Toast notification position to sit **below the navbar**, ensuring it doesn't block view or controls.
+
+
+
 ## [2.1.0] - 2026-01-16
 
 ### 🛡️ Security & Access

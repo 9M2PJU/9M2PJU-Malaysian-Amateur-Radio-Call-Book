@@ -109,7 +109,7 @@ const ToastContainer = ({ toasts, removeToast }) => {
                     .toast-container {
                         left: 10px !important;
                         right: 10px !important;
-                        top: 10px !important;
+                        top: 70px !important;
                         align-items: center !important;
                         width: auto !important;
                     }
@@ -126,7 +126,7 @@ const ToastContainer = ({ toasts, removeToast }) => {
                 className="toast-container"
                 style={{
                     position: 'fixed',
-                    top: '20px',
+                    top: '80px',
                     right: '20px',
                     zIndex: 9999,
                     display: 'flex',
