@@ -124,7 +124,7 @@ body {
     .mobile-compact-text {
         font-size: 0.8rem !important;
     }
-    
+
     .nav-container {
         padding: 0.8rem !important;
     }
@@ -299,6 +299,24 @@ select option:checked {
     background: linear-gradient(to right, #db2777, #be123c);
 }
 
+.pwa-btn-donate {
+    width: 100%;
+    background-color: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+    transition: all 0.15s;
+}
+
+.pwa-btn-donate:hover {
+    background-color: rgba(255, 107, 107, 0.2);
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
 .pwa-btn-later {
     width: 100%;
     background-color: rgba(234, 179, 8, 0.1);
@@ -382,25 +400,37 @@ select option:checked {
     border-left: 4px solid #4ade80;
     box-shadow: -5px 0 20px -5px rgba(74, 222, 128, 0.2);
 }
-.live-notification-toast.login::after { background: #4ade80; }
+
+.live-notification-toast.login::after {
+    background: #4ade80;
+}
 
 .live-notification-toast.logout {
     border-left: 4px solid #94a3b8;
     box-shadow: -5px 0 20px -5px rgba(148, 163, 184, 0.2);
 }
-.live-notification-toast.logout::after { background: #94a3b8; }
+
+.live-notification-toast.logout::after {
+    background: #94a3b8;
+}
 
 .live-notification-toast.insert {
     border-left: 4px solid #c084fc;
     box-shadow: -5px 0 20px -5px rgba(192, 132, 252, 0.2);
 }
-.live-notification-toast.insert::after { background: #c084fc; }
+
+.live-notification-toast.insert::after {
+    background: #c084fc;
+}
 
 .live-notification-toast.update {
     border-left: 4px solid #60a5fa;
     box-shadow: -5px 0 20px -5px rgba(96, 165, 250, 0.2);
 }
-.live-notification-toast.update::after { background: #60a5fa; }
+
+.live-notification-toast.update::after {
+    background: #60a5fa;
+}
 
 
 .notification-icon-wrapper {
@@ -452,19 +482,25 @@ select option:checked {
 }
 
 @keyframes slideInRight {
-    from { 
-        opacity: 0; 
+    from {
+        opacity: 0;
         transform: translateX(50px);
     }
-    to { 
-        opacity: 1; 
+
+    to {
+        opacity: 1;
         transform: translateX(0);
     }
 }
 
 @keyframes countdown {
-    from { width: 100%; }
-    to { width: 0%; }
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -473,14 +509,15 @@ select option:checked {
         width: 100%;
         animation: slideDownMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
+
     @keyframes slideDownMobile {
-        from { 
-            opacity: 0; 
+        from {
+            opacity: 0;
             transform: translateY(-20px);
         }
-        to { 
-            opacity: 1; 
+
+        to {
+            opacity: 1;
             transform: translateY(0);
         }
     }

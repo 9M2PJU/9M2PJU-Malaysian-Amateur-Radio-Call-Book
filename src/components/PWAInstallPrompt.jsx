@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { MdSmartphone, MdFlashOn, MdNotifications, MdOfflinePin, MdClose } from 'react-icons/md';
+import { MdSmartphone, MdFlashOn, MdNotifications, MdFavorite, MdClose } from 'react-icons/md';
 import { useAuth } from './AuthContext';
 import { usePWA } from './PWAContext';
+import DonationModal from './DonationModal';
 
 const PWAInstallPrompt = () => {
     const { user } = useAuth();
     const { isPromptVisible, showInstallPrompt, hideInstallPrompt, installFromPrompt, isInstallable } = usePWA();
     const [isMobile, setIsMobile] = useState(false);
+    const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
 
     // Detect if user is on mobile device
     useEffect(() => {
@@ -60,8 +62,8 @@ const PWAInstallPrompt = () => {
                             <span>Latest event notifications</span>
                         </div>
                         <div className="pwa-feature-item">
-                            <MdOfflinePin className="pwa-feature-icon" />
-                            <span>Works offline</span>
+                            <MdFavorite className="pwa-feature-icon" />
+                            <span>Support via donation</span>
                         </div>
                     </div>
 
@@ -73,11 +75,23 @@ const PWAInstallPrompt = () => {
                     </button>
 
                     <button
+                        onClick={() => setIsDonationModalOpen(true)}
+                        className="pwa-btn-donate"
+                    >
+                        ❤️ Donate
+                    </button>
+
+                    <button
                         onClick={hideInstallPrompt}
                         className="pwa-btn-later"
                     >
                         Maybe later
                     </button>
+
+                    <DonationModal
+                        isOpen={isDonationModalOpen}
+                        onClose={() => setIsDonationModalOpen(false)}
+                    />
                 </div>
             </div>
         </div>
