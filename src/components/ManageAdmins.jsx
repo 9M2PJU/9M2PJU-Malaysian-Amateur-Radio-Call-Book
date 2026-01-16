@@ -18,7 +18,8 @@ const ManageAdmins = () => {
     const [donators, setDonators] = useState([]);
     const [donatorsLoading, setDonatorsLoading] = useState(false);
     const [donatorCallsign, setDonatorCallsign] = useState('');
-    const [donatorEmail, setDonatorEmail] = useState('');
+    const [donatorCallsignId, setDonatorCallsignId] = useState(''); // Store the callsign ID
+    const [donatorCallsignData, setDonatorCallsignData] = useState(null); // Store full callsign data
     const [donatorNote, setDonatorNote] = useState('');
     const [donatorAdding, setDonatorAdding] = useState(false);
     const [lookingUp, setLookingUp] = useState(false);
@@ -122,7 +123,10 @@ const ManageAdmins = () => {
             setDonatorsLoading(true);
             const { data, error } = await supabase
                 .from('user_profiles')
-                .select('*')
+                .select(`
+                    *,
+                    callsigns(id, callsign, name, email)
+                `)
                 .eq('is_donator', true)
                 .order('created_at', { ascending: false });
 
@@ -145,24 +149,20 @@ const ManageAdmins = () => {
         try {
             const { data, error } = await supabase
                 .from('callsigns')
-                .select('email, callsign, name')
+                .select('id, email, callsign, name')
                 .ilike('callsign', donatorCallsign.trim())
                 .single();
 
             if (error || !data) {
                 setError(`Callsign ${donatorCallsign} not found in database`);
-                setDonatorEmail('');
+                setDonatorCallsignId('');
+                setDonatorCallsignData(null);
                 return;
             }
 
-            if (!data.email) {
-                setError(`Callsign ${donatorCallsign} has no email address in the database`);
-                setDonatorEmail('');
-                return;
-            }
-
-            setDonatorEmail(data.email);
-            setSuccess(`Found: ${data.name} (${data.callsign}) - ${data.email}`);
+            setDonatorCallsignId(data.id);
+            setDonatorCallsignData(data);
+            setSuccess(`Found: ${data.name} (${data.callsign})${data.email ? ` - ${data.email}` : ''}`);
         } catch (err) {
             console.error('Error looking up callsign:', err);
             setError('Failed to lookup callsign');
@@ -176,25 +176,19 @@ const ManageAdmins = () => {
         setError('');
         setSuccess('');
 
-        if (!donatorEmail.trim()) {
-            setError('Please lookup a callsign first or enter an email address');
-            return;
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(donatorEmail)) {
-            setError('Please enter a valid email address');
+        if (!donatorCallsignId) {
+            setError('Please lookup a callsign first');
             return;
         }
 
         setDonatorAdding(true);
 
         try {
-            // Check if profile already exists
+            // Check if this callsign already has a donator badge
             const { data: existing } = await supabase
                 .from('user_profiles')
                 .select('*')
-                .eq('email', donatorEmail.toLowerCase().trim())
+                .eq('callsign_id', donatorCallsignId)
                 .single();
 
             if (existing) {
@@ -206,15 +200,16 @@ const ManageAdmins = () => {
                         donator_note: donatorNote.trim() || null,
                         updated_at: new Date().toISOString()
                     })
-                    .eq('email', donatorEmail.toLowerCase().trim());
+                    .eq('callsign_id', donatorCallsignId);
 
                 if (error) throw error;
             } else {
-                // Create new profile
+                // Create new profile for this callsign
                 const { error } = await supabase
                     .from('user_profiles')
                     .insert({
-                        email: donatorEmail.toLowerCase().trim(),
+                        callsign_id: donatorCallsignId,
+                        email: donatorCallsignData?.email || null,
                         is_donator: true,
                         donator_note: donatorNote.trim() || null
                     });
@@ -222,9 +217,10 @@ const ManageAdmins = () => {
                 if (error) throw error;
             }
 
-            setSuccess(`${donatorEmail} has been marked as a donator`);
+            setSuccess(`Donator badge added to ${donatorCallsignData?.callsign}`);
             setDonatorCallsign('');
-            setDonatorEmail('');
+            setDonatorCallsignId('');
+            setDonatorCallsignData(null);
             setDonatorNote('');
             fetchDonators();
         } catch (err) {
@@ -235,8 +231,9 @@ const ManageAdmins = () => {
         }
     };
 
-    const handleRemoveDonator = async (donatorEmail) => {
-        if (!window.confirm(`Are you sure you want to remove donator badge from ${donatorEmail}?`)) {
+    const handleRemoveDonator = async (callsignId) => {
+        const donator = donators.find(d => d.callsign_id === callsignId);
+        if (!window.confirm(`Are you sure you want to remove donator badge from ${donator?.callsigns?.callsign || 'this callsign'}?`)) {
             return;
         }
 
@@ -247,11 +244,11 @@ const ManageAdmins = () => {
                     is_donator: false,
                     updated_at: new Date().toISOString()
                 })
-                .eq('email', donatorEmail);
+                .eq('callsign_id', callsignId);
 
             if (error) throw error;
 
-            setSuccess(`Donator badge removed from ${donatorEmail}`);
+            setSuccess(`Donator badge removed from ${donator?.callsigns?.callsign || 'callsign'}`);
             fetchDonators();
         } catch (err) {
             console.error('Error removing donator:', err);
@@ -512,28 +509,6 @@ const ManageAdmins = () => {
                                 </div>
                             </div>
 
-                            {/* Email Field (auto-filled or manual) */}
-                            <div>
-                                <label style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '6px', display: 'block' }}>
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    value={donatorEmail}
-                                    onChange={(e) => setDonatorEmail(e.target.value)}
-                                    placeholder="Auto-filled from callsign lookup"
-                                    style={{
-                                        padding: '12px',
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--glass-border)',
-                                        background: donatorEmail ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255,255,255,0.05)',
-                                        color: '#fff',
-                                        fontSize: '1rem',
-                                        width: '100%'
-                                    }}
-                                />
-                            </div>
-
                             {/* Note Field */}
                             <input
                                 type="text"
@@ -551,7 +526,7 @@ const ManageAdmins = () => {
                             />
                             <button
                                 type="submit"
-                                disabled={donatorAdding || !donatorEmail.trim()}
+                                disabled={donatorAdding || !donatorCallsignId}
                                 style={{
                                     padding: '12px 24px',
                                     background: 'linear-gradient(135deg, #ffd700 0%, #ffb347 100%)',
@@ -603,8 +578,18 @@ const ManageAdmins = () => {
                                     >
                                         <div>
                                             <div style={{ color: '#ffd700', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                ❤️ {donator.email}
+                                                ❤️ {donator.callsigns?.callsign || 'Unknown Callsign'}
                                             </div>
+                                            {donator.callsigns?.name && (
+                                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
+                                                    {donator.callsigns.name}
+                                                </div>
+                                            )}
+                                            {donator.callsigns?.email && (
+                                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
+                                                    {donator.callsigns.email}
+                                                </div>
+                                            )}
                                             {donator.donator_note && (
                                                 <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
                                                     Note: {donator.donator_note}
@@ -615,7 +600,7 @@ const ManageAdmins = () => {
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => handleRemoveDonator(donator.email)}
+                                            onClick={() => handleRemoveDonator(donator.callsign_id)}
                                             style={{
                                                 background: 'rgba(239, 68, 68, 0.2)',
                                                 border: '1px solid rgba(239, 68, 68, 0.4)',
