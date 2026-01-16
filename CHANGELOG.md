@@ -2,6 +2,11 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.2.6] - 2026-01-16
+### Changed
+- **New User Badge**: Reduced the "NEW" badge duration from 30 days to 24 hours to prevent older imports from being marked as new.
+- **Statistics**: Updated the "Recently Added" dashboard statistic to count only the last 7 days (requires SQL function update).
+
 ## [2.2.5] - 2026-01-16
 ### Documentation
 - **README Restoration**: Restored the original, detailed documentation regarding project philosophy, technical decisions, and architecture plans, while retaining the new modern visual style headers.
