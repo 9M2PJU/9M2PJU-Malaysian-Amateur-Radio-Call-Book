@@ -434,6 +434,48 @@ END:VCARD`;
                                 MARTS #{data.martsId}
                             </div>
                         )}
+                        {data.isPpmMember && (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                background: 'rgba(59, 78, 180, 0.2)', // PPM Blueish (based on logo)
+                                color: '#93c5fd', // Light blue text
+                                padding: '4px 12px',
+                                borderRadius: '6px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                border: '1px solid rgba(59, 130, 246, 0.3)'
+                            }} title="Persekutuan Pengakap Malaysia">
+                                <img
+                                    src="/ppm-logo.png"
+                                    alt="PPM Logo"
+                                    style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+                                />
+                                PPM Member
+                            </div>
+                        )}
+                        {data.dmrId && (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                color: '#e2e8f0', // Slate-200 for text
+                                padding: '4px 12px',
+                                borderRadius: '6px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                border: '1px solid rgba(255, 255, 255, 0.2)'
+                            }} title="DMR ID">
+                                <img
+                                    src="/dmr-logo.png"
+                                    alt="DMR Logo"
+                                    style={{ width: '40px', height: 'auto', borderRadius: '2px' }}
+                                />
+                                {data.dmrId}
+                            </div>
+                        )}
                         {data.meshtasticId && (
                             <div style={{
                                 display: 'flex',

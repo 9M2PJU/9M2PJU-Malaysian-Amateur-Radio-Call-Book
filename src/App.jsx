@@ -239,7 +239,8 @@ function Directory() {
                 addedDate: item.added_date,
                 expiryDate: item.expiry_date || '',
                 telegramChatId: item.telegram_chat_id || '',
-                telegramUsername: item.telegram_username || ''
+                telegramUsername: item.telegram_username || '',
+                isPpmMember: item.is_ppm_member || false
             }));
 
             // Client-side filtering for license status (requires date calculations)

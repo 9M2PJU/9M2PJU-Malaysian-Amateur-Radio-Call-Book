@@ -29,6 +29,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         expiryDate: '',
         telegramChatId: '',
         botField: '', // Honeypot
+        isPpmMember: false,
     });
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -60,6 +61,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                     aprsCallsign: initialData.aprsCallsign || '',
                     expiryDate: initialData.expiryDate || '',
                     telegramChatId: initialData.telegramChatId || '',
+                    isPpmMember: initialData.isPpmMember || false,
                     botField: ''
                 });
 
@@ -124,6 +126,8 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
         // Reset district if location (state) changes
         if (name === 'location') {
             setFormData(prev => ({ ...prev, [name]: value, district: '' }));
+        } else if (name === 'isPpmMember') {
+            setFormData(prev => ({ ...prev, [name]: e.target.checked }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
@@ -224,6 +228,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         aprs_callsign: formData.aprsCallsign || null,
                         expiry_date: formData.expiryDate || null,
                         telegram_chat_id: formData.telegramChatId || null,
+                        is_ppm_member: formData.isPpmMember
                     });
 
                 // Use ID if available (more robust), otherwise fallback to original callsign
@@ -264,6 +269,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         aprs_callsign: formData.aprsCallsign || null,
                         expiry_date: formData.expiryDate || null,
                         telegram_chat_id: formData.telegramChatId || null,
+                        is_ppm_member: formData.isPpmMember,
                         added_date: new Date().toISOString().split('T')[0],
                         user_id: user?.id || null // Link to auth user
                     });
@@ -623,6 +629,20 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                                 placeholder="xxxx"
                                 style={inputStyle}
                             />
+                        </div>
+
+                        <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                            <input
+                                type="checkbox"
+                                name="isPpmMember"
+                                id="isPpmMember"
+                                checked={formData.isPpmMember}
+                                onChange={handleChange}
+                                style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                            />
+                            <label htmlFor="isPpmMember" style={{ ...labelStyle, marginBottom: 0, cursor: 'pointer' }}>
+                                Are you a member of <strong>Persekutuan Pengakap Malaysia (PPM)</strong>?
+                            </label>
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
