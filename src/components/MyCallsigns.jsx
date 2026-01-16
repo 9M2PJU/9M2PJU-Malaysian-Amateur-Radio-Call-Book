@@ -6,8 +6,10 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import SubmissionModal from './SubmissionModal';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { useToast } from './Toast';
 
 const MyCallsigns = () => {
+    const toast = useToast();
     const { user } = useAuth();
     const [callsigns, setCallsigns] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -75,11 +77,12 @@ const MyCallsigns = () => {
 
                 if (error) throw error;
 
+                toast.success(`Callsign ${callsign} deleted successfully`);
                 // Refresh list
                 fetchMyCallsigns();
             } catch (err) {
                 console.error('Error deleting:', err);
-                alert('Failed to delete callsign: ' + err.message);
+                toast.error('Failed to delete callsign: ' + err.message);
             }
         }
     };

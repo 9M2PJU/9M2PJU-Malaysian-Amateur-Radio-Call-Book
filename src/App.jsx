@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { getLicenseStatus } from './utils/licenseStatus';
+import { useToast } from './components/Toast';
 
 // Lazy load components for better code splitting
 const Login = lazy(() => import('./components/Login'));
@@ -41,6 +42,7 @@ const LazyLoadSpinner = () => (
 );
 
 function Directory() {
+    const toast = useToast();
     const [callsigns, setCallsigns] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -294,11 +296,12 @@ function Directory() {
 
             if (error) throw error;
 
+            toast.success(`Callsign ${data.callsign} deleted successfully`);
             // Refresh the list
             fetchCallsigns(0, searchTerm, filters, true);
         } catch (err) {
             console.error('Error deleting callsign:', err);
-            alert('Failed to delete callsign: ' + err.message);
+            toast.error('Failed to delete callsign: ' + err.message);
         }
     };
 

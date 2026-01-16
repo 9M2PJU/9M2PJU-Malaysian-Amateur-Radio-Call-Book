@@ -6,6 +6,7 @@ import DonationModal from './DonationModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from './Toast';
 
 const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,9 +15,11 @@ const Navbar = () => {
     const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
     const { user, signOut, isSuperAdmin } = useAuth();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const handleSignOut = async () => {
         await signOut();
+        toast.success('Successfully logged out. See you next time! 73');
         navigate('/login');
     };
 

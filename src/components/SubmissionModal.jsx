@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes, FaExclamationTriangle, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
+import { useToast } from './Toast';
 
 import { MALAYSIAN_STATES, MALAYSIAN_DISTRICTS } from '../constants';
 
 const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
+    const toast = useToast();
     const { user, isAdmin } = useAuth();
     const [formData, setFormData] = useState({
         callsign: '',
@@ -270,6 +272,8 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
             }
 
             setSuccess(true);
+            const action = initialData ? 'updated' : 'added';
+            toast.success(`Callsign ${formData.callsign.toUpperCase()} ${action} successfully!`);
             setTimeout(() => {
                 setSuccess(false);
                 setFormData({
@@ -278,7 +282,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                 });
                 onClose();
                 window.location.reload(); // Refresh to show new data
-            }, 2000);
+            }, 1500);
 
         } catch (err) {
             console.error('Submission error:', err);

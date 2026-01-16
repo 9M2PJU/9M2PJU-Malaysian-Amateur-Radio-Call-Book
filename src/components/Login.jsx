@@ -3,11 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { FaLock, FaEnvelope, FaSpinner, FaBroadcastTower } from 'react-icons/fa';
 import PublicStats from './PublicStats';
+import { useToast } from './Toast';
 
 const Login = () => {
     const { signIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const toast = useToast();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -32,6 +34,7 @@ const Login = () => {
         try {
             const { error } = await signIn({ email, password });
             if (error) throw error;
+            toast.success('Welcome back! Successfully logged in.');
             navigate('/', { replace: true }); // Always go to home after login
         } catch (err) {
             setError(err.message);
