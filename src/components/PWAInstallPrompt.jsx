@@ -20,15 +20,15 @@ const PWAInstallPrompt = () => {
         checkMobile();
     }, []);
 
-    // Auto-show logic: Show on BOTH Mobile and Desktop when logged in and installable
+    // Auto-show logic: Auto-show on MOBILE ONLY when logged in and installable
     useEffect(() => {
         console.log('🔧 PWAInstallPrompt: Auto-show check', { isInstallable, hasUser: !!user, isMobile });
-        if (isInstallable && user) {
-            // Show until user installs (or dismisses, but currently logic re-shows on refresh if not installed)
-            console.log('✅ PWAInstallPrompt: Auto-showing install prompt');
+        if (isInstallable && user && isMobile) {
+            // Mobile: Always show until user installs
+            console.log('✅ PWAInstallPrompt: Auto-showing install prompt (mobile)');
             showInstallPrompt();
         }
-    }, [isInstallable, user]);
+    }, [isInstallable, user, isMobile]);
 
     if (!isPromptVisible) return null;
 

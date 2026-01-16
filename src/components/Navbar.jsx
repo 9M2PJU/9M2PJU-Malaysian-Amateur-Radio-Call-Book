@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBroadcastTower, FaSignOutAlt, FaUser, FaInfoCircle, FaList, FaHome, FaHeart, FaKey, FaShieldAlt, FaDownload } from 'react-icons/fa';
 import SubmissionModal from './SubmissionModal';
 import InfoModal from './InfoModal';
@@ -24,6 +24,22 @@ const Navbar = () => {
         toast.success('Successfully logged out. See you next time! 73');
         navigate('/login');
     };
+
+    // Auto-show donation popup on desktop (session based)
+    useEffect(() => {
+        if (user) {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+
+            if (!isMobile) {
+                const hasSeen = sessionStorage.getItem('hasSeenDonationPopup');
+                if (!hasSeen) {
+                    setIsDonationModalOpen(true);
+                    sessionStorage.setItem('hasSeenDonationPopup', 'true');
+                }
+            }
+        }
+    }, [user]);
 
     return (
         <>
