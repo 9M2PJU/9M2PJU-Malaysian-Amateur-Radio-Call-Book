@@ -17,11 +17,11 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [captchaToken, setCaptchaToken] = useState('');
 
-    // Prevent body scroll on this page
+    // Prevent body scroll on this page, but ensure content is scrollable if needed
     React.useEffect(() => {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflowY = 'auto'; // changed from hidden
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflowY = 'unset';
         };
     }, []);
 
@@ -59,14 +59,15 @@ const Login = () => {
             height: '100dvh', // Dynamic viewport height for mobile
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden', // Strictly prevent scroll
+            overflowY: 'auto', // Allow vertical scroll if content overflows
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed'
         }}>
             <style>{`
                 html, body { 
-                    overflow: hidden !important; 
+                    overflow-x: hidden !important; 
+                    overflow-y: auto !important; 
                     height: 100% !important; 
                     margin: 0 !important; 
                     padding: 0 !important;
