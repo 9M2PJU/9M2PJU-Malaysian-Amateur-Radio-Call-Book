@@ -635,7 +635,7 @@ const AutoLogoutToastHandler = () => {
 
     useEffect(() => {
         const handleAutoLogout = () => {
-            toast.error('You have been logged out due to inactivity (30 mins).');
+            toast.error('You have been logged out due to inactivity (5 mins).');
             // Navigate is handled by AuthContext state change usually, 
             // but we can force it here if needed.
         };

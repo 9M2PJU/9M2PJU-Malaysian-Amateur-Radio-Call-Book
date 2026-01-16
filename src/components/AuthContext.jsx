@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
 
     // Auto Logout Logic
     const logoutTimerRef = useRef(null);
-    const INACTIVITY_LIMIT = 30 * 60 * 1000; // 30 minutes
+    const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
 
     const resetInactivityTimer = useCallback(() => {
         if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
