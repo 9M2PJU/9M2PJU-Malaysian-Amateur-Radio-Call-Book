@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Turnstile from 'react-turnstile';
 import { useAuth } from './AuthContext';
 import { FaLock, FaEnvelope, FaSpinner, FaBroadcastTower } from 'react-icons/fa';
 import PublicStats from './PublicStats';
@@ -14,6 +15,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState('');
 
     // Prevent body scroll on this page
     React.useEffect(() => {
@@ -29,10 +31,19 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        if (!captchaToken) {
+            setError("Please complete the security check");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const { error } = await signIn({ email, password });
+            const { error } = await signIn({
+                email,
+                password,
+                options: { captchaToken }
+            });
             if (error) throw error;
             toast.success('Welcome back! Successfully logged in.');
             navigate('/', { replace: true }); // Always go to home after login
@@ -205,6 +216,15 @@ const Login = () => {
                                     Forgot Password?
                                 </Link>
                             </div>
+                        </div>
+
+                        {/* Turnstile / Captcha */}
+                        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+                            <Turnstile
+                                sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
+                                onVerify={setCaptchaToken}
+                                theme="dark"
+                            />
                         </div>
 
                         <button
