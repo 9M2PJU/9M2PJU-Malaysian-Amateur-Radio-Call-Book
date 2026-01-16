@@ -30,6 +30,7 @@
 *   **User Management**: Complete 'Forgot Password' and 'Change Password' workflows.
 *   **Role-Based Access**: Protected routes ensuring only owners can edit their data.
 *   **Anti-Spam**: Cloudflare Turnstile integration for bot-free authentication.
+*   **Auto-Logout**: Inactivity timer (5 minutes) automatically signs out idle sessions for security.
 
 ### 📡 Operator Portfolio
 *   **My Callsigns**: A private dashboard to manage your submitted stations.

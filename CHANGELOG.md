@@ -2,6 +2,18 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.2.0] - 2026-01-16
+### Added
+- **Auto Logout**: Added inactivity timeout (5 minutes) to automatically log out users and protect sessions.
+- **Smart Popups**:
+    - Mobile: "Install App" prompt (persistent).
+    - Desktop: "Donate" prompt (session-based, auto-show once upon login).
+- **Desktop Popup Support**: Enabled donation popup visibility on desktop browsers.
+
+### Changed
+- **Install App Logic**: Restored "Install App" prompt logic to be mobile-focused, while enabling Donation prompts on desktop.
+- **Auto Logout Timer**: Configured to 5 minutes as per user request.
+
 ## [2.1.1] - 2026-01-16
 
 ### 🐛 Bug Fixes
