@@ -36,6 +36,7 @@ const Toast = ({ id, message, type, onClose }) => {
 
     return (
         <div
+            className="toast-item"
             style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -92,18 +93,37 @@ const ToastContainer = ({ toasts, removeToast }) => {
                         opacity: 1;
                     }
                 }
-                @keyframes slideOut {
+                @keyframes slideDown {
                     from {
-                        transform: translateX(0);
-                        opacity: 1;
+                        transform: translateY(-50px);
+                        opacity: 0;
                     }
                     to {
-                        transform: translateX(100%);
-                        opacity: 0;
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                
+                /* Mobile Responsive Toast */
+                @media (max-width: 480px) {
+                    .toast-container {
+                        left: 10px !important;
+                        right: 10px !important;
+                        top: 10px !important;
+                        align-items: center !important;
+                        width: auto !important;
+                    }
+                    .toast-item {
+                        width: 100% !important;
+                        min-width: unset !important;
+                        max-width: 100% !important;
+                        animation: slideDown 0.3s ease-out !important;
+                        box-sizing: border-box;
                     }
                 }
             `}</style>
             <div
+                className="toast-container"
                 style={{
                     position: 'fixed',
                     top: '20px',
