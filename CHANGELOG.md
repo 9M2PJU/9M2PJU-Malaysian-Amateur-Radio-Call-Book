@@ -2,6 +2,10 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.2.4] - 2026-01-16
+### Documentation
+- **README Redesign**: Completely revamped the `README.md` with a modern, "fancy" aesthetic, featuring glassmorphism badges, improved layout, feature grids, and clearer architecture documentation.
+
 ## [2.2.3] - 2026-01-16
 ### Security
 - **Reset Password**: Added Cloudflare Turnstile protection to the Reset Password page to prevent automated spam/abuse.
