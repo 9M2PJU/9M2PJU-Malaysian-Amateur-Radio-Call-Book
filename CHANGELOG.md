@@ -2,6 +2,20 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.1.0] - 2026-01-16
+
+### 🛡️ Security & Access
+- **Cloudflare Turnstile**: Added robust anti-spam protection to Registration and Login pages.
+- **Local Backups**: Introduced secure `backup-db.sh` script for safe local database dumps.
+- **Strict Access Control**: Restricted Donator Badge management exclusively to Super Admins.
+
+### 📱 User Experience
+- **Mobile Responsiveness**: Fixed Login page layout on small screens to prevent content cutoff.
+- **Badge System**: Migrated to precise callsign-based badge assignment.
+- **Feedback**: Enhanced UI feedback for admin actions.
+
+---
+
 ## [2.0.0] - 2026-01-16
 
 ### 🎉 Major Features

@@ -29,6 +29,7 @@
 *   **Supabase Auth**: Robust email/password authentication flow.
 *   **User Management**: Complete 'Forgot Password' and 'Change Password' workflows.
 *   **Role-Based Access**: Protected routes ensuring only owners can edit their data.
+*   **Anti-Spam**: Cloudflare Turnstile integration for bot-free authentication.
 
 ### 📡 Operator Portfolio
 *   **My Callsigns**: A private dashboard to manage your submitted stations.
@@ -177,6 +178,7 @@ This project is built to be a resilient, long-term asset. All improvements below
 | ⚛️ **React 19** | Latest React features for a responsive, interactive UI. |
 | ⚡ **Vite 7** | Next-generation build tool for lightning-fast development. |
 | 🎨 **Glassmorphism** | Custom CSS3 styling for a modern, translucent aesthetic. |
+| 🛡️ **Turnstile** | Cloudflare's smart, invisible anti-spam protection. |
 | �️ **React Router** | Client-side routing for seamless navigation. |
 
 ### Backend (Serverless & Managed)
@@ -193,6 +195,7 @@ This project is built to be a resilient, long-term asset. All improvements below
 | 🐳 **Docker** | Full stack containerization for self-hosting. |
 | 🚢 **Vercel** | Static hosting with global CDN (Free Tier). |
 | 🐙 **GitHub Actions** | Automated CI/CD pipelines. |
+| 💾 **Backups** | Secure local backup automation scripts. |
 | 📬 **Resend** | Transactional email service (Free Tier). |
 
 
