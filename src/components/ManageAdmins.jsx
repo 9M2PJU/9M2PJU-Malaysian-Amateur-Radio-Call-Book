@@ -23,6 +23,8 @@ const ManageAdmins = () => {
     const [donatorNote, setDonatorNote] = useState('');
     const [donatorAdding, setDonatorAdding] = useState(false);
     const [lookingUp, setLookingUp] = useState(false);
+    const [donatorError, setDonatorError] = useState('');
+    const [donatorSuccess, setDonatorSuccess] = useState('');
 
     useEffect(() => {
         if (isSuperAdmin) {
@@ -142,7 +144,8 @@ const ManageAdmins = () => {
         if (!donatorCallsign.trim()) return;
 
         setLookingUp(true);
-        setError('');
+        setDonatorError('');
+        setDonatorSuccess('');
 
         try {
             const { data, error } = await supabase
@@ -152,7 +155,7 @@ const ManageAdmins = () => {
                 .single();
 
             if (error || !data) {
-                setError(`Callsign ${donatorCallsign} not found in database`);
+                setDonatorError(`Callsign ${donatorCallsign} not found in database`);
                 setDonatorCallsignId('');
                 setDonatorCallsignData(null);
                 return;
@@ -160,10 +163,10 @@ const ManageAdmins = () => {
 
             setDonatorCallsignId(data.id);
             setDonatorCallsignData(data);
-            setSuccess(`Found: ${data.name} (${data.callsign})${data.email ? ` - ${data.email}` : ''}`);
+            setDonatorSuccess(`Found: ${data.name} (${data.callsign})${data.email ? ` - ${data.email}` : ''}`);
         } catch (err) {
             console.error('Error looking up callsign:', err);
-            setError('Failed to lookup callsign');
+            setDonatorError('Failed to lookup callsign');
         } finally {
             setLookingUp(false);
         }
@@ -171,11 +174,11 @@ const ManageAdmins = () => {
 
     const handleAddDonator = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
+        setDonatorError('');
+        setDonatorSuccess('');
 
         if (!donatorCallsignId) {
-            setError('Please lookup a callsign first');
+            setDonatorError('Please lookup a callsign first');
             return;
         }
 
@@ -215,7 +218,7 @@ const ManageAdmins = () => {
                 if (error) throw error;
             }
 
-            setSuccess(`Donator badge added to ${donatorCallsignData?.callsign}`);
+            setDonatorSuccess(`Donator badge added to ${donatorCallsignData?.callsign}`);
             setDonatorCallsign('');
             setDonatorCallsignId('');
             setDonatorCallsignData(null);
@@ -223,7 +226,7 @@ const ManageAdmins = () => {
             fetchDonators();
         } catch (err) {
             console.error('Error adding donator:', err);
-            setError(err.message || 'Failed to add donator');
+            setDonatorError(err.message || 'Failed to add donator');
         } finally {
             setDonatorAdding(false);
         }
@@ -246,11 +249,11 @@ const ManageAdmins = () => {
 
             if (error) throw error;
 
-            setSuccess(`Donator badge removed from ${donator?.callsigns?.callsign || 'callsign'}`);
+            setDonatorSuccess(`Donator badge removed from ${donator?.callsigns?.callsign || 'callsign'}`);
             fetchDonators();
         } catch (err) {
             console.error('Error removing donator:', err);
-            setError('Failed to remove donator badge');
+            setDonatorError('Failed to remove donator badge');
         }
     };
 
@@ -453,6 +456,32 @@ const ManageAdmins = () => {
                     {/* Add Donator Form */}
                     <div className="glass-panel" style={{ padding: '24px', marginBottom: '24px', maxWidth: '600px' }}>
                         <h3 style={{ color: '#fff', marginTop: 0, marginBottom: '16px' }}>Add Donator Badge</h3>
+
+                        {donatorError && (
+                            <div style={{
+                                background: 'rgba(255, 0, 0, 0.1)',
+                                border: '1px solid #ff4444',
+                                borderRadius: '8px',
+                                padding: '12px',
+                                marginBottom: '16px',
+                                color: '#ff6666'
+                            }}>
+                                {donatorError}
+                            </div>
+                        )}
+
+                        {donatorSuccess && (
+                            <div style={{
+                                background: 'rgba(34, 197, 94, 0.1)',
+                                border: '1px solid #22c55e',
+                                borderRadius: '8px',
+                                padding: '12px',
+                                marginBottom: '16px',
+                                color: '#22c55e'
+                            }}>
+                                {donatorSuccess}
+                            </div>
+                        )}
 
                         <form onSubmit={handleAddDonator} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             {/* Callsign Lookup */}
