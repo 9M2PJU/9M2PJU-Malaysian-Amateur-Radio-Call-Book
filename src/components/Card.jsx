@@ -557,19 +557,30 @@ END:VCARD`;
                 </button>
 
                 {/* Submission Timestamp */}
-                {data.createdAt && (
+                {(data.createdAt || data.updatedAt) && (
                     <div style={{
                         marginTop: '12px',
                         fontSize: '0.75rem',
                         color: 'var(--text-muted)',
                         textAlign: 'center',
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '6px'
+                        gap: '4px'
                     }}>
-                        <FaClock style={{ fontSize: '0.7rem' }} />
-                        <span>Added: {formatDate(data.createdAt)}</span>
+                        {data.createdAt && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <FaClock style={{ fontSize: '0.7rem' }} />
+                                <span>Added: {formatDate(data.createdAt)}</span>
+                            </div>
+                        )}
+                        {data.updatedAt && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--secondary)' }}>
+                                <FaClock style={{ fontSize: '0.7rem' }} />
+                                <span>Edited: {formatDate(data.updatedAt)}</span>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

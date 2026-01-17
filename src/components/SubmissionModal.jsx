@@ -241,7 +241,11 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                         is_ppm_member: formData.isPpmMember,
                         is_bsmm_member: formData.isBsmmMember,
                         is_pppm_member: formData.isPppmMember,
-                        is_veteran: formData.isVeteran
+                        is_ppm_member: formData.isPpmMember,
+                        is_bsmm_member: formData.isBsmmMember,
+                        is_pppm_member: formData.isPppmMember,
+                        is_veteran: formData.isVeteran,
+                        updated_at: new Date().toISOString()
                     });
 
                 // Use ID if available (more robust), otherwise fallback to original callsign
