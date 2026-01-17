@@ -66,7 +66,7 @@ const Navbar = () => {
                         cursor: 'pointer'
                     }}
                 >
-                    <img src="/logo.jpg" alt="MY-Callbook" style={{ height: '36px', width: '36px', borderRadius: '50%' }} />
+                    <img src="/logo.png" alt="MY-Callbook" style={{ height: '36px', width: '36px', borderRadius: '50%' }} />
                     <h1 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 'bold' }}>
                         MY-Callbook
                     </h1>
