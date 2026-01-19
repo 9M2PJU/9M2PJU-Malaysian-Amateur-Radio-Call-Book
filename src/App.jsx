@@ -21,6 +21,7 @@ import StatsDashboard from './components/StatsDashboard';
 import Card from './components/Card';
 import Footer from './components/Footer';
 import SubmissionModal from './components/SubmissionModal';
+import BackToTop from './components/BackToTop';
 
 import { MALAYSIAN_STATES } from './constants';
 
@@ -582,6 +583,7 @@ function Directory() {
                 initialData={editData}
             />
 
+            <BackToTop />
             <Footer />
         </div >
     );
