@@ -46,6 +46,8 @@ const BackToTop = () => {
                 type="button"
                 onClick={scrollToTop}
                 style={{
+                    width: '3rem',
+                    height: '3rem',
                     borderRadius: '50%',
                     background: 'rgba(15, 23, 42, 0.9)', // Dark background
                     border: '1px solid var(--glass-border)',
@@ -56,8 +58,7 @@ const BackToTop = () => {
                     cursor: 'pointer',
                     transition: 'all 0.3s ease'
                 }}
-                // Mobile: w-10 (40px), Desktop: w-14 (56px)
-                className="hover:scale-110 group w-10 h-10 md:w-14 md:h-14"
+                className="hover:scale-110 group"
                 aria-label="Back to top"
             >
                 <svg
