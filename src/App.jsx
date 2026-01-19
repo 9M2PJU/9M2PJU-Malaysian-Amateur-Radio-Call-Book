@@ -394,7 +394,7 @@ function Directory() {
                         Malaysian Amateur<br />Radio Directory
                     </h1>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>
-                        The Modern "Yellow Pages" for Malaysian Amateur Radio Operators
+                        "The Modern Yellow Pages for Malaysian Amateur Radio Operators" - <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none' }}>9M2PJU</a>
                     </p>
                 </div>
 

@@ -81,7 +81,10 @@ We are obsessed with speed.
 
 Stay up to date with the latest evolution of the platform.
 
-### **v2.3.2** (Latest) - *2026-01-17*
+### **v2.3.3** (Latest) - *2026-01-19*
+*   **UI Enhancement**: Updated homepage tagline to "The Modern Yellow Pages for Malaysian Amateur Radio Operators" with 9M2PJU attribution linking to [hamradio.my](https://hamradio.my).
+
+### **v2.3.2** - *2026-01-17*
 *   **Maintenance**: Cumulative update including data recovery, UI enhancements, and stability fixes.
 *   **Features**: Includes all features from v2.3.1 (PWA, Stats, Data Recovery) plus "Edited" timestamps and manual "Load More" button.
 
