@@ -5,7 +5,6 @@ const BackToTop = () => {
 
     // Toggle visibility based on scroll position
     const toggleVisibility = () => {
-        // Show after 300px of scrolling
         if (window.scrollY > 300) {
             setIsVisible(true);
         } else {
@@ -22,9 +21,7 @@ const BackToTop = () => {
     };
 
     useEffect(() => {
-        // Check visibility immediately on mount in case we are already scrolled
         toggleVisibility();
-
         window.addEventListener('scroll', toggleVisibility);
         return () => {
             window.removeEventListener('scroll', toggleVisibility);
@@ -33,27 +30,28 @@ const BackToTop = () => {
 
     return (
         <div
-            className={`transition-all duration-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            className={`transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
             style={{
                 position: 'fixed',
                 bottom: '2rem',
                 right: '2rem',
-                zIndex: 99999
+                zIndex: 99
             }}
         >
             <button
                 type="button"
                 onClick={scrollToTop}
+                className="group flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 border border-white/10"
                 style={{
-                    background: 'linear-gradient(135deg, var(--secondary), var(--primary))',
-                    color: '#000',
-                    boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)'
+                    background: 'rgba(15, 23, 42, 0.6)',
                 }}
-                className="p-3 rounded-full hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-transform duration-200 flex items-center justify-center"
                 aria-label="Back to top"
             >
+                {/* Gradient Border Overlay */}
+                <div className="absolute inset-0 rounded-full p-[1px] bg-gradient-to-br from-cyan-400 to-blue-600 opacity-50 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+
                 <svg
-                    className="w-6 h-6"
+                    className="w-6 h-6 text-cyan-400 group-hover:text-white transition-colors duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -63,7 +61,7 @@ const BackToTop = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2.5"
-                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                        d="M5 15l7-7 7 7"
                     ></path>
                 </svg>
             </button>
