@@ -5,14 +5,16 @@ const BackToTop = () => {
 
     // Toggle visibility based on scroll position
     const toggleVisibility = () => {
-        console.log('BackToTop: SCROLL DETECTED. window.scrollY =', window.scrollY);
-        // Force true for debugging
-        setIsVisible(true);
+        // Show after 300px of scrolling
+        if (window.scrollY > 300) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
     };
 
     // Scroll to top smoothly
     const scrollToTop = () => {
-        console.log('BackToTop: Clicked');
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
@@ -20,7 +22,6 @@ const BackToTop = () => {
     };
 
     useEffect(() => {
-        console.log('BackToTop: MOUNTED');
         // Check visibility immediately on mount in case we are already scrolled
         toggleVisibility();
 
@@ -32,8 +33,13 @@ const BackToTop = () => {
 
     return (
         <div
-            className={`fixed bottom-6 right-6 transition-all duration-300 transform opacity-100 translate-y-0`}
-            style={{ zIndex: 99999, border: '4px solid red' }}
+            className={`transition-all duration-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            style={{
+                position: 'fixed',
+                bottom: '2rem',
+                right: '2rem',
+                zIndex: 99999
+            }}
         >
             <button
                 type="button"
@@ -61,9 +67,6 @@ const BackToTop = () => {
                     ></path>
                 </svg>
             </button>
-            <div style={{ background: 'white', color: 'black', padding: '2px', fontSize: '10px' }}>
-                DEBUG MODE
-            </div>
         </div>
     );
 };
