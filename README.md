@@ -81,7 +81,13 @@ We are obsessed with speed.
 
 Stay up to date with the latest evolution of the platform.
 
-### **v2.3.3** (Latest) - *2026-01-19*
+### **v2.3.5** (Latest) - *2026-01-20*
+*   **UI Branding**: Reverted logo to Gold version and optimized Login page layout for better mobile fit.
+
+### **v2.3.4** - *2026-01-20*
+*   **Performance**: Grid virtualization and component optimization.
+
+### **v2.3.3** - *2026-01-19*
 *   **UI Enhancement**: Updated homepage tagline to "The Modern Yellow Pages for Malaysian Amateur Radio Operators" with 9M2PJU attribution linking to [hamradio.my](https://hamradio.my).
 
 ### **v2.3.2** - *2026-01-17*
