@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Turnstile from 'react-turnstile';
 import { useAuth } from './AuthContext';
@@ -16,6 +16,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [captchaToken, setCaptchaToken] = useState('');
+    const turnstileRef = useRef();
 
     // Prevent body scroll on this page, but ensure content is scrollable if needed
     React.useEffect(() => {
@@ -49,6 +50,10 @@ const Login = () => {
             navigate('/', { replace: true }); // Always go to home after login
         } catch (err) {
             setError(err.message);
+            setCaptchaToken('');
+            if (turnstileRef.current) {
+                turnstileRef.current.reset();
+            }
         } finally {
             setLoading(false);
         }
@@ -223,6 +228,7 @@ const Login = () => {
                         {/* Turnstile / Captcha */}
                         <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', transform: 'scale(0.85)' }}>
                             <Turnstile
+                                ref={turnstileRef}
                                 sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
                                 onVerify={setCaptchaToken}
                                 theme="dark"
