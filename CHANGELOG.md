@@ -2,6 +2,13 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.3.4] - 2026-01-20
+### Performance & Responsiveness
+- **Grid Virtualization**: Implemented `@tanstack/react-virtual` to efficiently render large lists of callsigns, significantly reducing DOM nodes and improving scrolling performance.
+- **Component Optimization**: Optimized `Card.jsx` with `useMemo` for derived data and `loading="lazy"` for images to reduce main thread blocking.
+- **Render Stability**: Wrapped key event handlers in `App.jsx` with `useCallback` to prevent unnecessary re-renders.
+- **Mobile Layout**: Adjusted grid column strategy to better fit smaller screens (min 300px cards).
+
 ## [2.3.3] - 2026-01-19
 ### UI Enhancement
 - **Tagline Update**: Updated homepage tagline to "The Modern Yellow Pages for Malaysian Amateur Radio Operators" with 9M2PJU attribution linking to [hamradio.my](https://hamradio.my).

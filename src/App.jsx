@@ -1,10 +1,11 @@
-import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { getLicenseStatus } from './utils/licenseStatus';
 import { useToast } from './components/Toast';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 
 // Lazy load components for better code splitting
 const Login = lazy(() => import('./components/Login'));
@@ -45,6 +46,7 @@ const LazyLoadSpinner = () => (
 function Directory() {
     const toast = useToast();
     const location = useLocation();
+    const listRef = useRef(null);
 
     // Helper to get saved filters from localStorage
     const getSavedFilters = () => {
@@ -61,7 +63,7 @@ function Directory() {
 
     const savedFilters = getSavedFilters();
 
-    // Initialize state from localStorage
+    // Initialize state
     const [callsigns, setCallsigns] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -77,13 +79,40 @@ function Directory() {
         recentOnly: savedFilters?.recentOnly || '',
         contactInfo: savedFilters?.contactInfo || ''
     });
-    // States are static list for dropdown, fetching once
     const [states, setStates] = useState(MALAYSIAN_STATES);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
 
-    // Ref for infinite scroll observer
+    // Virtualization State
+    const [columnCount, setColumnCount] = useState(1);
 
+    // Calculate columns based on width
+    useEffect(() => {
+        const updateColumns = () => {
+            const width = window.innerWidth;
+            // Matches CSS grid logic: minmax(320px, 1fr) with adjustments for container padding
+            // Container max-width is 1200px.
+            // < 768px: padding 12px
+            // < 480px: padding 8px
+            let containerWidth = width;
+            if (width > 1200) containerWidth = 1200;
+
+            // Adjust for container padding
+            const padding = width <= 480 ? 16 : (width <= 768 ? 24 : 40);
+            const availableWidth = containerWidth - padding;
+
+            // Reduced min-width to 280px for better mobile support as planned
+            const minCardWidth = 300;
+            const gap = 24;
+
+            const cols = Math.floor((availableWidth + gap) / (minCardWidth + gap));
+            setColumnCount(Math.max(1, cols));
+        };
+
+        updateColumns();
+        window.addEventListener('resize', updateColumns);
+        return () => window.removeEventListener('resize', updateColumns);
+    }, []);
 
     const ITEMS_PER_PAGE = 50;
 
@@ -110,12 +139,10 @@ function Directory() {
     };
 
     useEffect(() => {
-        // Initial fetch with values from localStorage
         console.log('App Initializing...');
         fetchCallsigns(0, searchTerm, filters, true);
     }, []);
 
-    // Listen for reset filters event from Navbar home button
     useEffect(() => {
         const handleResetFilters = () => {
             const emptyFilters = {
@@ -130,14 +157,13 @@ function Directory() {
             setFilters(emptyFilters);
             setCallsigns([]);
             setPage(0);
-            clearSavedFilters(); // Clear localStorage
+            clearSavedFilters();
             fetchCallsigns(0, '', emptyFilters, true);
         };
 
         window.addEventListener('resetFilters', handleResetFilters);
         return () => window.removeEventListener('resetFilters', handleResetFilters);
     }, []);
-
 
 
     const fetchCallsigns = async (pageToFetch, term, currentFilters, reset = false) => {
@@ -180,7 +206,6 @@ function Directory() {
 
             if (currentFilters.recentOnly) {
                 if (currentFilters.recentOnly === 'older') {
-                    // Older than 1 year
                     const cutoffDate = new Date();
                     cutoffDate.setDate(cutoffDate.getDate() - 365);
                     query = query.lt('added_date', cutoffDate.toISOString().split('T')[0]);
@@ -192,7 +217,6 @@ function Directory() {
                 }
             }
 
-            // Pagination
             const from = pageToFetch * ITEMS_PER_PAGE;
             const to = from + ITEMS_PER_PAGE - 1;
 
@@ -229,42 +253,32 @@ function Directory() {
                 isBsmmMember: item.is_bsmm_member || false,
                 isPppmMember: item.is_pppm_member || false,
                 isVeteran: item.is_veteran || false,
-                isVeteran: item.is_veteran || false,
-                isVeteran: item.is_veteran || false,
                 isDonator: donatorCallsignIds.has(item.id),
                 createdAt: item.created_at,
                 updatedAt: item.updated_at
             }));
 
-            // Client-side filtering for license status (requires date calculations)
             if (currentFilters.licenseStatus) {
                 transformedData = transformedData.filter(item => {
                     const status = getLicenseStatus(item.expiryDate);
                     if (!status && currentFilters.licenseStatus !== '') {
-                        // If no expiry date, only show if filtering for all
                         return false;
                     }
                     return status && status.status === currentFilters.licenseStatus;
                 });
             }
 
-            // Client-side filtering for contact availability
             if (currentFilters.contactInfo) {
                 transformedData = transformedData.filter(item => {
                     const hasPhone = item.phone && item.phone.trim() !== '';
                     const hasEmail = item.email && item.email.trim() !== '';
 
                     switch (currentFilters.contactInfo) {
-                        case 'hasPhone':
-                            return hasPhone;
-                        case 'hasEmail':
-                            return hasEmail;
-                        case 'hasBoth':
-                            return hasPhone && hasEmail;
-                        case 'noContact':
-                            return !hasPhone && !hasEmail;
-                        default:
-                            return true;
+                        case 'hasPhone': return hasPhone;
+                        case 'hasEmail': return hasEmail;
+                        case 'hasBoth': return hasPhone && hasEmail;
+                        case 'noContact': return !hasPhone && !hasEmail;
+                        default: return true;
                     }
                 });
             }
@@ -286,7 +300,7 @@ function Directory() {
         }
     };
 
-    const handleSearch = (term) => {
+    const handleSearch = useCallback((term) => {
         setSearchTerm(term);
         // Clear current data to show loading spinner for search
         setCallsigns([]);
@@ -295,9 +309,8 @@ function Directory() {
         saveFilters(term, filters);
         // Reset to page 0 for new search
         fetchCallsigns(0, term, filters, true);
-    };
+    }, [filters]);
 
-    // Listen for search trigger from LiveNotifications
     useEffect(() => {
         const handleTriggerSearch = (e) => {
             if (e.detail) {
@@ -309,7 +322,6 @@ function Directory() {
         return () => window.removeEventListener('triggerSearch', handleTriggerSearch);
     });
 
-    // Handle Navigation Search
     useEffect(() => {
         if (location.state?.search) {
             handleSearch(location.state.search);
@@ -318,7 +330,7 @@ function Directory() {
         }
     }, [location.state]);
 
-    const handleFilterChange = (filterName, value) => {
+    const handleFilterChange = useCallback((filterName, value) => {
         let newFilters = { ...filters, [filterName]: value };
 
         // Reset district if state filter changes
@@ -334,18 +346,18 @@ function Directory() {
         saveFilters(searchTerm, newFilters);
         // Reset to page 0 for new filter
         fetchCallsigns(0, searchTerm, newFilters, true);
-    };
+    }, [filters, searchTerm]);
 
-    const loadMore = () => {
+    const loadMore = useCallback(() => {
         fetchCallsigns(page + 1, searchTerm, filters, false);
-    };
+    }, [page, searchTerm, filters]);
 
-    const handleEdit = (data) => {
+    const handleEdit = useCallback((data) => {
         setEditData(data);
         setIsModalOpen(true);
-    };
+    }, []);
 
-    const handleDelete = async (data) => {
+    const handleDelete = useCallback(async (data) => {
         if (!window.confirm(`Are you sure you want to delete ${data.callsign}? This action cannot be undone.`)) {
             return;
         }
@@ -365,22 +377,34 @@ function Directory() {
             console.error('Error deleting callsign:', err);
             toast.error('Failed to delete callsign: ' + err.message);
         }
-    };
+    }, [searchTerm, filters]);
 
     const handleCloseModal = (shouldRefresh = false) => {
         setIsModalOpen(false);
         setEditData(null);
         if (shouldRefresh) {
-            // Soft refresh: re-fetch data with current filters
             fetchCallsigns(0, searchTerm, filters, true);
         }
     };
+
+    // Virtualization Logic
+    const rowCount = Math.ceil(callsigns.length / columnCount);
+
+    // Virtualizer instance
+    const virtualizer = useWindowVirtualizer({
+        count: rowCount,
+        estimateSize: () => 400, // Approximate height of a card including gap
+        overscan: 5,
+        scrollMargin: listRef.current?.offsetTop ?? 0,
+    });
+
+    const items = virtualizer.getVirtualItems();
 
     return (
         <div className="min-h-screen">
             <Navbar />
 
-            <main className="container" style={{ minHeight: '80vh' }}>
+            <main className="container" ref={listRef} style={{ minHeight: '80vh' }}>
                 <div style={{ textAlign: 'center', margin: '40px 0 40px' }}>
                     <h1 style={{
                         fontSize: 'clamp(2rem, 5vw, 3.5rem)',
@@ -398,12 +422,10 @@ function Directory() {
                     </p>
                 </div>
 
-                {/* Statistics Dashboard - fetches realtime stats from database */}
                 {!loading && !error && callsigns.length > 0 && (
                     <StatsDashboard totalCount={totalCount} />
                 )}
 
-                {/* Advanced Search */}
                 <AdvancedSearch
                     onSearch={handleSearch}
                     onFilterChange={handleFilterChange}
@@ -446,7 +468,6 @@ function Directory() {
                     </div>
                 )}
 
-                {/* Results count */}
                 {!loading && !error && callsigns.length > 0 && (
                     <div style={{
                         marginBottom: '20px',
@@ -464,7 +485,7 @@ function Directory() {
                                     setFilters(emptyFilters);
                                     setCallsigns([]);
                                     setPage(0);
-                                    clearSavedFilters(); // Clear localStorage
+                                    clearSavedFilters();
                                     fetchCallsigns(0, '', emptyFilters, true);
                                 }}
                                 style={{
@@ -483,17 +504,46 @@ function Directory() {
                     </div>
                 )}
 
-                {/* Grid */}
+                {/* Virtualized List */}
                 {callsigns.length > 0 && !error && (
                     <>
                         <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                            gap: '24px'
+                            height: `${virtualizer.getTotalSize()}px`,
+                            width: '100%',
+                            position: 'relative',
                         }}>
-                            {callsigns.map((item, index) => (
-                                <Card key={`${item.callsign}-${index}`} data={item} onEdit={handleEdit} onDelete={handleDelete} />
-                            ))}
+                            {items.map((virtualRow) => {
+                                const rowStartIndex = virtualRow.index * columnCount;
+                                const rowItems = callsigns.slice(rowStartIndex, rowStartIndex + columnCount);
+
+                                return (
+                                    <div
+                                        key={virtualRow.key}
+                                        data-index={virtualRow.index}
+                                        ref={virtualizer.measureElement}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            transform: `translateY(${virtualRow.start}px)`,
+                                            display: 'grid',
+                                            gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
+                                            gap: '24px',
+                                            paddingBottom: '24px' // Add gap to bottom of row
+                                        }}
+                                    >
+                                        {rowItems.map((item) => (
+                                            <Card
+                                                key={item.id}
+                                                data={item}
+                                                onEdit={handleEdit}
+                                                onDelete={handleDelete}
+                                            />
+                                        ))}
+                                    </div>
+                                );
+                            })}
                         </div>
 
                         {/* Load More Button */}
@@ -649,8 +699,6 @@ const AutoLogoutToastHandler = () => {
     useEffect(() => {
         const handleAutoLogout = () => {
             toast.error('You have been logged out due to inactivity (5 mins).');
-            // Navigate is handled by AuthContext state change usually, 
-            // but we can force it here if needed.
         };
 
         window.addEventListener('autoLogout', handleAutoLogout);

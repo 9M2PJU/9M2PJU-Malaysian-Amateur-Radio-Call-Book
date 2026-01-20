@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaHome, FaDownload, FaFacebook, FaGlobe, FaSearch, FaClock, FaAddressCard, FaCalendarAlt, FaTelegram } from 'react-icons/fa';
 import { getLicenseStatus, formatExpiryDate } from '../utils/licenseStatus';
@@ -58,11 +58,27 @@ const STATE_FLAGS = {
     'PUTRAJAYA': '/flags/flag-putrajaya.svg'
 };
 
+const STANDARD_BADGE_STYLE = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '6px 12px', // Standard padding
+    borderRadius: '6px',
+    fontSize: '0.85rem', // Standard font size
+    fontWeight: '600',
+    height: '34px',     // Fixed height for alignment
+    textDecoration: 'none',
+    boxSizing: 'border-box',
+    transition: 'all 0.2s ease'
+};
+
 const Card = ({ data, onEdit, onDelete }) => {
     const { user, isAdmin, isSuperAdmin } = useAuth();
-    const licenseClass = getLicenseClass(data.callsign);
-    const recentlyAdded = isRecentlyAdded(data.addedDate);
-    const licenseStatus = getLicenseStatus(data.expiryDate);
+
+    // Memoize computationally intensive derived data
+    const licenseClass = useMemo(() => getLicenseClass(data.callsign), [data.callsign]);
+    const recentlyAdded = useMemo(() => isRecentlyAdded(data.addedDate), [data.addedDate]);
+    const licenseStatus = useMemo(() => getLicenseStatus(data.expiryDate), [data.expiryDate]);
 
     const downloadVCard = () => {
         const vcard = `BEGIN:VCARD
@@ -88,21 +104,87 @@ END:VCARD`;
         URL.revokeObjectURL(url);
     };
 
-    // Define buttonStyle for social buttons
-    const buttonStyle = {
-        background: 'rgba(255, 255, 255, 0.05)',
-        border: '1px solid var(--glass-border)',
-        borderRadius: '6px',
-        color: 'var(--text-muted)',
-        padding: '6px 12px',
-        textDecoration: 'none',
-        fontSize: '0.9rem',
-        fontWeight: '500',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        transition: 'all 0.2s ease',
-    };
+    // Prepare badges data
+    const badges = useMemo(() => {
+        const list = [
+            {
+                show: data.facebook,
+                type: 'link',
+                href: data.facebook,
+                label: 'Facebook',
+                icon: <FaFacebook style={{ fontSize: '1.2rem' }} />,
+                style: { background: 'rgba(24, 119, 242, 0.1)', color: '#1877f2', border: '1px solid rgba(24, 119, 242, 0.2)' }
+            },
+            {
+                show: data.qrz,
+                type: 'link',
+                href: data.qrz,
+                label: 'QRZ.com',
+                image: '/qrz-logo.png',
+                style: { background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)' }
+            },
+            {
+                show: data.aprsCallsign,
+                type: 'link',
+                href: `https://aprs.fi/#!call=a%2F${encodeURIComponent(data.aprsCallsign)}&timerange=3600&tail=3600`,
+                label: 'Track (APRS.fi)',
+                image: '/aprs-icon.png',
+                style: { background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.3)' }
+            },
+            {
+                show: data.dmrId,
+                type: 'badge',
+                label: data.dmrId,
+                image: '/dmr-logo.png',
+                style: { background: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: '1px solid rgba(255, 255, 255, 0.2)' },
+                imgStyle: { width: '40px', borderRadius: '2px' }
+            },
+            {
+                show: data.meshtasticId,
+                type: 'badge',
+                label: data.meshtasticId,
+                image: '/meshtastic-logo.png',
+                style: { background: 'rgba(103, 232, 157, 0.1)', color: '#67e89d', border: '1px solid rgba(103, 232, 157, 0.3)' },
+                imgStyle: { borderRadius: '4px' }
+            },
+            {
+                show: data.martsId,
+                type: 'badge',
+                label: `MARTS #${data.martsId}`,
+                image: '/marts-logo.png',
+                style: { background: 'rgba(255, 235, 59, 0.1)', color: '#fbbf24', border: '1px solid rgba(251, 191, 36, 0.3)' }
+            },
+            {
+                show: data.isPpmMember,
+                type: 'badge',
+                label: 'PPM Member',
+                image: '/ppm-logo.png',
+                style: { background: 'rgba(59, 78, 180, 0.2)', color: '#93c5fd', border: '1px solid rgba(59, 130, 246, 0.3)' }
+            },
+            {
+                show: data.isBsmmMember,
+                type: 'badge',
+                label: 'BSMM Member',
+                image: '/bsmm-logo.png',
+                style: { background: 'rgba(239, 68, 68, 0.15)', color: '#fca5a5', border: '1px solid rgba(248, 113, 113, 0.3)' }
+            },
+            {
+                show: data.isPppmMember,
+                type: 'badge',
+                label: 'PPPM Member',
+                image: '/pppm-logo.png',
+                style: { background: 'rgba(37, 99, 235, 0.15)', color: '#93c5fd', border: '1px solid rgba(96, 165, 250, 0.3)' }
+            },
+            {
+                show: data.isVeteran,
+                type: 'badge',
+                label: 'Military Veteran',
+                image: '/jhev-logo.png',
+                style: { background: 'rgba(75, 85, 99, 0.2)', color: '#cbd5e1', border: '1px solid rgba(148, 163, 184, 0.3)' }
+            }
+        ];
+        return list.filter(b => b.show);
+    }, [data]);
 
     return (
         <div className="glass-panel" style={{ padding: 'clamp(16px, 4vw, 24px)', transition: 'all 0.3s ease', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
@@ -244,6 +326,7 @@ END:VCARD`;
                                     src={STATE_FLAGS[data.location]}
                                     alt={data.location}
                                     style={{ width: '20px', height: 'auto', borderRadius: '2px', objectFit: 'cover' }}
+                                    loading="lazy"
                                 />
                                 {data.location}
                             </>
@@ -330,7 +413,7 @@ END:VCARD`;
                             style={{ color: 'var(--secondary)', textDecoration: 'none' }}
                             title="Chat on WhatsApp"
                         >
-                            {data.phone} <img src="/whatsapp-icon.png" alt="WhatsApp" style={{ height: '18px', width: '18px', verticalAlign: 'middle', marginLeft: '6px' }} />
+                            {data.phone} <img src="/whatsapp-icon.png" alt="WhatsApp" style={{ height: '18px', width: '18px', verticalAlign: 'middle', marginLeft: '6px' }} loading="lazy" />
                         </a>
                     </div>
                 )}
@@ -384,151 +467,55 @@ END:VCARD`;
                     </div>
                 )}
 
-                {/* Social Media Section */}
                 {/* Social Media & Badges Section */}
-                {(data.facebook || data.qrz || data.dmrId || data.martsId || data.meshtasticId || data.aprsCallsign || data.isPpmMember || data.isBsmmMember || data.isPppmMember || data.isVeteran) && (
+                {badges.length > 0 && (
                     <div style={{ display: 'flex', gap: '8px', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--glass-border)', flexWrap: 'wrap', alignItems: 'center' }}>
+                        {badges.map((badge, index) => {
+                            const content = (
+                                <>
+                                    {badge.icon && badge.icon}
+                                    {badge.image && (
+                                        <img
+                                            src={badge.image}
+                                            alt={badge.label}
+                                            style={{
+                                                height: '20px',
+                                                width: 'auto',
+                                                objectFit: 'contain',
+                                                ...badge.imgStyle
+                                            }}
+                                            loading="lazy"
+                                        />
+                                    )}
+                                    <span>{badge.label}</span>
+                                </>
+                            );
 
-                        {/* Define standard badge style for consistency */}
-                        {(() => {
-                            const standardBadgeStyle = {
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                padding: '6px 12px', // Standard padding
-                                borderRadius: '6px',
-                                fontSize: '0.85rem', // Standard font size
-                                fontWeight: '600',
-                                height: '34px',     // Fixed height for alignment
-                                textDecoration: 'none',
-                                boxSizing: 'border-box',
-                                transition: 'all 0.2s ease'
-                            };
-
-                            const badges = [
-                                {
-                                    show: data.facebook,
-                                    type: 'link',
-                                    href: data.facebook,
-                                    label: 'Facebook',
-                                    icon: <FaFacebook style={{ fontSize: '1.2rem' }} />,
-                                    style: { background: 'rgba(24, 119, 242, 0.1)', color: '#1877f2', border: '1px solid rgba(24, 119, 242, 0.2)' }
-                                },
-                                {
-                                    show: data.qrz,
-                                    type: 'link',
-                                    href: data.qrz,
-                                    label: 'QRZ.com',
-                                    image: '/qrz-logo.png',
-                                    style: { background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)' }
-                                },
-                                {
-                                    show: data.aprsCallsign,
-                                    type: 'link',
-                                    href: `https://aprs.fi/#!call=a%2F${encodeURIComponent(data.aprsCallsign)}&timerange=3600&tail=3600`,
-                                    label: 'Track (APRS.fi)',
-                                    image: '/aprs-icon.png',
-                                    style: { background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.3)' }
-                                },
-                                {
-                                    show: data.dmrId,
-                                    type: 'badge',
-                                    label: data.dmrId,
-                                    image: '/dmr-logo.png',
-                                    style: { background: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: '1px solid rgba(255, 255, 255, 0.2)' },
-                                    imgStyle: { width: '40px', borderRadius: '2px' }
-                                },
-                                {
-                                    show: data.meshtasticId,
-                                    type: 'badge',
-                                    label: data.meshtasticId,
-                                    image: '/meshtastic-logo.png',
-                                    style: { background: 'rgba(103, 232, 157, 0.1)', color: '#67e89d', border: '1px solid rgba(103, 232, 157, 0.3)' },
-                                    imgStyle: { borderRadius: '4px' }
-                                },
-                                {
-                                    show: data.martsId,
-                                    type: 'badge',
-                                    label: `MARTS #${data.martsId}`,
-                                    image: '/marts-logo.png',
-                                    style: { background: 'rgba(255, 235, 59, 0.1)', color: '#fbbf24', border: '1px solid rgba(251, 191, 36, 0.3)' }
-                                },
-                                {
-                                    show: data.isPpmMember,
-                                    type: 'badge',
-                                    label: 'PPM Member',
-                                    image: '/ppm-logo.png',
-                                    style: { background: 'rgba(59, 78, 180, 0.2)', color: '#93c5fd', border: '1px solid rgba(59, 130, 246, 0.3)' }
-                                },
-                                {
-                                    show: data.isBsmmMember,
-                                    type: 'badge',
-                                    label: 'BSMM Member',
-                                    image: '/bsmm-logo.png',
-                                    style: { background: 'rgba(239, 68, 68, 0.15)', color: '#fca5a5', border: '1px solid rgba(248, 113, 113, 0.3)' }
-                                },
-                                {
-                                    show: data.isPppmMember,
-                                    type: 'badge',
-                                    label: 'PPPM Member',
-                                    image: '/pppm-logo.png',
-                                    style: { background: 'rgba(37, 99, 235, 0.15)', color: '#93c5fd', border: '1px solid rgba(96, 165, 250, 0.3)' }
-                                },
-                                {
-                                    show: data.isVeteran,
-                                    type: 'badge',
-                                    label: 'Military Veteran',
-                                    image: '/jhev-logo.png',
-                                    style: { background: 'rgba(75, 85, 99, 0.2)', color: '#cbd5e1', border: '1px solid rgba(148, 163, 184, 0.3)' }
-                                }
-                            ];
-
-                            return badges.filter(b => b.show).map((badge, index) => {
-                                const content = (
-                                    <>
-                                        {badge.icon && badge.icon}
-                                        {badge.image && (
-                                            <img
-                                                src={badge.image}
-                                                alt={badge.label}
-                                                style={{
-                                                    height: '20px',
-                                                    width: 'auto',
-                                                    objectFit: 'contain',
-                                                    ...badge.imgStyle
-                                                }}
-                                            />
-                                        )}
-                                        <span>{badge.label}</span>
-                                    </>
-                                );
-
-                                if (badge.type === 'link') {
-                                    return (
-                                        <a
-                                            key={index}
-                                            href={badge.href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={{ ...standardBadgeStyle, ...badge.style }}
-                                            title={badge.label}
-                                        >
-                                            {content}
-                                        </a>
-                                    );
-                                }
-
+                            if (badge.type === 'link') {
                                 return (
-                                    <div
+                                    <a
                                         key={index}
-                                        style={{ ...standardBadgeStyle, ...badge.style }}
+                                        href={badge.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ ...STANDARD_BADGE_STYLE, ...badge.style }}
                                         title={badge.label}
                                     >
                                         {content}
-                                    </div>
+                                    </a>
                                 );
-                            });
-                        })()}
+                            }
+
+                            return (
+                                <div
+                                    key={index}
+                                    style={{ ...STANDARD_BADGE_STYLE, ...badge.style }}
+                                    title={badge.label}
+                                >
+                                    {content}
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
 
