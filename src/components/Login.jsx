@@ -107,7 +107,7 @@ const Login = () => {
                         </h2>
                     </div>
                     <h1 style={{
-                        fontSize: 'clamp(1.3rem, 4.5vw, 2rem)',
+                        fontSize: 'clamp(1rem, 3.5vw, 1.5rem)',
                         fontWeight: '800',
                         marginBottom: '10px',
                         background: 'linear-gradient(to right, #fff, #94a3b8)',
