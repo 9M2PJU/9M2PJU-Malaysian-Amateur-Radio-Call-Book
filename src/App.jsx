@@ -5,7 +5,7 @@ import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { getLicenseStatus } from './utils/licenseStatus';
 import { useToast } from './components/Toast';
-import { useWindowVirtualizer } from '@tanstack/react-virtual';
+// Loading spinner for lazy components
 
 // Lazy load components for better code splitting
 const Login = lazy(() => import('./components/Login'));
@@ -404,28 +404,6 @@ function Directory() {
 
     const hasActiveFilters = !!(searchTerm || filters.state || filters.district || filters.licenseClass || filters.licenseStatus || filters.recentOnly || filters.contactInfo);
 
-    // Virtualization Logic
-    const rowCount = Math.ceil(callsigns.length / columnCount);
-
-    // Virtualizer instance
-    const virtualizer = useWindowVirtualizer({
-        count: rowCount,
-        estimateSize: () => 400, // Approximate height of a card including gap
-        overscan: 12,
-        scrollMargin: listRef.current?.offsetTop ?? 0,
-    });
-
-    const items = virtualizer.getVirtualItems();
-
-    // Infinite Scroll Logic
-    useEffect(() => {
-        if (!items.length) return;
-        const lastItem = items[items.length - 1];
-        if (lastItem.index >= rowCount - 1 && hasMore && !loading) {
-            loadMore();
-        }
-    }, [items, rowCount, hasMore, loading, loadMore]);
-
     return (
         <div className="min-h-screen">
             <Navbar />
@@ -499,54 +477,30 @@ function Directory() {
 
 
 
-                {/* Virtualized List */}
+                {/* Native Grid */}
                 {callsigns.length > 0 && !error && (
                     <>
                         <div style={{
-                            height: `${virtualizer.getTotalSize()}px`,
-                            width: '100%',
-                            position: 'relative',
-                            marginTop: '0',
+                            display: 'grid',
+                            gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
+                            gap: '24px',
+                            paddingBottom: '24px'
                         }}>
-                            {items.map((virtualRow) => {
-                                const rowStartIndex = virtualRow.index * columnCount;
-                                const rowItems = callsigns.slice(rowStartIndex, rowStartIndex + columnCount);
-
-                                return (
-                                    <div
-                                        key={virtualRow.key}
-                                        data-index={virtualRow.index}
-                                        ref={virtualizer.measureElement}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            transform: `translateY(${virtualRow.start}px)`,
-                                            display: 'grid',
-                                            gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
-                                            gap: '24px',
-                                            paddingBottom: '24px' // Add gap to bottom of row
-                                        }}
-                                    >
-                                        {rowItems.map((item) => (
-                                            <Card
-                                                key={item.id}
-                                                data={item}
-                                                onEdit={handleEdit}
-                                                onDelete={handleDelete}
-                                            />
-                                        ))}
-                                    </div>
-                                );
-                            })}
+                            {callsigns.map((item) => (
+                                <Card
+                                    key={item.id}
+                                    data={item}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                />
+                            ))}
                         </div>
 
                         {/* Load More Button */}
                         <div
                             style={{
                                 textAlign: 'center',
-                                marginTop: '40px',
+                                marginTop: '20px',
                                 marginBottom: '60px',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -575,7 +529,34 @@ function Directory() {
                             )}
 
                             {!loading && hasMore && (
-                                <div style={{ height: '20px' }} /> /* Spacer for auto-load trigger area */
+                                <button
+                                    onClick={loadMore}
+                                    style={{
+                                        background: 'var(--glass-bg)',
+                                        border: '1px solid var(--glass-border)',
+                                        color: 'var(--text-main)',
+                                        padding: '12px 32px',
+                                        borderRadius: '12px',
+                                        fontSize: '1rem',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease',
+                                        backdropFilter: 'blur(10px)',
+                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                                        e.currentTarget.style.background = 'var(--glass-bg)';
+                                    }}
+                                >
+                                    Load More Callsigns
+                                </button>
                             )}
 
                             {!hasMore && callsigns.length > 0 && (
