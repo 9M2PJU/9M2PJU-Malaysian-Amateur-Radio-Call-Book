@@ -61,14 +61,13 @@ const Navbar = () => {
                     }}
                     style={{
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '0px',
+                        gap: '8px',
                         cursor: 'pointer'
                     }}
                 >
-                    <img src="/logo.png" alt="MY-Callbook" style={{ height: '65px', width: '65px', borderRadius: '50%', objectFit: 'contain' }} />
-                    <h1 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1rem, 4vw, 1.3rem)', fontWeight: 'bold' }}>
+                    <img src="/logo.png" alt="MY-Callbook" style={{ height: '36px', width: '36px', borderRadius: '50%' }} />
+                    <h1 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 'bold' }}>
                         MY-Callbook
                     </h1>
                 </div>

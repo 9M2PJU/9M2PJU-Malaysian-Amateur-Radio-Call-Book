@@ -100,8 +100,8 @@ const Login = () => {
                 justifyContent: 'center'
             }}>
                 <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(5px, 1.5vh, 15px)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '5px' }}>
-                        <img src="/logo.png" alt="MY-Callbook" style={{ height: '48px', width: '48px', borderRadius: '50%' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px', marginBottom: '5px' }}>
+                        <img src="/logo.png" alt="MY-Callbook" style={{ height: '100px', width: '100px', borderRadius: '50%', marginBottom: '10px' }} />
                         <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 3.5vw, 1.5rem)', fontWeight: 'bold' }}>
                             MY-Callbook
                         </h2>
