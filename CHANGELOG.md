@@ -2,6 +2,12 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.3.5] - 2026-01-20
+### UI & Branding
+- **Branding**: Reverted brand logo to Gold version.
+- **Login Page**: Optimized layout to prevent scrollbars and standardized sizing. Reduced title font size.
+- **Navbar**: Reverted layout to horizontal style.
+
 ## [2.3.4] - 2026-01-20
 ### Performance & Responsiveness
 - **Grid Virtualization**: Implemented `@tanstack/react-virtual` to efficiently render large lists of callsigns, significantly reducing DOM nodes and improving scrolling performance.

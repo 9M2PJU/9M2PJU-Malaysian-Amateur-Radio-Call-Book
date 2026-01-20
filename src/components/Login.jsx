@@ -91,26 +91,26 @@ const Login = () => {
             `}</style>
             <div className="login-container" style={{
                 margin: 'auto',
-                padding: '10px 20px', // Reduced vertical padding
+                padding: '10px 15px', // Further reduced padding
                 width: '100%',
                 maxWidth: '600px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minHeight: '100dvh' // Ensure it takes full height for centering
+                minHeight: '100dvh'
             }}>
-                <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(5px, 1vh, 10px)' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px', marginBottom: '5px' }}>
-                        <img src="/logo.png" alt="MY-Callbook" style={{ height: '90px', width: '90px', borderRadius: '50%', marginBottom: '5px' }} />
-                        <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.2rem, 3.5vw, 1.4rem)', fontWeight: 'bold' }}>
+                <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(5px, 1vh, 8px)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px', marginBottom: '3px' }}>
+                        <img src="/logo.png" alt="MY-Callbook" style={{ height: '80px', width: '80px', borderRadius: '50%', marginBottom: '4px' }} />
+                        <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.1rem, 3.5vw, 1.3rem)', fontWeight: 'bold' }}>
                             MY-Callbook
                         </h2>
                     </div>
                     <h1 style={{
-                        fontSize: 'clamp(1rem, 3vw, 1.4rem)',
+                        fontSize: 'clamp(0.9rem, 3vw, 1.3rem)',
                         fontWeight: '800',
-                        marginBottom: '8px',
+                        marginBottom: '6px',
                         background: 'linear-gradient(to right, #fff, #94a3b8)',
                         WebkitBackgroundClip: 'text',
                         color: 'transparent',
@@ -118,7 +118,7 @@ const Login = () => {
                     }}>
                         Malaysian Amateur<br />Radio Directory
                     </h1>
-                    <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.75rem, 2vw, 0.9rem)', maxWidth: '600px', margin: '0 auto 10px' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.7rem, 2vw, 0.85rem)', maxWidth: '600px', margin: '0 auto 8px' }}>
                         Directory for Malaysian Amateur Radio Operators
                     </p>
 
@@ -127,27 +127,27 @@ const Login = () => {
 
                 <div className="glass-panel login-card" style={{
                     width: '100%',
-                    maxWidth: '360px',
-                    padding: 'clamp(12px, 2.5vw, 20px)'
+                    maxWidth: '350px',
+                    padding: 'clamp(10px, 2.5vw, 15px)'
                 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '8px' }}>
                         <h2 style={{
                             marginTop: 0,
                             background: 'linear-gradient(to right, var(--primary), var(--secondary))',
                             WebkitBackgroundClip: 'text',
                             color: 'transparent',
-                            fontSize: '1.1rem',
-                            marginBottom: '4px'
+                            fontSize: '1rem',
+                            marginBottom: '2px'
                         }}>Restricted Access</h2>
                     </div>
 
                     <div className="restricted-info" style={{
                         background: 'rgba(255, 100, 100, 0.1)',
                         borderLeft: '4px solid #ff4444',
-                        padding: '5px 8px',
+                        padding: '4px 8px',
                         borderRadius: '4px',
-                        marginBottom: '10px',
-                        fontSize: '0.75rem',
+                        marginBottom: '8px',
+                        fontSize: '0.7rem',
                         color: '#ffaaaa',
                         lineHeight: '1.2'
                     }}>
@@ -159,9 +159,9 @@ const Login = () => {
                             background: 'rgba(255,0,0,0.1)',
                             border: '1px solid #ff4444',
                             color: '#ff6666',
-                            padding: '8px',
+                            padding: '6px',
                             borderRadius: '8px',
-                            marginBottom: '10px',
+                            marginBottom: '8px',
                             fontSize: '0.8rem'
                         }}>
                             {error}
@@ -169,8 +169,8 @@ const Login = () => {
                     )}
 
                     <form onSubmit={handleSubmit}>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.8rem' }}>Email</label>
+                        <div style={{ marginBottom: '8px' }}>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '2px', fontSize: '0.8rem' }}>Email</label>
                             <div style={{ position: 'relative' }}>
                                 <FaEnvelope style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)', fontSize: '0.8rem' }} />
                                 <input
@@ -192,8 +192,8 @@ const Login = () => {
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: '15px' }}>
-                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.8rem' }}>Password</label>
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '2px', fontSize: '0.8rem' }}>Password</label>
                             <div style={{ position: 'relative' }}>
                                 <FaLock style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)', fontSize: '0.8rem' }} />
                                 <input
@@ -213,15 +213,15 @@ const Login = () => {
                                     placeholder="••••••••"
                                 />
                             </div>
-                            <div style={{ textAlign: 'right', marginTop: '4px' }}>
-                                <Link to="/forgot-password" style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textDecoration: 'none' }}>
+                            <div style={{ textAlign: 'right', marginTop: '2px' }}>
+                                <Link to="/forgot-password" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textDecoration: 'none' }}>
                                     Forgot Password?
                                 </Link>
                             </div>
                         </div>
 
                         {/* Turnstile / Captcha */}
-                        <div style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center', transform: 'scale(0.9)' }}>
+                        <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', transform: 'scale(0.85)' }}>
                             <Turnstile
                                 sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
                                 onVerify={setCaptchaToken}
@@ -241,7 +241,7 @@ const Login = () => {
                                 border: 'none',
                                 borderRadius: '8px',
                                 color: loading ? 'var(--text-muted)' : '#000',
-                                fontSize: '0.95rem',
+                                fontSize: '0.9rem',
                                 fontWeight: 'bold',
                                 cursor: loading ? 'wait' : 'pointer',
                                 transition: 'all 0.2s',
@@ -255,14 +255,14 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div style={{ marginTop: '15px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                    <div style={{ marginTop: '10px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
                         Don't have an account?{' '}
                         <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>
                             Register
                         </Link>
                     </div>
                 </div>
-                <div className="footer-section" style={{ marginTop: '10px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                <div className="footer-section" style={{ marginTop: '8px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
                     <p style={{ margin: '0 0 2px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
                     <p style={{ margin: 0 }}>
                         Made for 🇲🇾 by <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>9M2PJU</a>
