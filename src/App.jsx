@@ -400,6 +400,15 @@ function Directory() {
 
     const items = virtualizer.getVirtualItems();
 
+    // Infinite Scroll Logic
+    useEffect(() => {
+        if (!items.length) return;
+        const lastItem = items[items.length - 1];
+        if (lastItem.index >= rowCount - 1 && hasMore && !loading) {
+            loadMore();
+        }
+    }, [items, rowCount, hasMore, loading, loadMore]);
+
     return (
         <div className="min-h-screen">
             <Navbar />
@@ -579,34 +588,7 @@ function Directory() {
                             )}
 
                             {!loading && hasMore && (
-                                <button
-                                    onClick={loadMore}
-                                    style={{
-                                        background: 'var(--glass-bg)',
-                                        border: '1px solid var(--glass-border)',
-                                        color: 'var(--text-main)',
-                                        padding: '12px 32px',
-                                        borderRadius: '12px',
-                                        fontSize: '1rem',
-                                        fontWeight: '600',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s ease',
-                                        backdropFilter: 'blur(10px)',
-                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                                    }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                                        e.currentTarget.style.background = 'var(--glass-bg)';
-                                    }}
-                                >
-                                    Load More Callsigns
-                                </button>
+                                <div style={{ height: '20px' }} /> /* Spacer for auto-load trigger area */
                             )}
 
                             {!hasMore && callsigns.length > 0 && (
