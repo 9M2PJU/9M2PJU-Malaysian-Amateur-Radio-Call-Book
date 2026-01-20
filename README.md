@@ -81,10 +81,10 @@ We are obsessed with speed.
 
 Stay up to date with the latest evolution of the platform.
 
-### **v2.4.0** (Latest) - *2026-01-20*
-*   **Final Stable**: Refined manual Load More button with premium styling and robust counting logic. Marked as **LAST STABLE** build.
+### **v2.4.1** (Latest) - *2026-01-20*
+*   **UI Polish**: Standardized layout spacing for a balanced look. **OFFICIAL LAST STABLE** version.
 
-### **v2.3.6** - *2026-01-20*
+### **v2.4.0** - *2026-01-20*
 
 ### **v2.3.5** - *2026-01-20*
 *   **UI Branding**: Reverted logo to Gold version and optimized Login page layout for better mobile fit.

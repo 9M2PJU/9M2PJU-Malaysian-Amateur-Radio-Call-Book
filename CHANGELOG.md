@@ -2,6 +2,10 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.4.1] - 2026-01-20
+### UI Polish
+- **Spacing**: Standardized vertical gaps between Statistics, Search Filter, and Cards grid for a more balanced and professional layout. This is the **OFFICIAL LAST STABLE** release.
+
 ## [2.4.0] - 2026-01-20
 ### UI & Stability
 - **Manual Load More**: Refined the manual "Load More" button with premium "Midnight Glass" aesthetics and robust logic for accurate result counting. This is the **LAST STABLE** release for the current implementation phase.
