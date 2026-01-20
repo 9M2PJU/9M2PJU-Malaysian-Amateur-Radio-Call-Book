@@ -522,7 +522,7 @@ const SubmissionModal = ({ isOpen, onClose, initialData = null }) => {
                             </div>
                             <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '6px', lineHeight: '1.5', fontSize: '0.85rem' }}>
                                 <div style={{ marginBottom: '8px', color: '#81e6d9' }}>
-                                    🔔 <strong>Why add this?</strong> You will receive automated reminders via Telegram when your license is about to expire.
+                                    🔔 <strong>Why add this?</strong> You will receive automated reminders via Telegram when your license is about to expire. <strong>THIS IS NOT YOUR PHONE NUMBER!</strong>
                                 </div>
                                 <strong style={{ color: 'var(--secondary)' }}>How to get your numeric Chat ID:</strong><br />
                                 1. <a
