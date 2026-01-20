@@ -373,7 +373,7 @@ END:VCARD`;
                             }}
                             title="Receiving license expiry reminders via Telegram"
                         >
-                            📲 TG Reminder
+                            📲 Expiry Reminder
                         </span>
                     )}
                 </div>
