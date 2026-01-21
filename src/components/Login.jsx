@@ -126,9 +126,11 @@ const Login = () => {
                         display: none !important;
                     }
                     
-                    /* Hide PublicStats on mobile to save space */
+                    /* Scale down PublicStats on mobile to save space */
                     .header-section > div:last-child {
-                        display: none !important;
+                        transform: scale(0.65) !important;
+                        transform-origin: center top !important;
+                        margin: -10px 0 -15px 0 !important;
                     }
 
                     /* Compact Card */
