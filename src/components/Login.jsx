@@ -79,84 +79,122 @@ const Login = () => {
                     position: fixed;
                     width: 100%;
                 }
+                /* Mobile optimization */
+                @media (max-width: 600px) {
+                    .login-card { 
+                        padding: 15px 20px !important; 
+                    }
+                    .logo-img {
+                        width: 100px !important;
+                        height: 100px !important;
+                    }
+                    .turnstile-wrapper {
+                        transform: scale(0.85);
+                        transform-origin: center;
+                    }
+                }
                 @media (max-height: 700px) {
                     .login-container { padding: 5px 10px !important; }
-                    .header-section { margin-bottom: 2px !important; }
+                    .header-section { margin-bottom: 5px !important; }
                     .header-section h1 { margin-bottom: 5px !important; }
-                    .footer-section { margin-top: 5px !important; margin-bottom: 5px !important; }
+                    .footer-section { margin-top: 10px !important; margin-bottom: 5px !important; }
                     .login-card { padding: 10px 15px !important; }
                     .badge-container { margin-bottom: 5px !important; }
                     .header-section p { display: none; } /* Hide subtext on very short screens */
                 }
-                @media (max-width: 400px) {
-                    .header-section h1 { font-size: 1.1rem !important; }
-                    .login-card { max-width: 98% !important; margin: 0 auto; }
-                    .restricted-info { display: none; } /* Hide info box on narrow screens to save height */
-                }
             `}</style>
             <div className="login-container" style={{
                 margin: 'auto',
-                padding: '10px 15px', // Further reduced padding
+                padding: '20px',
                 width: '100%',
-                maxWidth: '600px',
+                maxWidth: '1000px', // Increased from 600px
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '100dvh'
             }}>
-                <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(5px, 1vh, 8px)' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px', marginBottom: '3px' }}>
-                        <img src="/logo.png" alt="MY-Callbook" style={{ height: '80px', width: '80px', borderRadius: '50%', marginBottom: '4px' }} />
-                        <h2 style={{ margin: 0, background: 'linear-gradient(to right, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', color: 'transparent', fontSize: 'clamp(1.1rem, 3.5vw, 1.3rem)', fontWeight: 'bold' }}>
+                <div className="header-section" style={{ textAlign: 'center', marginBottom: 'clamp(10px, 2vh, 20px)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <img 
+                            src="/logo.png" 
+                            alt="MY-Callbook" 
+                            className="logo-img"
+                            style={{ 
+                                height: '150px', 
+                                width: '150px', 
+                                borderRadius: '50%', 
+                                marginBottom: '8px',
+                                boxShadow: '0 4px 20px rgba(0,0,0,0.3)', // Added shadow for pop
+                                transition: 'all 0.3s ease'
+                            }} 
+                        />
+                        <h2 style={{ 
+                            margin: 0, 
+                            background: 'linear-gradient(to right, var(--primary), var(--secondary))', 
+                            WebkitBackgroundClip: 'text', 
+                            color: 'transparent', 
+                            fontSize: 'clamp(1.5rem, 4vw, 2rem)', // Increased size
+                            fontWeight: 'bold',
+                            letterSpacing: '-0.5px'
+                        }}>
                             MY-Callbook
                         </h2>
                     </div>
                     <h1 style={{
-                        fontSize: 'clamp(0.9rem, 3vw, 1.3rem)',
+                        fontSize: 'clamp(1.2rem, 3.5vw, 1.8rem)', // Increased size
                         fontWeight: '800',
-                        marginBottom: '6px',
-                        background: 'linear-gradient(to right, #fff, #94a3b8)',
+                        marginBottom: '10px',
+                        background: 'linear-gradient(to right, #fff, #cbd5e1)',
                         WebkitBackgroundClip: 'text',
                         color: 'transparent',
-                        lineHeight: 1.1
+                        lineHeight: 1.2
                     }}>
                         Malaysian Amateur<br />Radio Directory
                     </h1>
-                    <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.7rem, 2vw, 0.85rem)', maxWidth: '600px', margin: '0 auto 8px' }}>
+                    <p style={{ 
+                        color: 'var(--text-muted)', 
+                        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', // Increased size
+                        maxWidth: '700px', 
+                        margin: '0 auto 15px' 
+                    }}>
                         Directory for Malaysian Amateur Radio Operators
                     </p>
 
-                    <PublicStats />
+                    <div style={{ transform: 'scale(1.1)' }}>
+                        <PublicStats />
+                    </div>
                 </div>
 
                 <div className="glass-panel login-card" style={{
                     width: '100%',
-                    maxWidth: '350px',
-                    padding: 'clamp(10px, 2.5vw, 15px)'
+                    maxWidth: '450px', // Increased from 350px
+                    padding: '30px', // Increased padding
+                    marginTop: '10px'
                 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                         <h2 style={{
                             marginTop: 0,
                             background: 'linear-gradient(to right, var(--primary), var(--secondary))',
                             WebkitBackgroundClip: 'text',
                             color: 'transparent',
-                            fontSize: '1rem',
-                            marginBottom: '2px'
+                            fontSize: '1.4rem', // Increased size
+                            marginBottom: '5px',
+                            fontWeight: '700'
                         }}>Restricted Access</h2>
                     </div>
 
                     <div className="restricted-info" style={{
                         background: 'rgba(255, 100, 100, 0.1)',
                         borderLeft: '4px solid #ff4444',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        marginBottom: '8px',
-                        fontSize: '0.7rem',
+                        padding: '10px 15px',
+                        borderRadius: '6px',
+                        marginBottom: '20px',
+                        fontSize: '0.9rem', // Increased size
                         color: '#ffaaaa',
-                        lineHeight: '1.2'
+                        lineHeight: '1.4'
                     }}>
-                        Directory restricted. Please log in.
+                        Directory restricted. Please log in to continue.
                     </div>
 
                     {error && (
@@ -164,20 +202,20 @@ const Login = () => {
                             background: 'rgba(255,0,0,0.1)',
                             border: '1px solid #ff4444',
                             color: '#ff6666',
-                            padding: '6px',
+                            padding: '12px',
                             borderRadius: '8px',
-                            marginBottom: '8px',
-                            fontSize: '0.8rem'
+                            marginBottom: '20px',
+                            fontSize: '0.9rem'
                         }}>
                             {error}
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit}>
-                        <div style={{ marginBottom: '8px' }}>
-                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '2px', fontSize: '0.8rem' }}>Email</label>
+                        <div style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '5px', fontSize: '0.9rem' }}>Email Address</label>
                             <div style={{ position: 'relative' }}>
-                                <FaEnvelope style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)', fontSize: '0.8rem' }} />
+                                <FaEnvelope style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--text-muted)', fontSize: '1rem' }} />
                                 <input
                                     type="email"
                                     inputMode="email"
@@ -187,22 +225,22 @@ const Login = () => {
                                     required
                                     style={{
                                         width: '100%',
-                                        padding: '8px 10px 8px 32px',
-                                        borderRadius: '8px',
+                                        padding: '12px 15px 12px 38px', // Increased padding
+                                        borderRadius: '10px',
                                         border: '1px solid var(--glass-border)',
                                         background: 'rgba(255,255,255,0.05)',
                                         color: '#fff',
-                                        fontSize: '0.85rem'
+                                        fontSize: '1rem' // Increased font size
                                     }}
                                     placeholder="name@example.com"
                                 />
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '2px', fontSize: '0.8rem' }}>Password</label>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '5px', fontSize: '0.9rem' }}>Password</label>
                             <div style={{ position: 'relative' }}>
-                                <FaLock style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)', fontSize: '0.8rem' }} />
+                                <FaLock style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--text-muted)', fontSize: '1rem' }} />
                                 <input
                                     type="password"
                                     enterKeyHint="go"
@@ -211,25 +249,34 @@ const Login = () => {
                                     required
                                     style={{
                                         width: '100%',
-                                        padding: '8px 10px 8px 32px',
-                                        borderRadius: '8px',
+                                        padding: '12px 15px 12px 38px', // Increased padding
+                                        borderRadius: '10px',
                                         border: '1px solid var(--glass-border)',
                                         background: 'rgba(255,255,255,0.05)',
                                         color: '#fff',
-                                        fontSize: '0.85rem'
+                                        fontSize: '1rem' // Increased font size
                                     }}
                                     placeholder="••••••••"
                                 />
                             </div>
-                            <div style={{ textAlign: 'right', marginTop: '2px' }}>
-                                <Link to="/forgot-password" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textDecoration: 'none' }}>
+                            <div style={{ textAlign: 'right', marginTop: '8px' }}>
+                                <Link to="/forgot-password" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color = 'var(--text-main)'} onMouseOut={(e) => e.target.style.color = 'var(--text-muted)'}>
                                     Forgot Password?
                                 </Link>
                             </div>
                         </div>
 
                         {/* Turnstile / Captcha */}
-                        <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', transform: 'scale(0.85)' }}>
+                        <div 
+                            className="turnstile-wrapper"
+                            style={{ 
+                                marginBottom: '20px', 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                minHeight: '65px', // Reserving space
+                                alignItems: 'center'
+                            }}
+                        >
                             <Turnstile
                                 ref={turnstileRef}
                                 siteKey="0x4AAAAAACM4A9z-qhrcwAcp"
@@ -241,38 +288,28 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={loading}
+                            className="btn-primary" // Use global class for consistent styling
                             style={{
                                 width: '100%',
-                                padding: '10px',
-                                background: loading
-                                    ? 'rgba(255, 255, 255, 0.1)'
-                                    : 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                                border: 'none',
-                                borderRadius: '8px',
-                                color: loading ? 'var(--text-muted)' : '#000',
-                                fontSize: '0.9rem',
-                                fontWeight: 'bold',
-                                cursor: loading ? 'wait' : 'pointer',
-                                transition: 'all 0.2s',
-                                display: 'flex',
+                                padding: '14px', // Larger button
+                                fontSize: '1.1rem', // Larger text
                                 justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '8px'
+                                opacity: loading ? 0.7 : 1
                             }}
                         >
                             {loading ? <><FaSpinner className="spin" /> Signing In...</> : 'Sign In'}
                         </button>
                     </form>
 
-                    <div style={{ marginTop: '10px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                    <div style={{ marginTop: '20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                         Don't have an account?{' '}
                         <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>
                             Register
                         </Link>
                     </div>
                 </div>
-                <div className="footer-section" style={{ marginTop: '8px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
-                    <p style={{ margin: '0 0 2px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
+                <div className="footer-section" style={{ marginTop: '20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                    <p style={{ margin: '0 0 5px 0' }}>&copy; 2026 Malaysian Amateur Radio Callbook</p>
                     <p style={{ margin: 0 }}>
                         Made for 🇲🇾 by <a href="https://hamradio.my" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>9M2PJU</a>
                     </p>
