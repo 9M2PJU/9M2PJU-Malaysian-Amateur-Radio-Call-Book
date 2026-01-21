@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { FaEnvelope, FaSpinner, FaArrowLeft } from 'react-icons/fa';
 
-import Turnstile from 'react-turnstile';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 const ForgotPassword = () => {
     const { resetPassword } = useAuth();
@@ -128,8 +128,8 @@ const ForgotPassword = () => {
                         {/* Turnstile / Captcha */}
                         <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
                             <Turnstile
-                                sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
-                                onVerify={setCaptchaToken}
+                                siteKey="0x4AAAAAACM4A9z-qhrcwAcp"
+                                onSuccess={setCaptchaToken}
                                 theme="dark"
                             />
                         </div>

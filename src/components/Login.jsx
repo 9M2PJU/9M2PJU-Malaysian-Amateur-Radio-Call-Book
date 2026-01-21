@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Turnstile from 'react-turnstile';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { useAuth } from './AuthContext';
 import { FaLock, FaEnvelope, FaSpinner, FaBroadcastTower } from 'react-icons/fa';
 import PublicStats from './PublicStats';
@@ -232,8 +232,8 @@ const Login = () => {
                         <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', transform: 'scale(0.85)' }}>
                             <Turnstile
                                 ref={turnstileRef}
-                                sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
-                                onVerify={setCaptchaToken}
+                                siteKey="0x4AAAAAACM4A9z-qhrcwAcp"
+                                onSuccess={setCaptchaToken}
                                 theme="dark"
                             />
                         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Turnstile from 'react-turnstile';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { useAuth } from './AuthContext';
 import { FaLock, FaEnvelope, FaSpinner, FaUser } from 'react-icons/fa';
 
@@ -207,8 +207,8 @@ const Register = () => {
                         {/* Turnstile / Captcha */}
                         <div style={{ marginBottom: '25px', display: 'flex', justifyContent: 'center' }}>
                             <Turnstile
-                                sitekey="0x4AAAAAACM4A9z-qhrcwAcp"
-                                onVerify={setCaptchaToken}
+                                siteKey="0x4AAAAAACM4A9z-qhrcwAcp"
+                                onSuccess={setCaptchaToken}
                                 theme="dark"
                             />
                         </div>
