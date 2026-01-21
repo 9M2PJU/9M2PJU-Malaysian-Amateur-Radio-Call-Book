@@ -2,6 +2,12 @@
 
 All notable changes to the Malaysian Amateur Radio Call Book will be documented in this file.
 
+## [2.4.4] - 2026-01-21
+### Security & UX
+- **Cloudflare Turnstile**: Replaced Altcha with Cloudflare Turnstile for more robust and user-friendly spam protection.
+- **Telegram Integration**: Added a pre-filled introduction message ("Hello, I got your number from MY-Callbook...") when clicking on a user's Telegram link.
+- **Build Stability**: Migrated to `@marsidev/react-turnstile` to resolve build issues with the previous library.
+
 ## [2.4.3] - 2026-01-21
 ### Mobile Optimization (The "It Works Perfect" Update)
 - **Search Interaction**: Implemented a "Debounce" mechanism for the search bar to prevent "AbortError" crashes and reduce server load by 80% during typing.

@@ -81,7 +81,11 @@ We are obsessed with speed.
 
 Stay up to date with the latest evolution of the platform.
 
-### **v2.4.3** (Latest) - *2026-01-21*
+### **v2.4.4** (Latest) - *2026-01-21*
+*   **Security Upgrade**: Replaced Altcha with Cloudflare Turnstile.
+*   **UX**: Added pre-filled Telegram greetings.
+
+### **v2.4.3** - *2026-01-21*
 *   **Mobile Perfection**: Major improvements to mobile keyboard handling, search interaction (debounce), and touch responsiveness. Fixed "AbortError" issues.
 
 ### **v2.4.2** - *2026-01-20*
@@ -333,7 +337,7 @@ This `docker-compose.yml` spins up the **entire infrastructure** locally:
 The project undergoes regular security reviews to ensure the safety of user data.
 
 - **Authentication**: Powered by Supabase Auth with secure token handling.
-- **Protection**: Multi-layered bot mitigation (Altcha + Honeypot).
+- **Protection**: Multi-layered bot mitigation (Cloudflare Turnstile + Honeypot).
 - **Session Security**: Automatic 5-minute inactivity logout for public/shared terminals.
 - **Input Sanitization**: Strict URL normalization and no raw HTML rendering to prevent XSS.
 - **Privacy**: Role-based access control (RBAC) ensures only authorized administrators can modify global directory data.

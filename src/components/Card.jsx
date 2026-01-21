@@ -422,7 +422,7 @@ END:VCARD`;
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
                         <FaTelegram style={{ minWidth: '16px', color: '#29b6f6' }} />
                         <a
-                            href={`https://t.me/${data.telegramUsername.replace(/^@/, '')}`}
+                            href={`https://t.me/${data.telegramUsername.replace(/^@/, '')}?text=${encodeURIComponent('Hello, I got your number from MY-Callbook https://callbook.hamradio.my !')}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: '#29b6f6', textDecoration: 'none' }}
