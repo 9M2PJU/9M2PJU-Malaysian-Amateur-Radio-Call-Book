@@ -115,8 +115,8 @@ const Login = () => {
                     }
                     
                     .logo-img {
-                        width: 60px !important; /* Smaller logo */
-                        height: 60px !important;
+                        width: 90px !important; /* Bigger logo */
+                        height: 90px !important;
                         margin-bottom: 2px !important;
                         opacity: 1 !important;
                         display: block !important;
@@ -124,14 +124,16 @@ const Login = () => {
 
                     .header-section h1 {
                         font-family: sans-serif;
-                        font-size: 1rem !important; /* Slightly smaller */
+                        font-size: 0.75rem !important; /* Smaller Directory text */
                         line-height: 1.1 !important;
                         margin-bottom: 0 !important;
+                        opacity: 0.8 !important;
                     }
 
                     .header-section h2 {
-                        font-size: 0.85rem !important;
-                        opacity: 0.9 !important;
+                        font-size: 1.4rem !important; /* Bigger MY-Callbook text */
+                        opacity: 1 !important;
+                        margin-bottom: 2px !important;
                     }
                     
                     .header-section > p { display: none !important; }
