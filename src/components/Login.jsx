@@ -61,21 +61,19 @@ const Login = () => {
 
     return (
         <div style={{
-            height: '100dvh',
+            minHeight: '100dvh',
             width: '100vw',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden', // Force no scrollbars on desktop
-            position: 'fixed', // Lock it in place
-            top: 0,
-            left: 0,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
+            backgroundAttachment: 'fixed',
+            overflow: 'hidden' // Default to hidden for desktop
         }}>
             <style>{`
+                /* Desktop Defaults */
                 html, body { 
                     overflow: hidden !important; 
                     height: 100% !important; 
@@ -83,28 +81,45 @@ const Login = () => {
                     padding: 0 !important;
                     width: 100%;
                 }
-                
+
                 /* Mobile & Small Screen Optimization */
                 @media (max-width: 768px), (max-height: 700px) {
                     html, body {
                         overflow-y: auto !important;
                         position: static !important;
+                        height: auto !important;
                     }
+                    /* Hide scrollbar for Chrome, Safari and Opera */
+                    html::-webkit-scrollbar, body::-webkit-scrollbar {
+                        display: none;
+                    }
+                    /* Hide scrollbar for IE, Edge and Firefox */
+                    html, body {
+                        -ms-overflow-style: none;  /* IE and Edge */
+                        scrollbar-width: none;  /* Firefox */
+                    }
+                    
                     .main-wrapper {
-                        position: static !important;
-                        overflow-y: auto !important;
                         height: auto !important;
                         min-height: 100dvh;
-                        padding: 20px 0;
+                        padding: 30px 0 !important;
+                        overflow-y: visible !important;
                     }
-                    .login-card { 
-                        padding: 20px !important;
-                        margin: 10px auto !important;
-                    }
+                    
+                    /* Ensure logo is visible and sized correctly */
                     .logo-img {
                         width: 100px !important;
                         height: 100px !important;
+                        display: block !important; 
+                        opacity: 1 !important;
                     }
+
+                    .login-card { 
+                        padding: 20px !important;
+                        margin: 10px auto !important;
+                        width: 90% !important;
+                    }
+                    
                     .turnstile-wrapper {
                         transform: scale(0.85);
                         transform-origin: center;
@@ -119,7 +134,7 @@ const Login = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                overflow: 'hidden' // Double ensure no scroll
+                overflow: 'hidden' // Default for desktop
             }}>
                 <div className="login-container" style={{
                     margin: '0 auto',
