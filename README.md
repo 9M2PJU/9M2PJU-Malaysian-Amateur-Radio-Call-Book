@@ -81,7 +81,10 @@ We are obsessed with speed.
 
 Stay up to date with the latest evolution of the platform.
 
-### **v2.4.2** (Latest) - *2026-01-20*
+### **v2.4.3** (Latest) - *2026-01-21*
+*   **Mobile Perfection**: Major improvements to mobile keyboard handling, search interaction (debounce), and touch responsiveness. Fixed "AbortError" issues.
+
+### **v2.4.2** - *2026-01-20*
 *   **Security**: Comprehensive security audit performed. Verified session security, XSS protection, and bot mitigation.
 
 ### **v2.4.1** - *2026-01-20*
