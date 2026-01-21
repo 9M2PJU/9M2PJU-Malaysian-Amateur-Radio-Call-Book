@@ -113,7 +113,7 @@ const Login = () => {
                         margin-bottom: 5px !important;
                     }
                     .header-section h1 {
-                        font-size: 1rem !important;
+                        font-size: 0.85rem !important;
                         margin-bottom: 0 !important;
                         line-height: 1.1 !important;
                     }
