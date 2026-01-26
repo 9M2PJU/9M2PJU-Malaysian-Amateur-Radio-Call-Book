@@ -169,10 +169,12 @@ graph TD
     
     Auth -->|"Verify/Reset (OK)"| Email["📧 Resend (Email API)"]
     Edge -.->|"🚫 Bulk Reminders (Quota Limit)"| Email
+    Edge -->|"✅ License Alerts"| Telegram["✈️ Telegram Bot API"]
     
     style User fill:#f9f,stroke:#333
     style CDN fill:#435,stroke:#333,color:#fff
     style SB fill:#3ecf8e,stroke:#333,color:#fff
+    style Telegram fill:#24A1DE,stroke:#333,color:#fff
 ```
 
 ### ⚠️ The Disabled Email System (Important)
