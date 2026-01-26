@@ -24,6 +24,25 @@
 
 ---
 
+## 🏷️ Badges & Status Indicators
+
+The badges at the top of this README indicate the current health, technology stack, and availability of the project:
+
+### Project Status
+*   ![Live Site](https://img.shields.io/badge/🌐_Live_Site-callbook.hamradio.my-2563EB?style=flat-square&logo=google-chrome&logoColor=white) **Live Site**: Direct link to the production application.
+*   ![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-222222?style=flat-square&logo=github) **Hosting**: Indicates the project is hosted on GitHub Pages.
+*   ![License](https://img.shields.io/badge/License-AGPLv3-22c55e?style=flat-square&logo=gnu-bash&logoColor=white) **License**: This project is open-source under the AGPLv3 license.
+*   ![Status](https://img.shields.io/badge/Status-Active_Development-orange?style=flat-square) **Development Status**: Shows the current phase of the project (Active, Maintenance, etc.).
+*   ![Docker](https://img.shields.io/badge/Docker-Image-2496ED?style=flat-square&logo=docker&logoColor=white) **Docker**: Links to the official Docker container package.
+
+### Tech Stack Versions
+*   ![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB) **React 19**: The core frontend library.
+*   ![Vite](https://img.shields.io/badge/Vite_7-646CFF?style=flat-square&logo=vite&logoColor=white) **Vite 7**: The build tool and development server.
+*   ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white) **Supabase**: The backend-as-a-service provider.
+*   ![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?style=flat-square&logo=pwa&logoColor=white) **PWA Ready**: Indicates Progressive Web App capabilities.
+
+---
+
 ## 📖 Introduction
 
 Welcome to the **Malaysian Amateur Radio Callbook**, a next-generation directory designed to connect ham radio operators across Malaysia. This project goes beyond a simple list; it is a **comprehensive platform** built with the latest web technologies to provide a fast, secure, and beautiful user experience. Whether you are a veteran operator or a newly licensed ham, this platform is your gateway to the local community.
