@@ -141,7 +141,8 @@ END:VCARD`;
             },
             {
                 show: data.meshtasticId,
-                type: 'badge',
+                type: 'link',
+                href: `https://meshmap2.lucifernet.com/?node_id=${parseInt(data.meshtasticId.slice(1), 16)}`,
                 label: data.meshtasticId,
                 image: '/meshtastic-logo.png',
                 style: { background: 'rgba(103, 232, 157, 0.1)', color: '#67e89d', border: '1px solid rgba(103, 232, 157, 0.3)' },
